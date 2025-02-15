@@ -7,7 +7,7 @@ This project is a **Website** that offers the user the ability to navigate a uni
 1. [Installation](#installation)
 2. [Technologies Used](#technologies-used)
 3. [Features](#features)
-4. [Contributing](#contributing)
+4. [Contributors](#contributors)
 
 ## Installation:
 
@@ -19,7 +19,7 @@ This project is a **Website** that offers the user the ability to navigate a uni
 
 ## Features:
 
-## Contributing:
+## Contributors:
 - **Lucas** - https://github.com/Lucasarl
 - **Tim** - https://github.com/Rymney34
 - **James** - https://github.com/jamesharris1307
