@@ -19,9 +19,7 @@ This project is a **Website** that offers the user the ability to navigate a uni
 
 ## Features:
 
-## Contributing Members:
+## Contributing:
 - **Lucas** - https://github.com/Lucasarl
 - **Tim** - https://github.com/Rymney34
 - **James** - https://github.com/jamesharris1307
-
-
