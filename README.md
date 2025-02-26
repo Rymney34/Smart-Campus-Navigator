@@ -38,6 +38,7 @@ Make sure you have the following software installed:
 - **Express**: Web framework for Node.js
 - **Leaflet**: Library for interactive maps
 - **MongoDB**: Database for storing data (e.g., Map Data, Images)
+- **Mongoose**: Object Data Modeling (ODM) Library for MongoDB
 
 ## Features:
 
