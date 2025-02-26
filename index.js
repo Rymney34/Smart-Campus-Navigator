@@ -54,6 +54,145 @@ function setupUserLocation(map) {
 
 setupUserLocation(map);
 
+var popupMenu = document.createElement("div");
+popupMenu.id = "popupMenu";
+popupMenu.style.display = "none"; // Initially hidden
+popupMenu.innerHTML = `
+    <h3 id="destinationTitle">Building</h3>
+    
+    <p id="targetLocation">Target: <span id="destinationText"></span></p>
+    <p id="eta">ETA:</p>
+    <button id="goButton">GO</button>
+`;
+document.body.appendChild(popupMenu);
+
+var css = document.createElement("style");
+css.innerHTML = `
+    #popupMenu {
+        position: fixed;
+        bottom: 20px;
+        right: 2%;
+        width: 320px;
+        background: #0A152A;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        font-family: "Gill Sans", sans-serif;
+    }
+    #popupMenu h3 { margin: 0; font-size: 18px; }
+    #popupMenu p { font-size: 14px; opacity: 0.8; }
+    #popupMenu button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        font-size: 16px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+`;
+document.head.appendChild(css);
+popupMenu.style.position = "fixed";
+document.body.appendChild(popupMenu); // Ensures it's not inside the map
+
+// Function to Show Popup Menu
+function showPopupMenu(locationName, lat, lng) {
+    document.getElementById("destinationTitle").textContent = locationName;
+    document.getElementById("destinationText").textContent = locationName;
+
+    calculateETA([lat,lng])
+
+    popupMenu.style.display = "block";
+
+    document.getElementById("goButton").onclick = function () {
+        createRoute([lat, lng]);
+    };
+}
+
+// Function to Create Route When "GO" is Pressed
+function createRoute(destination) {
+    if (!userLatLng) {
+        setupUserLocation(map);
+        return;
+    }
+
+    // Remove existing route if it exists
+    if (routingControl) {
+        map.removeControl(routingControl);
+    }
+
+    // Create route using Leaflet Routing Machine
+    routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(userLatLng.lat, userLatLng.lng),
+            L.latLng(destination[0], destination[1])
+        ],
+        routeWhileDragging: false,
+    }).addTo(map);
+
+    setTimeout(() => {
+        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
+    }, 100);
+
+    routingControl.on('routesfound', function (e) {
+        let route = e.routes[0];
+        let distanceMeters = route.summary.totalDistance; // Distance in meters
+        let walkingSpeed = 1.39; // meters per second
+        let etaSeconds = distanceMeters / walkingSpeed;
+        let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
+
+        // Update ETA in popup
+        document.getElementById("eta").textContent = `ETA: ${etaMinutes} min`;
+    });
+
+    popupMenu.style.display = "none"; // Hide the popup after starting the route
+}
+
+function calculateETA(destination) {
+    if (!userLatLng) {
+        document.getElementById("eta").textContent = `ETA: Location unavailable`;
+        return;
+    }
+
+    let router = L.Routing.control({
+        waypoints: [
+            L.latLng(userLatLng.lat, userLatLng.lng),
+            L.latLng(destination[0], destination[1])
+        ],
+        routeWhileDragging: false,
+        createMarker: function () { return null; }, // Hide markers
+        show: false, // Hide UI panel
+        lineOptions: {
+            styles: [{ color: "transparent", opacity: 0, weight: 0 }] // 👈 Make the line invisible
+        }
+    }).addTo(map);
+
+    setTimeout(() => {
+        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
+    }, 100);
+
+    router.route();
+    
+    router.on('routesfound', function (e) {
+        console.log("✅ Route found:", e.routes[0]);
+        let route = e.routes[0];
+        let distanceMeters = route.summary.totalDistance; // Distance in meters
+        let walkingSpeed = 1.39; // meters per second
+        let etaSeconds = distanceMeters / walkingSpeed;
+        let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
+        
+        document.getElementById("eta").textContent = `ETA: ${etaMinutes} min`;
+
+        
+        setTimeout(() => map.removeControl(router), 0);
+    });
+   
+}
 
 // Add Event Listener to Display Click Events on the Map
     // Main use is to find the Coordinates of the building edges 
@@ -338,28 +477,6 @@ locations.forEach(function(location) {
         .bindPopup(location.name);
 
     marker.on('click', function () {
-        if (!userLatLng) {
-            setupUserLocation(map);
-            return;
-        }
-
-        // Remove previous route if it exists
-        if (routingControl) {
-            map.removeControl(routingControl);
-        }
-
-        // Generate route from user to clicked marker
-        routingControl = L.Routing.control({
-            waypoints: [
-                userLatLng, // User's current location
-                L.latLng(location.lat, location.lng) // Marker location
-            ],
-            routeWhileDragging: true,
-            
-        }).addTo(map);
-
-        setTimeout(() => {
-            document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-        }, 100);
+        showPopupMenu(location.name, location.lat, location.lng);
     });
 });
