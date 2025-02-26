@@ -1,28 +1,50 @@
-const { MongoClient } = require("mongodb")
-const uri = require("./atlas_uri")
+// Requirements
+const express = require("express");
+const mongoose = require("mongoose");
 
-console.log(uri)
+// Set up Database Connection
+const uri = "mongodb+srv://james-harris:48De40@campusnavigationsystemc.hmo0v.mongodb.net/campNavDB?retryWrites=true&w=majority&appName=CampusNavigationSystemCluster";
+mongoose.connect(uri)
+  .then(() => {
+    console.log("Connected to MongoDB Atlas!");
+  })
+  .catch((err) => {
+    console.error(`Error connecting to db: ${err}`);
+  });
 
-const client = new MongoClient(uri)
-const dbname = "bank"
+// Define a Schema (Buildings Schema)
+const buildingsSchema = new mongoose.Schema({
+  name: String,
+  type: String
+});
 
-const connectToDatabase = async () => {
-    try {
-        await client.connect();
-        console.log(`Connected to MongoDB Atlas: ${dbname}`);
-    }catch (err) {
-        console.error(`Error connecting to db ${err}`);
-    } 
-};
- 
-const main = async () => {
-    try {
-        await connectToDatabase();
-    } catch(err) {
-        console.error(`Error connecting to db ${err}`);
-    } finally {
-        await client.close();
-    }
-};
+// Create a Model from the Schema
+const Building = mongoose.model("Building", buildingsSchema);
 
-main();
+// Create Express App
+const app = express();
+const port = 4000;
+
+app.use(express.json());
+
+// Show if Server is Running
+app.get("/", (req, res) => {
+  res.send("Hello, the server is running!");
+});
+
+// Fetch Building Data from MongoDB
+app.get("/buildings", async (req, res) => {
+  try {
+    const buildings = await Building.find();  // Fetch data from the 'buildings' collection
+    console.log(buildings);  // Log the fetched data to the console
+    res.json(buildings);  // Send the data back as JSON in the response
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    res.status(500).send("Error fetching data");
+  }
+});
+
+// Start Server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
