@@ -10,9 +10,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 }).addTo(map);
 
 // Add Event Listener to Display Click Events on the Map
-    // Main use is to find the Coordinates of the building edges 
-    // to create the polygon representing the Uni's buildings
-    // Click on map and you will see the lat & long value of that specific point
+    /* Main use is to find the Coordinates of the building edges 
+       to create the polygon representing the Uni's buildings
+       Click on map and you will see the lat & long value of that specific point
+    */
 map.on('click', function(e) {
     // Get the Latitude and Longitude of the Clicked Point
     var lat = e.latlng.lat;
@@ -285,4 +286,3 @@ locations.forEach(function(location) {
         .addTo(map)
         .bindPopup(location.name);
 });
-
