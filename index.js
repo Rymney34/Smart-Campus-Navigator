@@ -1,5 +1,15 @@
+
+var bounds = L.latLngBounds(
+    L.latLng(51.494, -3.216), // South-West corner
+    L.latLng(51.498, -3.210)  // North-East corner
+);
+
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
-var map = L.map('map').setView([51.496212259288775, -3.2133038818782333], 50);
+var map = L.map('map', {
+    minZoom: 15,
+    maxBounds: bounds, // Restrict panning
+    maxBoundsViscosity: 1.0 // Prevents dragging outside the bounds
+}).setView([51.496212259288775, -3.2133038818782333], 50);
 
 // Add OpenStreetMap Tile Layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -8,6 +18,42 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; CartoDB'
 }).addTo(map);
+
+var routingControl = null;
+var userLatLng = null;
+
+
+function setupUserLocation(map) {
+    var userMarker = null;
+
+    // Locate user without auto-centering or zooming
+    map.locate({ enableHighAccuracy: true, setView: false });
+
+    map.on('locationfound', function (e) {
+        userLatLng = e.latlng; // Store user location
+
+        if (userMarker) {
+            userMarker.setLatLng(userLatLng); // Update marker position
+        } else {
+            // Add marker for the first time
+            userMarker = L.marker(userLatLng).addTo(map)
+                .bindPopup("You are here.");
+        }
+    });
+
+    // Prevent auto-following after first location find
+    map.on('locationfound', function () {
+        map.stopLocate();
+    });
+
+    // Prevent auto-panning or resetting view
+    map.on('movestart moveend drag mousedown', function () {
+        map.stopLocate();
+    });
+}
+
+setupUserLocation(map);
+
 
 // Add Event Listener to Display Click Events on the Map
     // Main use is to find the Coordinates of the building edges 
@@ -286,3 +332,34 @@ locations.forEach(function(location) {
         .bindPopup(location.name);
 });
 
+locations.forEach(function(location) {
+    var marker = L.marker([location.lat, location.lng])
+        .addTo(map)
+        .bindPopup(location.name);
+
+    marker.on('click', function () {
+        if (!userLatLng) {
+            setupUserLocation(map);
+            return;
+        }
+
+        // Remove previous route if it exists
+        if (routingControl) {
+            map.removeControl(routingControl);
+        }
+
+        // Generate route from user to clicked marker
+        routingControl = L.Routing.control({
+            waypoints: [
+                userLatLng, // User's current location
+                L.latLng(location.lat, location.lng) // Marker location
+            ],
+            routeWhileDragging: true,
+            
+        }).addTo(map);
+
+        setTimeout(() => {
+            document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
+        }, 100);
+    });
+});
