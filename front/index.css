@@ -1,0 +1,22 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    width: 90%;
+    height: 90vh;
+}
+
+.mainTest{
+    margin-bottom: 30px;
+}
+
+.blockName{
+    font-size: 20px;
+}
+
+.titleName {
+    font-size: 20px;
+}

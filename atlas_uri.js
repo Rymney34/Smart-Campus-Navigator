@@ -1,2 +1,2 @@
 module.exports = uri =
-    "mongodb+srv://myAtlasDBUser:Timosha_228@myatlasclusteredu.u1nq2.mongodb.net/?retryWrites=true&w=majority&appName=myAtlasClusterEDU";
+        "mongodb+srv://first_db_userT:Gazoz_228@campus-navigator.qe53f.mongodb.net/?retryWrites=true&w=majority&appName=Campus-Navigator";

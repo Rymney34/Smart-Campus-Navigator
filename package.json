@@ -2,6 +2,7 @@
   "dependencies": {
     "express": "^4.21.2",
     "leaflet": "^1.9.4",
-    "mongodb": "^6.13.0"
+    "mongodb": "^6.13.0",
+    "mongoose": "^8.10.1"
   }
 }
