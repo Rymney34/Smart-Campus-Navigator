@@ -10,7 +10,7 @@ html, body {
 }
 
 #side-bar {
-    width: 10%;
+    width: 5%;
     background-color: rgb(21, 21, 61);
     color: rgba(255, 255, 255, 0);
     transition: width 0.2s ease;
@@ -35,4 +35,26 @@ html, body {
     cursor: pointer;
     width: 50px;
     height: 50px;
+}
+
+#data-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.data-item {
+    background: #f0f0f0;
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.data-item h2 {
+    margin-top: 0;
+}
+
+.data-item p {
+    margin: 5px 0;
 }
