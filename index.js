@@ -137,7 +137,7 @@ function createRoute(destination) {
 
     setTimeout(() => {
         document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-    }, 100);
+    }, 10);
 
     routingControl.on('routesfound', function (e) {
         let route = e.routes[0];
@@ -174,7 +174,7 @@ function calculateETA(destination) {
 
     setTimeout(() => {
         document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-    }, 100);
+    }, 10);
 
     router.route();
     
