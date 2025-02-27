@@ -4,7 +4,35 @@ html, body {
     padding: 0;
 }
 
+#layout {
+    display: flex;
+    height: 100%;
+}
+
+#side-bar {
+    width: 10%;
+    background-color: rgb(21, 21, 61);
+    color: rgba(255, 255, 255, 0);
+    transition: width 0.2s ease;
+    text-align: center;
+    overflow: hidden;
+}
+
+#side-bar.active {
+    width: 25%;
+    color: white;
+}
+
 #map {
-    width: 100%;
+    flex-grow: 1;
     height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+#side-barButton {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
 }
