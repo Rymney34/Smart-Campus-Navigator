@@ -130,11 +130,47 @@ document.getElementById("startLocationSelect").addEventListener("change", functi
 // Global variable to store the current target location
 let currentTargetLocation = null;
 
+function resetGoButton() {
+    const goButton = document.getElementById("goButton");
+    goButton.textContent = "GO";
+    goButton.style.background = "red";
+    goButton.style.border = "none";
+
+    goButton.onclick = function () {
+        let startLocation = getSelectedStartLocation();
+        if (!startLocation) {
+            alert("Start location not available!");
+            return;
+        }
+        createRoute(startLocation, currentTargetLocation);
+
+        goButton.textContent = "END";
+        goButton.style.background = "#444";
+        goButton.style.border = "2px solid red";
+
+        goButton.onclick = function () {
+            if (routingControl) {
+                map.removeControl(routingControl);
+                routingControl = null;
+            }
+            resetGoButton();
+            popupMenu.style.display = "none";
+        };
+    };
+}
+
+
 // Function to Show Popup Menu
 function showPopupMenu(locationName, lat, lng) {
     currentTargetLocation = [lat, lng]; // Store target location globally
     document.getElementById("destinationText").textContent = locationName;
     popupMenu.style.display = "block";
+
+    const goButton = document.getElementById("goButton");
+    goButton.textContent = "GO";
+    goButton.style.background = "red";
+    goButton.style.border = "none";
+    
 
     let startLocation = getSelectedStartLocation();
 
@@ -149,8 +185,28 @@ function showPopupMenu(locationName, lat, lng) {
             return;
         }
         createRoute(updatedStartLocation, [lat, lng]);
-    };
-}
+
+        this.textContent = "END";
+        this.style.background = "#444"; // Darker color to indicate stopping
+        this.style.border = "2px solid red"; // Optional styling
+
+        popupMenu.style.display = "block";
+
+        // Change the button action to stop pathfinding
+        this.onclick = function () {
+            if (routingControl) {
+                map.removeControl(routingControl); 
+                routingControl = null; // Reset so a new route can be created
+            }
+    
+            this.textContent = "GO";
+            this.style.background = "red";
+            this.style.border = "none";
+    
+            this.onclick = document.getElementById("goButton").onclick;
+            popupMenu.style.display = "none";
+        };
+}}
 
 
 function findLocation(locationName,lat,lng) {
