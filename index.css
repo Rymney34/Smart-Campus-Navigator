@@ -9,3 +9,64 @@ html, body {
     height: 100vh;
     z-index: 0;
 }
+
+.location-input {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.location-input select {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 14px;
+    padding: 5px;
+    outline: none;
+}
+
+.eta-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+#goButton {
+    background: red;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#startLocationSelect {
+    background-color: #0A152A; /* Match the popup background */
+    color: white; /* Ensure text is visible */
+    border: 1px solid #2C3E50;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+}
+
+/* Make options visible */
+#startLocationSelect option {
+    background-color: white; /* Background for options */
+    color: black; /* Text color */
+    padding: 10px;
+}
+
+/* Hover Effect */
+#startLocationSelect option:hover {
+    background-color: #007bff;
+    color: white;
+}

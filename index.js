@@ -24,6 +24,7 @@ var userLatLng = null;
 
 
 function setupUserLocation(map) {
+    
     var userMarker = null;
 
     // Locate user without auto-centering or zooming
@@ -58,10 +59,25 @@ var popupMenu = document.createElement("div");
 popupMenu.id = "popupMenu";
 popupMenu.style.display = "none"; // Initially hidden
 popupMenu.innerHTML = `
-    <h3 id="destinationTitle">Building</h3>
-    
-    <p id="targetLocation">Target: <span id="destinationText"></span></p>
-    <p id="eta">ETA:</p>
+    <h3 id="destinationTitle">Directions</h3>
+
+    <div class="location-input">
+        <label for="startLocationSelect">User Location</label>
+        <select id="startLocationSelect">
+            <option value="live">Live Location</option>
+        </select>
+    </div>
+
+    <div class="location-input">
+        <label>Target Location</label>
+        <p id="destinationText"></p>
+    </div>
+
+    <div class="eta-container">
+        <p></p>
+        <span id="eta"></span>
+    </div>
+
     <button id="goButton">GO</button>
 `;
 document.body.appendChild(popupMenu);
@@ -100,24 +116,69 @@ document.head.appendChild(css);
 popupMenu.style.position = "fixed";
 document.body.appendChild(popupMenu); // Ensures it's not inside the map
 
+// Get the dropdown element
+const startLocationSelect = document.getElementById("startLocationSelect");
+
+
+document.getElementById("startLocationSelect").addEventListener("change", function () {
+    let startLocation = getSelectedStartLocation();
+    
+    if (startLocation && currentTargetLocation) {
+        calculateETA(startLocation, currentTargetLocation);
+    }
+});
+// Global variable to store the current target location
+let currentTargetLocation = null;
+
 // Function to Show Popup Menu
 function showPopupMenu(locationName, lat, lng) {
-    document.getElementById("destinationTitle").textContent = locationName;
+    currentTargetLocation = [lat, lng]; // Store target location globally
     document.getElementById("destinationText").textContent = locationName;
-
-    calculateETA([lat,lng])
-
     popupMenu.style.display = "block";
 
+    let startLocation = getSelectedStartLocation();
+
+    if (startLocation) {
+        calculateETA(startLocation, [lat, lng]);
+    }
+
     document.getElementById("goButton").onclick = function () {
-        createRoute([lat, lng]);
+        let updatedStartLocation = getSelectedStartLocation(); // Get latest selection when pressing GO
+        if (!updatedStartLocation) {
+            alert("Start location not available!");
+            return;
+        }
+        createRoute(updatedStartLocation, [lat, lng]);
     };
 }
 
+
+function findLocation(locationName,lat,lng) {
+    let startLocation;
+    popupMenu.style.display = "block";
+    let selectedValue = startLocationSelect.value;
+    if (selectedValue === "live") {
+        startLocation = [userLatLng.lat,userLatLng.lng]; // Use live location
+    } else {
+        startLocation = JSON.parse(selectedValue); // Convert stored coordinates back to an array
+    }
+    calculateETA(startLocation,[lat,lng]);
+    return startLocation;
+}
+
+function getSelectedStartLocation() {
+    let selectedValue = startLocationSelect.value;
+    if (selectedValue === "live") {
+        return userLatLng ? [userLatLng.lat, userLatLng.lng] : null; // Use live location
+    } else {
+        return JSON.parse(selectedValue);
+    }
+}
+
 // Function to Create Route When "GO" is Pressed
-function createRoute(destination) {
-    if (!userLatLng) {
-        setupUserLocation(map);
+function createRoute(start, destination) {
+    if (!start || !destination) {
+        alert("Location not available!");
         return;
     }
 
@@ -129,39 +190,32 @@ function createRoute(destination) {
     // Create route using Leaflet Routing Machine
     routingControl = L.Routing.control({
         waypoints: [
-            L.latLng(userLatLng.lat, userLatLng.lng),
+            L.latLng(start[0], start[1]),
             L.latLng(destination[0], destination[1])
         ],
         routeWhileDragging: false,
+        draggableWaypoints: false, 
     }).addTo(map);
 
     setTimeout(() => {
         document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
     }, 10);
 
-    routingControl.on('routesfound', function (e) {
-        let route = e.routes[0];
-        let distanceMeters = route.summary.totalDistance; // Distance in meters
-        let walkingSpeed = 1.39; // meters per second
-        let etaSeconds = distanceMeters / walkingSpeed;
-        let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
-
-        // Update ETA in popup
-        document.getElementById("eta").textContent = `ETA: ${etaMinutes} min`;
-    });
-
     popupMenu.style.display = "none"; // Hide the popup after starting the route
 }
 
-function calculateETA(destination) {
-    if (!userLatLng) {
+function calculateETA(start,destination) {
+    
+    if (!start) {
         document.getElementById("eta").textContent = `ETA: Location unavailable`;
         return;
     }
 
+    
+
     let router = L.Routing.control({
         waypoints: [
-            L.latLng(userLatLng.lat, userLatLng.lng),
+            L.latLng(start[0], start[1]),
             L.latLng(destination[0], destination[1])
         ],
         routeWhileDragging: false,
@@ -174,7 +228,7 @@ function calculateETA(destination) {
 
     setTimeout(() => {
         document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-    }, 10);
+    }, 0);
 
     router.route();
     
@@ -463,6 +517,14 @@ var locations = [
     { lat: 51.49601990017624, lng: -3.212036490440369, name: "Block A" },
     { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" }, 
 ];
+
+// Adds all locations to the dropdown
+locations.forEach(function(location) {
+    var option = document.createElement("option");
+    option.value = JSON.stringify([location.lat, location.lng]); // Store coordinates as a string
+    option.textContent = location.name;
+    startLocationSelect.appendChild(option);
+});
 
 // Adds Lat and Lng Values to Map
 locations.forEach(function(location) {
