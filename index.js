@@ -126,11 +126,13 @@ document.getElementById("startLocationSelect").addEventListener("change", functi
     if (startLocation && currentTargetLocation) {
         calculateETA(startLocation, currentTargetLocation);
     }
+    resetGoButton()
 });
 // Global variable to store the current target location
 let currentTargetLocation = null;
 
 function resetGoButton() {
+    popupMenu.style.display = "block";
     const goButton = document.getElementById("goButton");
     goButton.textContent = "GO";
     goButton.style.background = "red";
@@ -143,7 +145,7 @@ function resetGoButton() {
             return;
         }
         createRoute(startLocation, currentTargetLocation);
-
+        popupMenu.style.display = "block";
         goButton.textContent = "END";
         goButton.style.background = "#444";
         goButton.style.border = "2px solid red";
