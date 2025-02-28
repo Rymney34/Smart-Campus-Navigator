@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
 
 const locationsSchema = new mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId },
-    idFloor: { type: mongoose.Schema.Types.ObjectId},
-    idType: { type: mongoose.Schema.Types.ObjectId },
+    _id: { type: mongoose.Schema.Types.ObjectId, auto:true },
+    idFloor: { type: mongoose.Schema.Types.ObjectId, ref: 'floors'},
+    idType: { type: mongoose.Schema.Types.ObjectId, ref: 'locationType' },
     roomNumber: { type: String },
     facilityName: {type: String},
     isFacility: {type: Boolean},
@@ -11,4 +11,4 @@ const locationsSchema = new mongoose.Schema({
     closeTime: { type: String, default: "15:00"},
 });
 
-module.exports = mongoose.model("locations", locationsSchema)
+module.exports = mongoose.model("Locations", locationsSchema)

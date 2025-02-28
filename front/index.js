@@ -292,10 +292,10 @@ const h2 = document.getElementsByClassName("titleName")[0];
 
 
 
-// Function to fetch data and then dispaly at the front end
-    const responseAPI = async () => {
 
-        const res = await fetch('/blocks' ,{
+    const responseAPI1 = async () => {
+
+        const res = await fetch('/test2' ,{
             method: 'GET',
         })
       
@@ -308,24 +308,25 @@ const h2 = document.getElementsByClassName("titleName")[0];
         h2.textContent = data.title;
       }
 
-      responseAPI()
+      responseAPI1()
 
-    // async function fetchBlockDetails() {
-    //     try {
-    //         const response = await fetch('/blocks'); // Fetch from Express API
-    //         const data = await response.json(); // Parse JSON response
-            
-    //         // Insert data into the page
-    //         h1.textContent = data;
-    //     } catch (error) {
-    //         console.error('Error fetching block details:', error);
-    //         document.getElementById('block-title').innerText = "Error loading data";
-    //     }
-    // }
+    const imgElement = document.getElementById("image1");
 
-    // fetchBlockDetails();
+        const responseAPI = async () => {
+            try {
+                const response = await fetch("./image");
+        
+                const data = await response.json();
+                
+                console.log(data); 
+
+                // Set the image source using the base64 string
+                imgElement.src = `data:image/png;base64,${data.image}`;
+            } catch (error) {
+                console.error("Error fetching image:", error);
+            }
+        };
+
+        responseAPI();
 
 
-      
-
-// console.log(showInfor)
