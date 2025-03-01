@@ -59,26 +59,31 @@ var popupMenu = document.createElement("div");
 popupMenu.id = "popupMenu";
 popupMenu.style.display = "none"; // Initially hidden
 popupMenu.innerHTML = `
-    <h3 id="destinationTitle">Directions</h3>
-
-    <div class="location-input">
-        <label for="startLocationSelect">User Location</label>
-        <select id="startLocationSelect">
-            <option value="live">Live Location</option>
-        </select>
+    <div id="popupHeader">
+        <h3 id="destinationTitle">Directions</h3>
+        <button id="popupToggle">▲</button>
     </div>
+    <div id="popupContent">
+            <div class="location-input">
+            <label for="startLocationSelect">User Location</label>
+            <select id="startLocationSelect">
+                <option value="live">Live Location</option>
+            </select>
+        </div>
 
-    <div class="location-input">
-        <label>Target Location</label>
-        <p id="destinationText"></p>
+        <div class="location-input">
+            <label>Target Location</label>
+            <p id="destinationText"></p>
+        </div>
+
+        <div class="eta-container">
+            <p></p>
+            <span id="eta"></span>
+        </div>
+
+        <button id="goButton">GO</button>
     </div>
-
-    <div class="eta-container">
-        <p></p>
-        <span id="eta"></span>
-    </div>
-
-    <button id="goButton">GO</button>
+    
 `;
 document.body.appendChild(popupMenu);
 
@@ -127,6 +132,10 @@ document.getElementById("startLocationSelect").addEventListener("change", functi
         calculateETA(startLocation, currentTargetLocation);
     }
     resetGoButton()
+});
+
+document.getElementById("popupToggle").addEventListener("click", function () {
+    document.getElementById("popupMenu").classList.toggle("minimized");
 });
 // Global variable to store the current target location
 let currentTargetLocation = null;
@@ -180,35 +189,8 @@ function showPopupMenu(locationName, lat, lng) {
         calculateETA(startLocation, [lat, lng]);
     }
 
-    document.getElementById("goButton").onclick = function () {
-        let updatedStartLocation = getSelectedStartLocation(); // Get latest selection when pressing GO
-        if (!updatedStartLocation) {
-            alert("Start location not available!");
-            return;
-        }
-        createRoute(updatedStartLocation, [lat, lng]);
-
-        this.textContent = "END";
-        this.style.background = "#444"; // Darker color to indicate stopping
-        this.style.border = "2px solid red"; // Optional styling
-
-        popupMenu.style.display = "block";
-
-        // Change the button action to stop pathfinding
-        this.onclick = function () {
-            if (routingControl) {
-                map.removeControl(routingControl); 
-                routingControl = null; // Reset so a new route can be created
-            }
-    
-            this.textContent = "GO";
-            this.style.background = "red";
-            this.style.border = "none";
-    
-            this.onclick = document.getElementById("goButton").onclick;
-            popupMenu.style.display = "none";
-        };
-}}
+    resetGoButton();
+}
 
 
 function findLocation(locationName,lat,lng) {
@@ -252,7 +234,9 @@ function createRoute(start, destination) {
             L.latLng(destination[0], destination[1])
         ],
         routeWhileDragging: false,
+        addWaypoints: false,
         draggableWaypoints: false, 
+
     }).addTo(map);
 
     setTimeout(() => {
