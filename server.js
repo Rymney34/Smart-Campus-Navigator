@@ -5,12 +5,13 @@ const floors = require("./floors");
 const Locations = require("./locations.js");
 const locationType = require("./locationType");
 const Images = require("./images.js")
+const icons = require("./icons.js")
 // const images = require('./images');
 
 const {test2} = require("./test1");
 
 
-const fs = require("fs");
+const fs = require("fs").promises;
 
 
 const app = express();
@@ -33,15 +34,40 @@ async function connectDB() {
     }
 }
 
+//Adding image to db 
 
+// async function iconsUpload () {
+    
+//     try{
+        
+//         const imagePath = './dumble.png';
 
+    
+//         const imageBuffer =  await fs.readFile(imagePath);
+//         // const base64I = imageBuffer.toString('base64')
+//         // const mimeType = 'image/png';
 
+//         const newIcon = new icons({
+//             image: imageBuffer
+//           });
+
+//           const result = await newIcon.save();
+//           console.log(result)
+
+//     }catch (e){
+//         console.log(e.message)
+//     }
+
+// }
+
+// iconsUpload()
 
 async function run(){
     try{
-        const imagePath = "./t1.png";  // Change to your image path
+        const imagePath = "./t1.png"; 
         const imageBuffer = fs.readFileSync(imagePath);
 
+        
   
 
     }catch(e){
@@ -61,8 +87,8 @@ async function imag1() {
             },
             {
                 $project: {
-                    _id: 0, // Exclude _id
-                    image: 1 // Include only image field
+                    _id: 0, 
+                    image: 1 
                 }
             }
         ];
@@ -74,7 +100,7 @@ async function imag1() {
 
     } catch (error) {
         console.error("Error in imag1:", error.message);
-        throw error; // Re-throw to be caught in the route
+        throw error;
     }
 }
 
@@ -82,6 +108,45 @@ app.get("/image", async (req, res) => {
     try {
        
         const result = await imag1();
+       
+        const base64Image = result.image.toString('base64');
+       
+        res.json({ image: base64Image });
+    } catch (e) {
+        console.error("Error in /image route:", e.message);
+        res.status(500).json({ error: "Failed to fetch image" });
+    }
+});
+
+async function ic1() {
+    try {
+        const q = [
+            { 
+                $match: { _id: new mongoose.Types.ObjectId("67c216db632f0ba7e393a950") }
+            },
+            {
+                $project: {
+                    _id: 0, 
+                    image: 1 
+                }
+            }
+        ];
+
+        
+        const res = await icons.aggregate(q).exec();
+        
+        return res[0];
+
+    } catch (error) {
+        console.error("Error in imag1:", error.message);
+        throw error;
+    }
+}
+
+app.get("/icon", async (req, res) => {
+    try {
+       
+        const result = await ic1();
        
         const base64Image = result.image.toString('base64');
        
@@ -105,6 +170,7 @@ app.get('/test2', async (req, res) => {
 
 
 connectDB().then(() => {
+    
     app.listen(port, () => {
         console.log(`Listening on port ${port}`);
         
