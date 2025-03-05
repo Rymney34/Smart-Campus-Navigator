@@ -65,6 +65,8 @@ html, body {
 #eta-label {
     margin-left: 0px !important;
     margin-bottom:0px !important;
+    opacity: 0.8;
+    font-size: 14px;
 }
 
 #eta {
@@ -151,7 +153,7 @@ html, body {
     font-size: 20px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 #popupContent {
@@ -176,20 +178,25 @@ html, body {
     border-radius: 5px;
     width: 100%;
     font-size: 14px;
-    text-align: left;
     appearance: none; /* Removes default styles */
+    text-align: right; /* Right-align selected text */
+    text-align-last: right; /* Ensures only the selected value is right-aligned */
+    margin-left: 25px;
 }
 
 /* Fix dropdown container */
 .location-input {
     background: rgba(255, 255, 255, 0.1);
+    justify-content: space-between;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row !important;
     align-items: flex-start; /* Ensures left alignment */
 }
+
+
 
 /* Ensure dropdown options are properly visible */
 #startLocationSelect option {
@@ -200,9 +207,26 @@ html, body {
 }
 
 
+
 .location-input label {
     font-size: 14px;
     color: white;
-    margin-left: 6px; /* Ensure alignment */
+    opacity: 0.8;
+    min-width: 90px;
+    flex: 1;
+    padding: 8px;
 }
 
+.location-input select, 
+.location-input p {
+    flex: 1;
+    text-align: right; 
+    max-width: 60%; 
+}
+
+#destinationText {
+    font-size: 14px !important;
+    margin: 0px;
+    margin-left: 30px;
+    padding: 8px;
+}

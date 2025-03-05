@@ -61,12 +61,16 @@ popupMenu.style.display = "none"; // Initially hidden
 popupMenu.innerHTML = `
     <div id="popupHeader">
     <h3 id="destinationTitle">Directions</h3>
-    <button id="popupToggle">▲</button>
+    <button id="popupToggle">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </button>
 </div>
 
 <div id="popupContent">
     <div class="location-input">
-        <label for="startLocationSelect">User Location</label>
+        <label for="startLocationSelect" id="userLocationLabel">User Location</label>
         <select id="startLocationSelect">
             <option value="live">Live Location</option>
         </select>
@@ -108,7 +112,6 @@ css.innerHTML = `
         font-family: "Gill Sans", sans-serif;
     }
     #popupMenu h3 { margin: 0; font-size: 20pt; margin-left: 6px}
-    #popupMenu p { font-size: 14px; opacity: 0.8; margin-left: 8px}
     
 `;
 document.head.appendChild(css);
@@ -248,7 +251,7 @@ function calculateETA(start,destination) {
         document.getElementById("eta").textContent = `Location unavailable`;
         return;
     }
-
+    document.getElementById("eta").textContent = `Loading`;
     
 
     let router = L.Routing.control({
@@ -477,21 +480,47 @@ var buildingCoordsBlockC  = [
     // Car Park Coordinates 
 // Staff Car Park 1
 var carParkStaff1  = [
+    [51.495586439246665, -3.211709260940552],
+    [51.49534612186005, -3.2120203971862797],
+    [51.49527269129474, -3.211875557899475],
+    [51.49553303549247, -3.211580514907837]
 ];
 // Staff Car Park 2
 var carParkStaff2  = [
+    [51.49563976216066, -3.2116287946701054],
+    [51.49595016988006, -3.2112264633178715],
+    [51.49590677968079, -3.2110708951950078],
+    [51.49557634526976, -3.21150541305542],
 ];
 // Staff Car Park 3
 var carParkStaff3  = [
+    [51.49569640456206, -3.2118809223175053],
+    [51.49542604806526, -3.2122135162353516],
+    [51.49537931961933, -3.212090134620667],
+    [51.49562965002059, -3.2117521762847905]
 ];
 // Staff Car Park 4
-var carParkStaff4  = [
+var carParkStaff4  = [ 
+    [51.49602724804583, -3.21151077747345],
+    [51.495733529463934, -3.211816549301148],
+    [51.495686801333214, -3.2117038965225224],
+    [51.49596383169403, -3.2113230228424077],
+    
 ];
 // Staff Car Park 5
 var carParkStaff5  = [
+    [51.4967950096051,-3.2144236564636235],
+    [51.497068614831484, -3.2140481472015385],
+    [51.497015422829335, -3.213924765586853],
+    [51.496741736507964,  -3.2143431901931767]
+
 ];
 // Staff Car Park 6
 var carParkStaff6  = [
+    [51.497112197784865, -3.2142949104309086],
+    [51.496908602451704, -3.2145524024963383],
+    [51.49684852496649, -3.2144451141357426],
+    [51.49708555335194, -3.2141286134719853]
 ];
 // Clinic Car Park
 var carParkClinic = [
@@ -541,6 +570,18 @@ L.polygon(buildingCoordsBlockA, polygonStyleIdle).addTo(map);
 // Block C Polygon
 L.polygon(buildingCoordsBlockC, polygonStyleIdle).addTo(map);
 
+L.polygon(carParkStaff1, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff2, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff3, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff4, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff5, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff6, polygonStyleIdle).addTo(map);
+
 // Lat and Lng Values of All Markers on Map
 var locations = [
     { lat: 51.49651417611058, lng: -3.2147777080535893, name: "Block O" },
@@ -553,7 +594,13 @@ var locations = [
     { lat: 51.49558573446089, lng: -3.2131415605545044, name: "Block L" },
     { lat: 51.49531521373177, lng: -3.212787508964539, name: "Block P" },
     { lat: 51.49601990017624, lng: -3.212036490440369, name: "Block A" },
-    { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" }, 
+    { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" },
+    { lat: 51.495429565540654, lng: -3.211816549301148, name: "Car Park 1"}, 
+    { lat: 51.49576659567774, lng: -3.2113981246948247, name: "Car Park 2"}, 
+    { lat: 51.49552951802504, lng: -3.2119989395141606, name: "Car Park 3"},
+    { lat: 51.495846874546295, lng: -3.2115966081619267, name: "Car Park 4"},
+    { lat: 51.49691195624249, lng: -3.2141715288162236, name: "Car Park 5"},
+    { lat: 51.496992099814655, lng: -3.214364647865296, name: "Car Park 6"}, 
 ];
 
 // Adds all locations to the dropdown
