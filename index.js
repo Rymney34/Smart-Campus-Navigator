@@ -21,16 +21,16 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 
 var routingControl = null;
 var userLatLng = null;
-
+var savedLocation = null;
 
 function setupUserLocation(map) {
-    
     var userMarker = null;
 
     // Locate user without auto-centering or zooming
     map.locate({ enableHighAccuracy: true, setView: false });
 
     map.on('locationfound', function (e) {
+        console.log(e.latlng);
         userLatLng = e.latlng; // Store user location
 
         if (userMarker) {
@@ -60,30 +60,34 @@ popupMenu.id = "popupMenu";
 popupMenu.style.display = "none"; // Initially hidden
 popupMenu.innerHTML = `
     <div id="popupHeader">
-        <h3 id="destinationTitle">Directions</h3>
-        <button id="popupToggle">▲</button>
+    <h3 id="destinationTitle">Directions</h3>
+    <button id="popupToggle">▲</button>
+</div>
+
+<div id="popupContent">
+    <div class="location-input">
+        <label for="startLocationSelect">User Location</label>
+        <select id="startLocationSelect">
+            <option value="live">Live Location</option>
+        </select>
     </div>
-    <div id="popupContent">
-            <div class="location-input">
-            <label for="startLocationSelect">User Location</label>
-            <select id="startLocationSelect">
-                <option value="live">Live Location</option>
-            </select>
-        </div>
 
-        <div class="location-input">
-            <label>Target Location</label>
-            <p id="destinationText"></p>
-        </div>
-
-        <div class="eta-container">
-            <p></p>
-            <span id="eta"></span>
-        </div>
-
-        <button id="goButton">GO</button>
+    <div class="location-input">
+        <label>Target Location</label>
+        <p id="destinationText"></p>
     </div>
-    
+
+    <!-- ETA and GO Button Row -->
+    <div class="eta-go-container">
+        <div class="eta-box">
+            <p id="eta-label">ETA</p>
+            <span id="eta">-- min</span>
+        </div>
+        <div class="go-button-container">
+            <button id="goButton">GO</button>
+        </div>
+    </div>
+</div>
 `;
 document.body.appendChild(popupMenu);
 
@@ -103,19 +107,9 @@ css.innerHTML = `
         z-index: 1000;
         font-family: "Gill Sans", sans-serif;
     }
-    #popupMenu h3 { margin: 0; font-size: 18px; }
-    #popupMenu p { font-size: 14px; opacity: 0.8; }
-    #popupMenu button {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        font-size: 16px;
-        background: red;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+    #popupMenu h3 { margin: 0; font-size: 20pt; margin-left: 6px}
+    #popupMenu p { font-size: 14px; opacity: 0.8; margin-left: 8px}
+    
 `;
 document.head.appendChild(css);
 popupMenu.style.position = "fixed";
@@ -134,7 +128,7 @@ document.getElementById("startLocationSelect").addEventListener("change", functi
     resetGoButton()
 });
 
-document.getElementById("popupToggle").addEventListener("click", function () {
+document.getElementById("popupHeader").addEventListener("click", function () {
     document.getElementById("popupMenu").classList.toggle("minimized");
 });
 // Global variable to store the current target location
@@ -151,6 +145,8 @@ function resetGoButton() {
         let startLocation = getSelectedStartLocation();
         if (!startLocation) {
             alert("Start location not available!");
+            setupUserLocation(map);
+            popupMenu.style.display = "none";
             return;
         }
         createRoute(startLocation, currentTargetLocation);
@@ -184,7 +180,7 @@ function showPopupMenu(locationName, lat, lng) {
     
 
     let startLocation = getSelectedStartLocation();
-
+    console.log(startLocation+"!!!!");
     if (startLocation) {
         calculateETA(startLocation, [lat, lng]);
     }
@@ -249,7 +245,7 @@ function createRoute(start, destination) {
 function calculateETA(start,destination) {
     
     if (!start) {
-        document.getElementById("eta").textContent = `ETA: Location unavailable`;
+        document.getElementById("eta").textContent = `Location unavailable`;
         return;
     }
 
@@ -282,7 +278,7 @@ function calculateETA(start,destination) {
         let etaSeconds = distanceMeters / walkingSpeed;
         let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
         
-        document.getElementById("eta").textContent = `ETA: ${etaMinutes} min`;
+        document.getElementById("eta").textContent = `${etaMinutes} min`;
 
         
         setTimeout(() => map.removeControl(router), 0);
@@ -581,6 +577,7 @@ locations.forEach(function(location) {
         .bindPopup(location.name);
 
     marker.on('click', function () {
+        savedLocation=location;
         showPopupMenu(location.name, location.lat, location.lng);
     });
 });

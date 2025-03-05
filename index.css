@@ -28,12 +28,51 @@ html, body {
     outline: none;
 }
 
-.eta-container {
-    display: flex;
+.eta-go-container {
+    display: flex; 
+    justify-content: space-between; 
     align-items: center;
-    gap: 10px;
     margin-top: 10px;
+    gap: 30px;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    align-items: stretch;
+}
+
+.eta-box, .go-button-container {
+    background: rgba(255, 255, 255, 0.1);
+    flex: 1;
+    width: 40%;
+    border-radius: 20px;
     font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+}
+
+.go-button-container {
+    height: 90px;
+}
+
+.eta-box {
+    height: 70px;
+    padding-bottom: 20px;
+}
+
+#eta-label {
+    margin-left: 0px !important;
+    margin-bottom:0px !important;
+}
+
+#eta {
+    margin-left: 0px;
+    margin-bottom: 13px;
+    font-size: 18pt; 
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 #goButton {
@@ -42,10 +81,16 @@ html, body {
     font-size: 18px;
     font-weight: bold;
     padding: 10px;
-    border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    margin-top: 15px;
+    width: 100%;
+    height: 100%;
+    font-size: 20pt; 
+    transition: border 0.3s ease-in-out;
+}
+
+#goButton:hover {
+    border: 2px solid blue !important;
 }
 
 #startLocationSelect {
@@ -55,7 +100,7 @@ html, body {
     padding: 8px;
     border-radius: 5px;
     width: 100%;
-    font-size: 16px;
+    margin-left: 0px
 }
 
 /* Make options visible */
@@ -100,17 +145,18 @@ html, body {
 }
 
 #popupToggle {
-    background: none;
+    background: none !important;
     border: none;
     color: white;
     font-size: 20px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
+    margin-bottom: 10px;
 }
 
 #popupContent {
     display: block;
-    padding: 10px;
+    padding-top: 10px;
 }
 
 /* Minimized state */
@@ -121,3 +167,42 @@ html, body {
 .minimized #popupToggle {
     transform: rotate(180deg);
 }
+
+#startLocationSelect {
+    background-color: #1A1F36; /* Matches the UI theme */
+    color: white;
+    border: 1px solid #2C3E50;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+    text-align: left;
+    appearance: none; /* Removes default styles */
+}
+
+/* Fix dropdown container */
+.location-input {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensures left alignment */
+}
+
+/* Ensure dropdown options are properly visible */
+#startLocationSelect option {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    text-align: left;
+}
+
+
+.location-input label {
+    font-size: 14px;
+    color: white;
+    margin-left: 6px; /* Ensure alignment */
+}
+
