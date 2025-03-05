@@ -27,7 +27,7 @@ function setupUserLocation(map) {
     var userMarker = null;
 
     // Locate user without auto-centering or zooming
-    map.locate({ enableHighAccuracy: true, setView: false });
+    map.locate({watch:true,  enableHighAccuracy: true, setView: false });
 
     map.on('locationfound', function (e) {
         console.log(e.latlng);
