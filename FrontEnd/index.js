@@ -57,7 +57,6 @@ var buildingCoordsBlockT = [
     [51.49601990017624, -3.2136247176091697],
     [51.49609337396509, -3.213522897634538]
 ];
-
 // Block M
 var buildingCoordsBlockM = [
     [51.497081918880454, -3.2136515248467594],
@@ -72,7 +71,6 @@ var buildingCoordsBlockM = [
     [51.496794708716, -3.213665408182001],
     [51.49698197139272, -3.2134410352802028]
 ];
-
 // Block N
 var buildingCoordsBlockN = [
     [51.49684814330224, -3.2136010351656434],
@@ -83,7 +81,6 @@ var buildingCoordsBlockN = [
     [51.496934974371236, -3.213343578743642],
     [51.49697838984373, -3.2134400432190295]
 ];
-
 // Block D
 var buildingCoordsBlockD = [
     [51.49618354618045, -3.2128017428247495],
@@ -105,12 +102,10 @@ var buildingCoordsBlockD = [
     [51.49627371821741, -3.213409258685707],
     [51.49639060762948, -3.2132258348132767]
 ];
-
 // Block E
 var buildingCoordsBlockE = [
     
 ];
-
 // Block L
 var buildingCoordsBlockL = [
     [51.49565252945548, -3.2133282934072653],
@@ -123,7 +118,6 @@ var buildingCoordsBlockL = [
     [51.49574604228349, -3.2132155396411815],
 
 ];
-
 // Block B
 var buildingCoordsBlockB = [
     [51.496834784661544, -3.212673014608763],
@@ -131,7 +125,6 @@ var buildingCoordsBlockB = [
     [51.49622696236867, -3.212560361830137],
     [51.49656047313556, -3.2121196715934746]
 ];
-
 // Block A
 var buildingCoordsBlockA = [
     [51.49617686676321, -3.2121097150722067],
@@ -151,7 +144,6 @@ var buildingCoordsBlockA = [
     [51.49638371883475, -3.2118726351181586],
     [51.49619356530447, -3.212142032272962]
 ];
-
 // Block F
 var buildingCoordsBlockF = [
     [51.496497477686766, -3.2118576468305275],
@@ -175,7 +167,6 @@ var buildingCoordsBlockF = [
     [51.49645072206752, -3.211600095359378],
     [51.49651083642631, -3.211616248019187]
 ];
-
 // Block P
 var buildingCoordsBlockP = [
     [51.49546550322393, -3.2132061236918017],
@@ -192,7 +183,6 @@ var buildingCoordsBlockP = [
     [51.49550224057998, -3.212801760641478],
     [51.495602433218714, -3.2130216898995627]
 ];
-
 // Block C
 var buildingCoordsBlockC  = [
     [51.49589678890499, -3.2125184563830453],
@@ -232,46 +222,34 @@ var carParkClinic = [
 var carParkReservedParking   = [
 ];
 
-// Polygon Style - Not Selected
-    // Main Function is to Change the Outline, Fill Colour and Opacity
-    // of The Polygons Representing the Uni Buildings
-var polygonStyleIdle = {
+var polygonStyle = {
     color: "blue",
     fillColor: "blue",
     fillOpacity: 0.5,
 };
-// Polygon Style - Selected
-    // When User Selects a Building the Color will change
-    // To highlight the current buidling being Viewed
-        // ! Feature Not Implemented Yet - JH!
-var polygonStyleSelected = {
-    color: "Red",
-    fillColor: "Red",
-    fillOpacity: 0.5,
-};
 
 // Block O Polygon
-L.polygon(buildingCoordsBlockO, polygonStyleSelected).addTo(map);
+L.polygon(buildingCoordsBlockO, polygonStyle).addTo(map);
 // Block T Polygon
-L.polygon(buildingCoordsBlockT, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockT, polygonStyle).addTo(map);
 // Block L Polygons
-L.polygon(buildingCoordsBlockL, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockL, polygonStyle).addTo(map);
 // Block P Polygon
-L.polygon(buildingCoordsBlockP, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockP, polygonStyle).addTo(map);
 // Block B Polygon
-L.polygon(buildingCoordsBlockB, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockB, polygonStyle).addTo(map);
 // Block M Polygon
-L.polygon(buildingCoordsBlockM, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockM, polygonStyle).addTo(map);
 // Block N Polygon
-L.polygon(buildingCoordsBlockN, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockN, polygonStyle).addTo(map);
 // Block D Polygon
-L.polygon(buildingCoordsBlockD, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockD, polygonStyle).addTo(map);
 // Block F Polygon
-L.polygon(buildingCoordsBlockF, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockF, polygonStyle).addTo(map);
 // Block A Polygon
-L.polygon(buildingCoordsBlockA, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockA, polygonStyle).addTo(map);
 // Block C Polygon
-L.polygon(buildingCoordsBlockC, polygonStyleIdle).addTo(map);
+L.polygon(buildingCoordsBlockC, polygonStyle).addTo(map);
 
 // Lat and Lng Values of All Markers on Map
 var locations = [

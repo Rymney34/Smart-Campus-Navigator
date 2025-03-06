@@ -21,5 +21,5 @@ fetchPolygonMarkers()
 
 // Start Server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`); // Print Success Message
+  console.log(`Server running on port http://localhost:${port}`); // Print Success Message
 });
