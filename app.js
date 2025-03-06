@@ -1,55 +1,25 @@
 // http://localhost:3000
 
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
-
+const express = require('express'); 
+const mongoose = require('mongoose'); // Require Mongoose Library
+const Marker = require('./models/Marker'); // Require Models/Marker.js File
+const fetchPolygonMarkers = require('./FetchMethods/fetchPolygonMarkers')
 const app = express();
-const port = 3000;
+const port = 3000; // Port is equal to 3000
+const path = require('path') // Require path module (Handle File Paths)
+
 
 // MongoDB Connect
-mongoose.connect('mongodb+srv://james-harris:48De40@campusnavigationsystemc.hmo0v.mongodb.net/campNavDB')
-  .then(() => console.log('Connected to MongoDB!'))
-  .catch(err => console.error('Connection error:', err));
+mongoose.connect('mongodb+srv://james-harris:48De40@campusnavigationsystemc.hmo0v.mongodb.net/campNavDB') // Connect to MongoDB Database
+  .then(() => console.log('Connected to MongoDB!')) // Print Success Message
+  .catch(err => console.error('Connection error:', err)); // Print Error Fail Message
 
-const facilitySchema = new mongoose.Schema({
-  facilityName: String,
-  facilityOpenTime: String,
-  facilityCloseTime: String,
-  facilityIcon: String
-});
-
-const buildingSchema = new mongoose.Schema({
-  name: String,
-  type: String,
-  facilities: [facilitySchema],
-  openTime: String,
-  closeTime: String,
-  rooms: [String],
-  image: String
-});
-
-const Building = mongoose.model('Building', buildingSchema);
-
+// Launch Website Front End 
 app.use(express.static(path.join(__dirname, 'FrontEnd')));
 
-app.get('/api/buildings', (req, res) => {
-  Building.find()
-    .then(data => {
-      res.json(data);
-    })
-    .catch(err => {
-      console.error('Error retrieving data:', err);
-      res.status(500).send('Internal Server Error');
-    });
-});
-
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'FrontEnd', 'index.html'));
-});
+fetchPolygonMarkers()
 
 // Start Server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`); // Print Success Message
 });
