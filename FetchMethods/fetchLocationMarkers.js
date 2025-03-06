@@ -1,3 +1,17 @@
+/*
+const Marker = require('./models/Marker');
+
+module.exports = function fetchPolygonMarkers() {
+  return Marker.find().select('blockName -_id')
+    .then(markers => {
+      console.log(markers); 
+    })
+    .catch(err => {
+      console.error("Error: ", err); 
+    });
+};
+*/
+
 // Lat and Lng Values of All Markers on Map
 export const locations = [
     { lat: 51.49651417611058, lng: -3.2147777080535893, name: "Block O" },
@@ -12,3 +26,4 @@ export const locations = [
     { lat: 51.49601990017624, lng: -3.212036490440369, name: "Block A" },
     { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" }, 
 ];
+
