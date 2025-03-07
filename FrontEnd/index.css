@@ -1,0 +1,59 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#layout {
+    display: flex;
+    height: 100%;
+}
+
+#side-bar {
+    width: 5%;
+    background-color: rgb(21, 21, 61);
+    color: rgba(255, 255, 255, 0);
+    transition: width 0.2s ease;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#side-bar.active {
+    width: 25%;
+    color: white;
+}
+
+#searchDiv {
+    display: grid;
+    grid-template-columns: 0.8fr 0.2fr;
+    justify-items: center;
+}
+
+#side-bar #searchBar, #side-bar #searchButton {
+    display: none;
+}
+#side-bar.active #searchBar, #side-bar.active  #searchButton{
+    display: block;
+}
+
+#map {
+    flex-grow: 1;
+    height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+#side-barButton {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+#buildingInfo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

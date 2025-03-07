@@ -1,28 +1,21 @@
-const { MongoClient } = require("mongodb")
-const uri = require("./atlas_uri")
+// http://localhost:3000
 
-console.log(uri)
+const express = require('express'); 
+const mongoose = require('mongoose'); // Require Mongoose Library
+const Marker = require('./models/Marker'); // Require Models/Marker.js File
+const app = express();
+const port = 3000; // Port is equal to 3000
+const path = require('path') // Require path module (Handle File Paths)
 
-const client = new MongoClient(uri)
-const dbname = "bank"
+// MongoDB Connect
+mongoose.connect('mongodb+srv://james-harris:48De40@campusnavigationsystemc.hmo0v.mongodb.net/campNavDB') // Connect to MongoDB Database
+  .then(() => console.log('Connected to MongoDB!')) // Print Success Message
+  .catch(err => console.error('Connection error:', err)); // Print Error Fail Message
 
-const connectToDatabase = async () => {
-    try {
-        await client.connect();
-        console.log(`Connected to MongoDB Atlas: ${dbname}`);
-    }catch (err) {
-        console.error(`Error connecting to db ${err}`);
-    } 
-};
- 
-const main = async () => {
-    try {
-        await connectToDatabase();
-    } catch(err) {
-        console.error(`Error connecting to db ${err}`);
-    } finally {
-        await client.close();
-    }
-};
+// Launch Website Front End 
+app.use(express.static(path.join(__dirname, 'FrontEnd')));
 
-main();
+// Start Server
+app.listen(port, () => {
+  console.log(`Server running on port http://localhost:${port}`); // Print Success Message
+});

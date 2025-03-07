@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Navigation</title>
+
+    <!-- Leaflet.js -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="layout">
+        <div id="side-bar" class="side-bar">
+            <div><button id="side-barButton">-</button></div>  
+            <div>
+                <h1 id="title">Campus Nav Syst</h1>
+                <div id="searchDiv">
+                    <input id="searchBar" type="text" placeholder="Search:">
+                    <button id="searchButton">Search</button>
+                </div>
+            </div>
+            <div id="campus-list-container">
+                <div><h1>image goes here</h1></div>
+                <div id="buildingInfo">
+                    <h1>|Facilities|</h1>
+                    <h1>|Rooms|</h1>
+                </div>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script type="module" src="index.js"></script>
+    <script src="side-bar.js"></script>
+
+    <script type="module" src="\FetchMethods\fetchPolygonMarkers.js"></script>
+    <script type="module" src="\FetchMethods\fetchLocationMarkers.js"></script>
+    <script type="module" src="\util/mapPolygonColour.js"></script>
+</body>
+</html>
