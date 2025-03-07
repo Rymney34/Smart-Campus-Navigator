@@ -1,5 +1,15 @@
+
+var bounds = L.latLngBounds(
+    L.latLng(51.494, -3.216), // South-West corner
+    L.latLng(51.498, -3.210)  // North-East corner
+);
+
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
-var map = L.map('map').setView([51.496212259288775, -3.2133038818782333], 50);
+var map = L.map('map', {
+    minZoom: 15,
+    maxBounds: bounds, // Restrict panning
+    maxBoundsViscosity: 1.0 // Prevents dragging outside the bounds
+}).setView([51.496212259288775, -3.2133038818782333], 50);
 
 // Add OpenStreetMap Tile Layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -8,6 +18,276 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; CartoDB'
 }).addTo(map);
+
+var routingControl = null;
+var userLatLng = null;
+var savedLocation = null;
+
+function setupUserLocation(map) {
+    var userMarker = null;
+
+    // Locate user without auto-centering or zooming
+    map.locate({watch:true,  enableHighAccuracy: true, setView: false });
+
+    map.on('locationfound', function (e) {
+        console.log(e.latlng);
+        userLatLng = e.latlng; // Store user location
+
+        if (userMarker) {
+            userMarker.setLatLng(userLatLng); // Update marker position
+        } else {
+            // Add marker for the first time
+            userMarker = L.marker(userLatLng).addTo(map)
+                .bindPopup("You are here.");
+        }
+    });
+
+    // Prevent auto-following after first location find
+    map.on('locationfound', function () {
+        map.stopLocate();
+    });
+
+    // Prevent auto-panning or resetting view
+    map.on('movestart moveend drag mousedown', function () {
+        map.stopLocate();
+    });
+}
+
+setupUserLocation(map);
+
+var popupMenu = document.createElement("div");
+popupMenu.id = "popupMenu";
+popupMenu.style.display = "none"; // Initially hidden
+popupMenu.innerHTML = `
+    <div id="popupHeader">
+    <h3 id="destinationTitle">Directions</h3>
+    <button id="popupToggle">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </button>
+</div>
+
+<div id="popupContent">
+    <div class="location-input">
+        <label for="startLocationSelect" id="userLocationLabel">User Location</label>
+        <select id="startLocationSelect">
+            <option value="live">Live Location</option>
+        </select>
+    </div>
+
+    <div class="location-input">
+        <label>Target Location</label>
+        <p id="destinationText"></p>
+    </div>
+
+    <!-- ETA and GO Button Row -->
+    <div class="eta-go-container">
+        <div class="eta-box">
+            <p id="eta-label">ETA</p>
+            <span id="eta">-- min</span>
+        </div>
+        <div class="go-button-container">
+            <button id="goButton">GO</button>
+        </div>
+    </div>
+</div>
+`;
+document.body.appendChild(popupMenu);
+
+var css = document.createElement("style");
+css.innerHTML = `
+    #popupMenu {
+        position: fixed;
+        bottom: 20px;
+        right: 2%;
+        width: 320px;
+        background: #0A152A;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        font-family: "Gill Sans", sans-serif;
+    }
+    #popupMenu h3 { margin: 0; font-size: 20pt; margin-left: 6px}
+    
+`;
+document.head.appendChild(css);
+popupMenu.style.position = "fixed";
+document.body.appendChild(popupMenu); // Ensures it's not inside the map
+
+// Get the dropdown element
+const startLocationSelect = document.getElementById("startLocationSelect");
+
+
+document.getElementById("startLocationSelect").addEventListener("change", function () {
+    let startLocation = getSelectedStartLocation();
+    
+    if (startLocation && currentTargetLocation) {
+        calculateETA(startLocation, currentTargetLocation);
+    }
+    resetGoButton()
+});
+
+document.getElementById("popupHeader").addEventListener("click", function () {
+    document.getElementById("popupMenu").classList.toggle("minimized");
+});
+// Global variable to store the current target location
+let currentTargetLocation = null;
+
+function resetGoButton() {
+    popupMenu.style.display = "block";
+    const goButton = document.getElementById("goButton");
+    goButton.textContent = "GO";
+    goButton.style.background = "red";
+    goButton.style.border = "none";
+
+    goButton.onclick = function () {
+        let startLocation = getSelectedStartLocation();
+        if (!startLocation) {
+            alert("Start location not available!");
+            setupUserLocation(map);
+            popupMenu.style.display = "none";
+            return;
+        }
+        createRoute(startLocation, currentTargetLocation);
+        popupMenu.style.display = "block";
+        goButton.textContent = "END";
+        goButton.style.background = "#444";
+        goButton.style.border = "2px solid red";
+
+        goButton.onclick = function () {
+            if (routingControl) {
+                map.removeControl(routingControl);
+                routingControl = null;
+            }
+            resetGoButton();
+            popupMenu.style.display = "none";
+        };
+    };
+}
+
+
+// Function to Show Popup Menu
+function showPopupMenu(locationName, lat, lng) {
+    currentTargetLocation = [lat, lng]; // Store target location globally
+    document.getElementById("destinationText").textContent = locationName;
+    popupMenu.style.display = "block";
+
+    const goButton = document.getElementById("goButton");
+    goButton.textContent = "GO";
+    goButton.style.background = "red";
+    goButton.style.border = "none";
+    
+
+    let startLocation = getSelectedStartLocation();
+    console.log(startLocation+"!!!!");
+    if (startLocation) {
+        calculateETA(startLocation, [lat, lng]);
+    }
+
+    resetGoButton();
+}
+
+
+function findLocation(locationName,lat,lng) {
+    let startLocation;
+    popupMenu.style.display = "block";
+    let selectedValue = startLocationSelect.value;
+    if (selectedValue === "live") {
+        startLocation = [userLatLng.lat,userLatLng.lng]; // Use live location
+    } else {
+        startLocation = JSON.parse(selectedValue); // Convert stored coordinates back to an array
+    }
+    calculateETA(startLocation,[lat,lng]);
+    return startLocation;
+}
+
+function getSelectedStartLocation() {
+    let selectedValue = startLocationSelect.value;
+    if (selectedValue === "live") {
+        return userLatLng ? [userLatLng.lat, userLatLng.lng] : null; // Use live location
+    } else {
+        return JSON.parse(selectedValue);
+    }
+}
+
+// Function to Create Route When "GO" is Pressed
+function createRoute(start, destination) {
+    if (!start || !destination) {
+        alert("Location not available!");
+        return;
+    }
+
+    // Remove existing route if it exists
+    if (routingControl) {
+        map.removeControl(routingControl);
+    }
+
+    // Create route using Leaflet Routing Machine
+    routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(start[0], start[1]),
+            L.latLng(destination[0], destination[1])
+        ],
+        routeWhileDragging: false,
+        addWaypoints: false,
+        draggableWaypoints: false, 
+
+    }).addTo(map);
+
+    setTimeout(() => {
+        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
+    }, 10);
+
+    popupMenu.style.display = "none"; // Hide the popup after starting the route
+}
+
+function calculateETA(start,destination) {
+    
+    if (!start) {
+        document.getElementById("eta").textContent = `Location unavailable`;
+        return;
+    }
+    document.getElementById("eta").textContent = `Loading`;
+    
+
+    let router = L.Routing.control({
+        waypoints: [
+            L.latLng(start[0], start[1]),
+            L.latLng(destination[0], destination[1])
+        ],
+        routeWhileDragging: false,
+        createMarker: function () { return null; }, // Hide markers
+        show: false, // Hide UI panel
+        lineOptions: {
+            styles: [{ color: "transparent", opacity: 0, weight: 0 }] // 👈 Make the line invisible
+        }
+    }).addTo(map);
+
+    setTimeout(() => {
+        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
+    }, 0);
+
+    router.route();
+    
+    router.on('routesfound', function (e) {
+        console.log("✅ Route found:", e.routes[0]);
+        let route = e.routes[0];
+        let distanceMeters = route.summary.totalDistance; // Distance in meters
+        let walkingSpeed = 1.39; // meters per second
+        let etaSeconds = distanceMeters / walkingSpeed;
+        let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
+        
+        document.getElementById("eta").textContent = `${etaMinutes} min`;
+
+        
+        setTimeout(() => map.removeControl(router), 0);
+    });
+   
+}
 
 // Add Event Listener to Display Click Events on the Map
     // Main use is to find the Coordinates of the building edges 
@@ -200,21 +480,47 @@ var buildingCoordsBlockC  = [
     // Car Park Coordinates 
 // Staff Car Park 1
 var carParkStaff1  = [
+    [51.495586439246665, -3.211709260940552],
+    [51.49534612186005, -3.2120203971862797],
+    [51.49527269129474, -3.211875557899475],
+    [51.49553303549247, -3.211580514907837]
 ];
 // Staff Car Park 2
 var carParkStaff2  = [
+    [51.49563976216066, -3.2116287946701054],
+    [51.49595016988006, -3.2112264633178715],
+    [51.49590677968079, -3.2110708951950078],
+    [51.49557634526976, -3.21150541305542],
 ];
 // Staff Car Park 3
 var carParkStaff3  = [
+    [51.49569640456206, -3.2118809223175053],
+    [51.49542604806526, -3.2122135162353516],
+    [51.49537931961933, -3.212090134620667],
+    [51.49562965002059, -3.2117521762847905]
 ];
 // Staff Car Park 4
-var carParkStaff4  = [
+var carParkStaff4  = [ 
+    [51.49602724804583, -3.21151077747345],
+    [51.495733529463934, -3.211816549301148],
+    [51.495686801333214, -3.2117038965225224],
+    [51.49596383169403, -3.2113230228424077],
+    
 ];
 // Staff Car Park 5
 var carParkStaff5  = [
+    [51.4967950096051,-3.2144236564636235],
+    [51.497068614831484, -3.2140481472015385],
+    [51.497015422829335, -3.213924765586853],
+    [51.496741736507964,  -3.2143431901931767]
+
 ];
 // Staff Car Park 6
 var carParkStaff6  = [
+    [51.497112197784865, -3.2142949104309086],
+    [51.496908602451704, -3.2145524024963383],
+    [51.49684852496649, -3.2144451141357426],
+    [51.49708555335194, -3.2141286134719853]
 ];
 // Clinic Car Park
 var carParkClinic = [
@@ -264,6 +570,18 @@ L.polygon(buildingCoordsBlockA, polygonStyleIdle).addTo(map);
 // Block C Polygon
 L.polygon(buildingCoordsBlockC, polygonStyleIdle).addTo(map);
 
+L.polygon(carParkStaff1, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff2, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff3, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff4, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff5, polygonStyleIdle).addTo(map);
+
+L.polygon(carParkStaff6, polygonStyleIdle).addTo(map);
+
 // Lat and Lng Values of All Markers on Map
 var locations = [
     { lat: 51.49651417611058, lng: -3.2147777080535893, name: "Block O" },
@@ -276,8 +594,22 @@ var locations = [
     { lat: 51.49558573446089, lng: -3.2131415605545044, name: "Block L" },
     { lat: 51.49531521373177, lng: -3.212787508964539, name: "Block P" },
     { lat: 51.49601990017624, lng: -3.212036490440369, name: "Block A" },
-    { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" }, 
+    { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" },
+    { lat: 51.495429565540654, lng: -3.211816549301148, name: "Car Park 1"}, 
+    { lat: 51.49576659567774, lng: -3.2113981246948247, name: "Car Park 2"}, 
+    { lat: 51.49552951802504, lng: -3.2119989395141606, name: "Car Park 3"},
+    { lat: 51.495846874546295, lng: -3.2115966081619267, name: "Car Park 4"},
+    { lat: 51.49691195624249, lng: -3.2141715288162236, name: "Car Park 5"},
+    { lat: 51.496992099814655, lng: -3.214364647865296, name: "Car Park 6"}, 
 ];
+
+// Adds all locations to the dropdown
+locations.forEach(function(location) {
+    var option = document.createElement("option");
+    option.value = JSON.stringify([location.lat, location.lng]); // Store coordinates as a string
+    option.textContent = location.name;
+    startLocationSelect.appendChild(option);
+});
 
 // Adds Lat and Lng Values to Map
 locations.forEach(function(location) {
@@ -286,3 +618,13 @@ locations.forEach(function(location) {
         .bindPopup(location.name);
 });
 
+locations.forEach(function(location) {
+    var marker = L.marker([location.lat, location.lng])
+        .addTo(map)
+        .bindPopup(location.name);
+
+    marker.on('click', function () {
+        savedLocation=location;
+        showPopupMenu(location.name, location.lat, location.lng);
+    });
+});
