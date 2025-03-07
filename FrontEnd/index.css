@@ -57,3 +57,224 @@ html, body {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+.location-input {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.location-input select {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 14px;
+    padding: 5px;
+    outline: none;
+}
+
+.eta-go-container {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-top: 10px;
+    gap: 30px;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    align-items: stretch;
+}
+
+.eta-box, .go-button-container {
+    background: rgba(255, 255, 255, 0.1);
+    flex: 1;
+    width: 40%;
+    border-radius: 20px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+}
+
+.go-button-container {
+    height: 90px;
+}
+
+.eta-box {
+    height: 70px;
+    padding-bottom: 20px;
+}
+
+#eta-label {
+    margin-left: 0px !important;
+    margin-bottom:0px !important;
+    opacity: 0.8;
+    font-size: 14px;
+}
+
+#eta {
+    margin-left: 0px;
+    margin-bottom: 13px;
+    font-size: 18pt; 
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#goButton {
+    background: red;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    font-size: 20pt; 
+    transition: border 0.3s ease-in-out;
+}
+
+#goButton:hover {
+    border: 2px solid blue !important;
+}
+
+#startLocationSelect {
+    background-color: #0A152A; /* Match the popup background */
+    color: white; /* Ensure text is visible */
+    border: 1px solid #2C3E50;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    margin-left: 0px
+}
+
+/* Make options visible */
+#startLocationSelect option {
+    background-color: white; /* Background for options */
+    color: black; /* Text color */
+    padding: 10px;
+}
+
+/* Hover Effect */
+#startLocationSelect option:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+#popupMenu {
+    font-family: 'Inter', sans-serif;
+    position: fixed;
+    bottom: 20px;
+    right: 2%;
+    width: 320px;
+    background: #0A152A;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: height 0.3s ease-in-out;
+}
+
+#popupHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    background: #16213E; /* Darker shade for header */
+    border-radius: 10px 10px 0 0;
+}
+
+#popupToggle {
+    background: none !important;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 0px;
+}
+
+#popupContent {
+    display: block;
+    padding-top: 10px;
+}
+
+/* Minimized state */
+.minimized #popupContent {
+    display: none;
+}
+
+.minimized #popupToggle {
+    transform: rotate(180deg);
+}
+
+#startLocationSelect {
+    background-color: #1A1F36; /* Matches the UI theme */
+    color: white;
+    border: 1px solid #2C3E50;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+    appearance: none; /* Removes default styles */
+    text-align: right; /* Right-align selected text */
+    text-align-last: right; /* Ensures only the selected value is right-aligned */
+    margin-left: 25px;
+}
+
+/* Fix dropdown container */
+.location-input {
+    background: rgba(255, 255, 255, 0.1);
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row !important;
+    align-items: flex-start; /* Ensures left alignment */
+}
+
+
+
+/* Ensure dropdown options are properly visible */
+#startLocationSelect option {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    text-align: left;
+}
+
+
+
+.location-input label {
+    font-size: 14px;
+    color: white;
+    opacity: 0.8;
+    min-width: 90px;
+    flex: 1;
+    padding: 8px;
+}
+
+.location-input select, 
+.location-input p {
+    flex: 1;
+    text-align: right; 
+    max-width: 60%; 
+}
+
+#destinationText {
+    font-size: 14px !important;
+    margin: 0px;
+    margin-left: 30px;
+    padding: 8px;
+}
