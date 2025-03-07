@@ -14,7 +14,7 @@ import {
     buildingCoordsBlockF,
     buildingCoordsBlockP,
     buildingCoordsBlockC
-} from '/FetchMethods/fetchPolygonMarkers.js';
+} from '/FrontEnd/FetchMethods/fetchPolygonMarkers.js';
 
 // Import Polygon Colour Setting
 import {
@@ -24,7 +24,7 @@ import {
 // Import Marker Location Coordinates
 import {
     locations
-} from '/FetchMethods/fetchLocationMarkers.js';
+} from '/FrontEnd/FetchMethods/fetchLocationMarkers.js';
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map').setView([51.496212259288775, -3.2133038818782333], 50);

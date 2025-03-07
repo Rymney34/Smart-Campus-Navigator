@@ -1,14 +1,17 @@
 /*
-const Marker = require('./models/Marker');
-
-module.exports = function fetchPolygonMarkers() {
-  return Marker.find().select('blockName -_id')
-    .then(markers => {
-      console.log(markers); 
-    })
-    .catch(err => {
-      console.error("Error: ", err); 
-    });
+// Fetch logic to get location markers
+export const fetchLocationMarkers = async () => {
+  try {
+      const response = await fetch('/api/markers');  // API endpoint for marker data
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      const markers = await response.json();
+      return markers;  // Return the fetched markers
+  } catch (error) {
+      console.error('Error fetching marker data:', error);
+      return [];  // Return an empty array in case of error
+  }
 };
 */
 
@@ -26,4 +29,3 @@ export const locations = [
     { lat: 51.49601990017624, lng: -3.212036490440369, name: "Block A" },
     { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C" }, 
 ];
-
