@@ -33,7 +33,7 @@ var bounds = L.latLngBounds(
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
-    minZoom: 15,
+    minZoom: 10,
     maxBounds: bounds, // Restrict panning
     maxBoundsViscosity: 1.0 // Prevents dragging outside the bounds
 }).setView([51.496212259288775, -3.2133038818782333], 50);
