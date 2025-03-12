@@ -53,6 +53,10 @@ html, body {
     height: 50px;
 }
 
+#campus-list-container {
+    width: auto;
+}
+
 #buildingInfo {
     display: grid;
     grid-template-columns: 1fr 1fr;

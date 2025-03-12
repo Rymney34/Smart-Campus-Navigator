@@ -1,3 +1,7 @@
+// Schema Model for retrieving data from the DB
+// Currently set up for the Practice DB
+// Needs updating for the real MongoDB database
+
 const mongoose = require('mongoose'); // Require Mongoose
 
 const markerSchema = new mongoose.Schema({
