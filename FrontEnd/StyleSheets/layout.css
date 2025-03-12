@@ -1,0 +1,30 @@
+#webView {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100%;
+}
+
+#map {
+    flex-grow: 1;
+    height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+#side-bar {
+    width: 5%;
+    background-color: rgb(21, 21, 61);
+    color: rgba(255, 255, 255, 0);
+    transition: width 0.2s ease;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#side-bar.active {
+    width: 25%;
+    color: white;
+}
+

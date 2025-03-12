@@ -1,5 +1,5 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
-import { mapClickHandler } from "/util/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
+import { mapClickHandler } from "/Utility/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
 // Import Building Coordinates
 import {
@@ -19,7 +19,7 @@ import {
 // Import Polygon Colour Setting
 import {
     polygonStyle
-} from './util/mapPolygonColour.js';
+} from './Utility/mapPolygonColour.js';
 
 // Import Marker Location Coordinates
 import {

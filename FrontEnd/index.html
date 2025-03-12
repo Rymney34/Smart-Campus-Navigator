@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Navigation</title>
-
+    
     <!--CSS Logic-->
-    <link rel="stylesheet" href="index.css">
+    <link rel="styleSheet" href="../StyleSheets/global.css">
+    <link rel="stylesheet" href="../StyleSheets/directions.css">
+    <link rel="stylesheet" href="../StyleSheets/layout.css">
+    <link rel="stylesheet" href="../StyleSheets/sideBar.css">
+    <link rel="stylesheet" href="../StyleSheets/directions.css">
+    
 </head>
 <body>
     <!--Main View (Contains Side-Bar and Map View Columns)-->
-    <div id="layout">
+    <div id="webView">
         <!--Side Bar-->
         <div id="side-bar" class="side-bar">
             <!--Expand/Collapse Side Bar Button-->
@@ -42,21 +47,27 @@
     <!--Leaflet CSS Stylesheet (Leaflet.css Logic) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <!--Leaflet JavaScript Script (Leaflet.js Logic)-->
+    <!--Leaflet JavaScript Logic (Leaflet.js Logic)-->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <!--Leaflet Routing Machine JavaScript Script (Leaflet-Routing-Machine.js Logic)-->
+    <!--Leaflet Routing Machine JavaScript Logic (Leaflet-Routing-Machine.js Logic)-->
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     
     <!--Side Bar Logic-->
     <script src="side-bar.js"></script>
     <!--Map Data and PathFinding Logic-->
     <script type="module" src="index.js"></script>
+
+    <script type="module" src="/PathFinding/routeETA.js"></script>
+    <script type="module" src="/PathFinding/routeManager.js"></script>
+    <script type="module" src="/PathFinding/userLocation.js"></script>
+    <script type="module" src="/PathFinding/popUpMenu.js"></script>
+
     <!--Fetch Polygon Markers Logic-->
     <script type="module" src="/FetchMethods/fetchPolygonMarkers.js"></script>
     <!--Fetch Marker Location Logic-->
     <script type="module" src="/FetchMethods/fetchLocationMarkers.js"></script>
     <!--Fetch Polygon Colour Logic-->
-    <script type="module" src="/util/mapPolygonColour.js"></script>
+    <script type="module" src="/Utility/mapPolygonColour.js"></script>
 </body>
 </html>

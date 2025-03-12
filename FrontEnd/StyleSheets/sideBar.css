@@ -1,0 +1,30 @@
+#side-barButton {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+#searchDiv {
+    display: grid;
+    grid-template-columns: 0.8fr 0.2fr;
+    justify-items: center;
+}
+
+#side-bar #searchBar, #side-bar #searchButton {
+    display: none;
+}
+#side-bar.active #searchBar, #side-bar.active  #searchButton{
+    display: block;
+}
+
+#campus-list-container {
+    width: auto;
+}
+
+#buildingInfo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
