@@ -5,43 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Navigation</title>
 
-    <!-- Leaflet.js -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-
+    <!--CSS Logic-->
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <!--Main View (Contains Side-Bar and Map View Columns)-->
     <div id="layout">
+        <!--Side Bar-->
         <div id="side-bar" class="side-bar">
+            <!--Expand/Collapse Side Bar Button-->
             <div><button id="side-barButton">-</button></div>  
             <div>
                 <h1 id="title">Campus Nav Syst</h1>
+                <!--Search Bar-->
                 <div id="searchDiv">
                     <input id="searchBar" type="text" placeholder="Search:">
                     <button id="searchButton">Search</button>
                 </div>
             </div>
+            <!--Display Database Info-->
             <div id="campus-list-container">
+                <!--Building Image-->
                 <div><h1>| Image Here |</h1></div>
                 <div id="buildingInfo">
+                    <!--Facilities Inside Building-->
                     <h1>|Facilities|</h1>
+                    <!--Rooms Inside Building-->
                     <h1>|Rooms|</h1>
                 </div>
             </div>
         </div>
+        <!--Map View-->
         <div id="map"></div>
     </div>
-    <script type="module" src="index.js"></script>
-    <script src="side-bar.js"></script>
 
-    <script type="module" src="\FetchMethods\fetchPolygonMarkers.js"></script>
-    <script type="module" src="\FetchMethods\fetchLocationMarkers.js"></script>
-    <script type="module" src="\util/mapPolygonColour.js"></script>
+    <!--Leaflet CSS Stylesheet (Leaflet.css Logic) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!--Leaflet JavaScript Script (Leaflet.js Logic)-->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!--Leaflet Routing Machine JavaScript Script (Leaflet-Routing-Machine.js Logic)-->
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    
+    <!--Side Bar Logic-->
+    <script src="side-bar.js"></script>
+    <!--Map Data and PathFinding Logic-->
+    <script type="module" src="index.js"></script>
+    <!--Fetch Polygon Markers Logic-->
+    <script type="module" src="/FetchMethods/fetchPolygonMarkers.js"></script>
+    <!--Fetch Marker Location Logic-->
+    <script type="module" src="/FetchMethods/fetchLocationMarkers.js"></script>
+    <!--Fetch Polygon Colour Logic-->
+    <script type="module" src="/util/mapPolygonColour.js"></script>
 </body>
 </html>
