@@ -14,6 +14,9 @@ import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
+import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA,
+} from './FetchMethods/fetchIcons.js'
+
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
@@ -308,28 +311,13 @@ function calculateETA(start,destination) {
 // Call Map Click Handler - Removable Feature (Developer Only Feature)
 mapClickHandler(map); // REMOVE FEATURE ON LAUNCH
 
-// Block O Polygon
-L.polygon(buildingCoords.BlockO, polygonStyle).addTo(map);
-// Block T Polygon
-L.polygon(buildingCoords.BlockT, polygonStyle).addTo(map);
-// Block L Polygons
-L.polygon(buildingCoords.BlockL, polygonStyle).addTo(map);
-// Block P Polygon
-L.polygon(buildingCoords.BlockP, polygonStyle).addTo(map);
-// Block B Polygon
-L.polygon(buildingCoords.BlockB, polygonStyle).addTo(map);
-// Block M Polygon
-L.polygon(buildingCoords.BlockM, polygonStyle).addTo(map);
-// Block N Polygon
-L.polygon(buildingCoords.BlockN, polygonStyle).addTo(map);
-// Block D Polygon
-L.polygon(buildingCoords.BlockD, polygonStyle).addTo(map);
-// Block F Polygon
-L.polygon(buildingCoords.BlockF, polygonStyle).addTo(map);
-// Block A Polygon
-L.polygon(buildingCoords.BlockA, polygonStyle).addTo(map);
-// Block C Polygon
-L.polygon(buildingCoords.BlockC, polygonStyle).addTo(map);
+// Array of block names
+const blockNames = ["BlockO", "BlockT", "BlockL", "BlockP", "BlockB", "BlockM", "BlockN", "BlockD", "BlockF", "BlockA", "BlockC"];
+
+// Add polygons for each block
+blockNames.forEach(block => {
+    L.polygon(buildingCoords[block], polygonStyle).addTo(map);
+});
 
 // Adds all locations to the dropdown
 locations.forEach(function(location) {
@@ -339,13 +327,49 @@ locations.forEach(function(location) {
     startLocationSelect.appendChild(option);
 });
 
+let iconSize = [60, 60]
+let iconAnchor = [30, 30]
+
+// Function to generate custom icons for each block type
+function createCustomIcon(block, svgIcon) {
+    return L.divIcon({
+        className: 'custom-icon',
+        html: svgIcon,
+        iconSize: iconSize,
+        iconAnchor: iconAnchor,
+    });
+}
+
+// Map block types to SVG icons
+const blockIcons = {
+    "Block O": svgIconBlockO,
+    "Block B": svgIconBlockB,
+    "Block F": svgIconBlockF,
+    "Block M": svgIconBlockM,
+    "Block N": svgIconBlockN,
+    "Block D": svgIconBlockD,
+    "Block T": svgIconBlockT,
+    "Block L": svgIconBlockL,
+    "Block P": svgIconBlockP,
+    "Block A": svgIconBlockA,
+    "Block C": svgIconBlockC
+};
+
+// Create custom icons for each block type
+const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
+    icons[block] = createCustomIcon(block, blockIcons[block]);
+    return icons;
+}, {});
+
+// Add markers with custom icons
 locations.forEach(function(location) {
-    var marker = L.marker([location.lat, location.lng])
-        .addTo(map)
-        .bindPopup(location.name);
+    var marker = L.marker([location.lat, location.lng], {
+        icon: customIcons[location.name]
+    }).addTo(map)
+    .bindPopup(location.name);
 
     marker.on('click', function () {
-        savedLocation=location;
+        savedLocation = location;
         showPopupMenu(location.name, location.lat, location.lng);
     });
 });

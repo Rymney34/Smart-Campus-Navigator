@@ -13,7 +13,8 @@
 
 #side-bar {
     width: 5%;
-    background-color: rgb(21, 21, 61);
+    min-width: 100px;
+    background-color: #15153d;
     color: rgba(255, 255, 255, 0);
     transition: width 0.2s ease;
     text-align: center;
@@ -25,6 +26,7 @@
 
 #side-bar.active {
     width: 25%;
+    min-width: 400px;
     color: white;
 }
 

@@ -12,10 +12,10 @@
     justify-items: center;
 }
 
-#side-bar #searchBar, #side-bar #searchButton {
+#side-bar #searchBar, #side-bar #searchButton, #side-bar #settingsDiv {
     display: none;
 }
-#side-bar.active #searchBar, #side-bar.active  #searchButton{
+#side-bar.active #searchBar, #side-bar.active  #searchButton, #side-bar.active #settingsDiv{
     display: block;
 }
 
