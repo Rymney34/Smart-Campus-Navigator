@@ -1,4 +1,4 @@
-export var svgIconBlockO = `
+export const svgIconBlockO = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -12,7 +12,7 @@ export var svgIconBlockO = `
 </svg>
 `;
 
-export var svgIconBlockB = `
+export const svgIconBlockB = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -26,7 +26,7 @@ export var svgIconBlockB = `
 </svg>
 `;
 
-export var svgIconBlockM = `
+export const svgIconBlockM = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -40,7 +40,7 @@ export var svgIconBlockM = `
 </svg>
 `;
 
-export var svgIconBlockT = `
+export const svgIconBlockT = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -54,7 +54,7 @@ export var svgIconBlockT = `
 </svg>
 `;
 
-export var svgIconBlockD = `
+export const svgIconBlockD = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -68,7 +68,7 @@ export var svgIconBlockD = `
 </svg>
 `;
 
-export var svgIconBlockF = `
+export const svgIconBlockF = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -82,7 +82,7 @@ export var svgIconBlockF = `
 </svg>
 `;
 
-export var svgIconBlockN = `
+export const svgIconBlockN = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -96,7 +96,7 @@ export var svgIconBlockN = `
 </svg>
 `;
 
-export var svgIconBlockL = `
+export const svgIconBlockL = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -110,7 +110,7 @@ export var svgIconBlockL = `
 </svg>
 `;
 
-export var svgIconBlockC = `
+export const svgIconBlockC = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -124,7 +124,7 @@ export var svgIconBlockC = `
 </svg>
 `;
 
-export var svgIconBlockP = `
+export const svgIconBlockP = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -138,7 +138,7 @@ export var svgIconBlockP = `
 </svg>
 `;
 
-export var svgIconBlockA = `
+export const svgIconBlockA = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <defs>
     <style>
@@ -152,7 +152,7 @@ export var svgIconBlockA = `
 </svg>
 `;
 
-export var svgIconGym = `
+export const svgIconGym = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <rect x="222.14" y="181.3" width="330.5" height="61.12" rx="30.56" ry="30.56" transform="translate(263.28 -211.88) rotate(45)"/>
   <rect x="285.97" y="117.47" width="330.5" height="61.12" rx="30.56" ry="30.56" transform="translate(236.84 -275.71) rotate(45)"/>
@@ -164,7 +164,7 @@ export var svgIconGym = `
 </svg>
 `;
 
-export var svgIconLibrary = `
+export const svgIconLibrary = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <rect x="42.22" y="171.54" width="136.69" height="280.34"/>
   <rect x="42.22" y="110.35" width="136.69" height="43.66" rx="4.24" ry="4.24"/>
@@ -180,7 +180,7 @@ export var svgIconLibrary = `
 </svg>
 `;
 
-export var svgIconCafeteria = `
+export const svgIconCafeteria = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <path d="M477.02,546.37l-168.53-189.51L97.35,166.69c-36.4-36.4-36.4-95.41,0-131.81h0s445.58,445.58,445.58,445.58c18.2,18.2,18.2,47.71,0,65.9h0c-18.2,18.2-47.71,18.2-65.9,0Z"/>
   <path d="M2.74,151.84h377.24v110.81H113.55c-61.16,0-110.81-49.65-110.81-110.81h0Z" transform="translate(202.59 -74.61) rotate(45)"/>
@@ -192,7 +192,7 @@ export var svgIconCafeteria = `
 </svg>
 `;
 
-export var svgIconPrayerRoom = `
+export const svgIconPrayerRoom = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <circle cx="397.43" cy="118.75" r="74.7"/>
   <path d="M113.4,236.28h234.13c32.64,0,59.14,26.5,59.14,59.14v35.47c0,32.64-26.5,59.14-59.14,59.14H113.4c-15.21,0-27.56-12.35-27.56-27.56v-98.63c0-15.21,12.35-27.56,27.56-27.56Z" transform="translate(-152.04 304.89) rotate(-50.63)"/>
@@ -203,7 +203,7 @@ export var svgIconPrayerRoom = `
 </svg>
 `;
 
-export var svgIconFireAssemply = `
+export const svgIconFireAssemply = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <path d="M388.42,421.65v19.59c0,6.95-5.64,12.59-12.59,12.59h-152.76c-6.95,0-12.59-5.64-12.59-12.59v-19.59c0-17.21,6.47-32.9,17.11-44.78,1.54-1.73,3.18-3.38,4.89-4.93,6.35-5.78,13.81-10.35,22.02-13.36,9.63,9.39,22.19,15.79,36.18,17.69,2.87.4,5.79.6,8.77.6s5.9-.2,8.77-.6c13.99-1.9,26.55-8.3,36.18-17.69,8.21,3.01,15.67,7.58,22.02,13.36,1.71,1.55,3.35,3.2,4.89,4.93,10.64,11.88,17.11,27.57,17.11,44.78Z"/>
   <path d="M274.21,226.56c-25.83,7.57-46.82,26.47-57.21,50.96-3,7.05-5.12,14.56-6.21,22.39h-.31c-17.48,0-33.35-6.98-44.95-18.29-11.98-11.69-19.42-28.01-19.42-46.07,0-35.55,28.82-64.37,64.37-64.37,32.5,0,59.36,24.08,63.73,55.38Z"/>
@@ -227,7 +227,7 @@ export var svgIconFireAssemply = `
 </svg>
 `;
 
-export var svgIconSideBarButton = `
+export const svgIconSideBarButton = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <rect x="43.95" y="114.41" width="511.35" height="43.74" rx="21.87" ry="21.87"/>
   <rect x="43.95" y="277.76" width="511.35" height="43.74" rx="21.87" ry="21.87"/>

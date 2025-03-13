@@ -211,6 +211,8 @@ function showPopupMenu(locationName, lat, lng) {
     resetGoButton();
 }
 
+// When commented out no noticable change on website
+/* 
 function findLocation(locationName,lat,lng) {
     let startLocation;
     popupMenu.style.display = "block";
@@ -223,6 +225,7 @@ function findLocation(locationName,lat,lng) {
     calculateETA(startLocation,[lat,lng]);
     return startLocation;
 }
+*/
 
 function getSelectedStartLocation() {
     let selectedValue = startLocationSelect.value;

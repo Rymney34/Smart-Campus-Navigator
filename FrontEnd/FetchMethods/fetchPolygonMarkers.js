@@ -1,20 +1,6 @@
-/*
-var Marker = require('./models/Marker');
-
-module.exports = function fetchPolygonMarkers() {
-  return Marker.find().select('blockName -_id')
-    .then(markers => {
-      console.log(markers); 
-    })
-    .catch(err => {
-      console.error("Error: ", err); 
-    });
-};
-*/
-
 // Building Coordinates
 // Block O
-export var buildingCoordsBlockO = [
+export const buildingCoordsBlockO = [
   [51.496871365660304, -3.2151210308074956],
   [51.49660104392152, -3.2154268026351933],
   [51.496497477686766, -3.2151946593982],
@@ -30,7 +16,7 @@ export var buildingCoordsBlockO = [
 ];
 
 // Block T
-export var buildingCoordsBlockT = [
+export const buildingCoordsBlockT = [
   [51.496304093246195, -3.2139408944849106],
   [51.49622696236867, -3.214041273878368],
   [51.49621360354594, -3.214019863730813],
@@ -45,7 +31,7 @@ export var buildingCoordsBlockT = [
   [51.49609337396509, -3.213522897634538]
 ];
 // Block M
-export var buildingCoordsBlockM = [
+export const buildingCoordsBlockM = [
   [51.497081918880454, -3.2136515248467594],
   [51.496621594668184, -3.2142671556567897],
   [51.496507496741785, -3.214035553026056],
@@ -59,7 +45,7 @@ export var buildingCoordsBlockM = [
   [51.49698197139272, -3.2134410352802028]
 ];
 // Block N
-export var buildingCoordsBlockN = [
+export const buildingCoordsBlockN = [
   [51.49684814330224, -3.2136010351656434],
   [51.49670453770969, -3.2134562077599753],
   [51.49659432845972, -3.213247019219106],
@@ -69,7 +55,7 @@ export var buildingCoordsBlockN = [
   [51.49697838984373, -3.2134400432190295]
 ];
 // Block D
-export var buildingCoordsBlockD = [
+export const buildingCoordsBlockD = [
   [51.49618354618045, -3.2128017428247495],
   [51.49603386923149, -3.212549971583674],
   [51.49596707842493, -3.2124280929565434],
@@ -90,7 +76,7 @@ export var buildingCoordsBlockD = [
   [51.49639060762948, -3.2132258348132767]
 ];
 // Block L
-export var buildingCoordsBlockL = [
+export const buildingCoordsBlockL = [
   [51.49565252945548, -3.2133282934072653],
   [51.495632490967374, -3.2132899464444806],
   [51.4955423176619, -3.2134133518214574],
@@ -102,14 +88,14 @@ export var buildingCoordsBlockL = [
 
 ];
 // Block B
-export var buildingCoordsBlockB = [
+export const buildingCoordsBlockB = [
   [51.496834784661544, -3.212673014608763],
   [51.496507496741785, -3.2131098671513625],
   [51.49622696236867, -3.212560361830137],
   [51.49656047313556, -3.2121196715934746]
 ];
 // Block A
-export var buildingCoordsBlockA = [
+export const buildingCoordsBlockA = [
   [51.49617686676321, -3.2121097150722067],
   [51.49621082348317, -3.2120472192764287],
   [51.496136790239184, -3.2118951145887435],
@@ -128,7 +114,7 @@ export var buildingCoordsBlockA = [
   [51.49619356530447, -3.212142032272962]
 ];
 // Block F
-export var buildingCoordsBlockF = [
+export const buildingCoordsBlockF = [
   [51.496497477686766, -3.2118576468305275],
   [51.49635387098941, -3.211831709901383],
   [51.49635387098941, -3.2118642112612066],
@@ -151,7 +137,7 @@ export var buildingCoordsBlockF = [
   [51.49651083642631, -3.211616248019187]
 ];
 // Block P
-export var buildingCoordsBlockP = [
+export const buildingCoordsBlockP = [
   [51.49546550322393, -3.2132061236918017],
   [51.49545214417801, -3.2131825630347364],
   [51.495382009122785, -3.2132684412477968],
@@ -167,7 +153,7 @@ export var buildingCoordsBlockP = [
   [51.495602433218714, -3.2130216898995627]
 ];
 // Block C
-export var buildingCoordsBlockC  = [
+export const buildingCoordsBlockC  = [
   [51.49589678890499, -3.2125184563830453],
   [51.495796138362444, -3.2122468255972008],
   [51.495599093467625, -3.212481110441226],
@@ -180,7 +166,7 @@ export var buildingCoordsBlockC  = [
 ];
 
 // In fetchPolygonMarkers.js
-export var buildingCoords = {
+export const buildingCoords = {
   BlockO: buildingCoordsBlockO,
   BlockT: buildingCoordsBlockT,
   BlockM: buildingCoordsBlockM,
