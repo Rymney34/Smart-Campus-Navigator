@@ -2,19 +2,7 @@
 import { mapClickHandler } from "/Utility/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
 // Import Building Coordinates
-import {
-    buildingCoordsBlockO,
-    buildingCoordsBlockT,
-    buildingCoordsBlockM,
-    buildingCoordsBlockN,
-    buildingCoordsBlockD,
-    buildingCoordsBlockL,
-    buildingCoordsBlockB,
-    buildingCoordsBlockA,
-    buildingCoordsBlockF,
-    buildingCoordsBlockP,
-    buildingCoordsBlockC
-} from './FetchMethods/fetchPolygonMarkers.js';
+import { buildingCoords } from './FetchMethods/fetchPolygonMarkers.js';
 
 // Import Polygon Colour Setting
 import {
@@ -26,16 +14,33 @@ import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
-var bounds = L.latLngBounds(
-    L.latLng(51.494, -3.216), // South-West corner
-    L.latLng(51.498, -3.210)  // North-East corner
-);
+import {
+    setupUserLocation
+} from './PathFinding/userLocation.js';
+
+import {
+    findLocation
+} from './PathFinding/userLocation.js';
+
+import {
+    getSelectedStartLocation
+} from './PathFinding/userLocation.js';
+
+import {
+    createRoute
+} from './PathFinding/routeManager.js';
+
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
+    /*
     minZoom: 10,
-    maxBounds: bounds, // Restrict panning
+    maxBounds: L.latLngBounds(
+        L.latLng(51.494, -3.216), // South-West corner
+        L.latLng(51.498, -3.210)  // North-East corner
+    ), // Restrict panning
     maxBoundsViscosity: 1.0 // Prevents dragging outside the bounds
+    */
 }).setView([51.496212259288775, -3.2133038818782333], 50);
 
 // Add OpenStreetMap Tile Layer
@@ -51,36 +56,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 var routingControl = null;
 var userLatLng = null;
 var savedLocation = null;
-
-function setupUserLocation(map) {
-    var userMarker = null;
-
-    // Locate user without auto-centering or zooming
-    map.locate({watch:true,  enableHighAccuracy: true, setView: false });
-
-    map.on('locationfound', function (e) {
-        console.log(e.latlng);
-        userLatLng = e.latlng; // Store user location
-
-        if (userMarker) {
-            userMarker.setLatLng(userLatLng); // Update marker position
-        } else {
-            // Add marker for the first time
-            userMarker = L.marker(userLatLng).addTo(map)
-                .bindPopup("You are here.");
-        }
-    });
-
-    // Prevent auto-following after first location find
-    map.on('locationfound', function () {
-        map.stopLocate();
-    });
-
-    // Prevent auto-panning or resetting view
-    map.on('movestart moveend drag mousedown', function () {
-        map.stopLocate();
-    });
-}
 
 setupUserLocation(map);
 
@@ -149,7 +124,6 @@ document.body.appendChild(popupMenu); // Ensures it's not inside the map
 
 // Get the dropdown element
 const startLocationSelect = document.getElementById("startLocationSelect");
-
 
 document.getElementById("startLocationSelect").addEventListener("change", function () {
     let startLocation = getSelectedStartLocation();
@@ -220,7 +194,7 @@ function showPopupMenu(locationName, lat, lng) {
     resetGoButton();
 }
 
-
+/*
 function findLocation(locationName,lat,lng) {
     let startLocation;
     popupMenu.style.display = "block";
@@ -242,7 +216,13 @@ function getSelectedStartLocation() {
         return JSON.parse(selectedValue);
     }
 }
+    */
 
+findLocation();
+
+getSelectedStartLocation();
+
+/*
 // Function to Create Route When "GO" is Pressed
 function createRoute(start, destination) {
     if (!start || !destination) {
@@ -273,6 +253,9 @@ function createRoute(start, destination) {
 
     popupMenu.style.display = "none"; // Hide the popup after starting the route
 }
+    */
+
+createRoute()
 
 function calculateETA(start,destination) {
     
@@ -322,35 +305,27 @@ function calculateETA(start,destination) {
 mapClickHandler(map); // REMOVE FEATURE ON LAUNCH
 
 // Block O Polygon
-L.polygon(buildingCoordsBlockO, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockO, polygonStyle).addTo(map);
 // Block T Polygon
-L.polygon(buildingCoordsBlockT, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockT, polygonStyle).addTo(map);
 // Block L Polygons
-L.polygon(buildingCoordsBlockL, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockL, polygonStyle).addTo(map);
 // Block P Polygon
-L.polygon(buildingCoordsBlockP, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockP, polygonStyle).addTo(map);
 // Block B Polygon
-L.polygon(buildingCoordsBlockB, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockB, polygonStyle).addTo(map);
 // Block M Polygon
-L.polygon(buildingCoordsBlockM, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockM, polygonStyle).addTo(map);
 // Block N Polygon
-L.polygon(buildingCoordsBlockN, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockN, polygonStyle).addTo(map);
 // Block D Polygon
-L.polygon(buildingCoordsBlockD, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockD, polygonStyle).addTo(map);
 // Block F Polygon
-L.polygon(buildingCoordsBlockF, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockF, polygonStyle).addTo(map);
 // Block A Polygon
-L.polygon(buildingCoordsBlockA, polygonStyle).addTo(map);
+L.polygon(buildingCoords.BlockA, polygonStyle).addTo(map);
 // Block C Polygon
-L.polygon(buildingCoordsBlockC, polygonStyle).addTo(map);
-
-
-// Adds Lat and Lng Values to Map
-locations.forEach(function(location) {
-    L.marker([location.lat, location.lng])
-        .addTo(map)
-        .bindPopup(location.name);
-});
+L.polygon(buildingCoords.BlockC, polygonStyle).addTo(map);
 
 // Adds all locations to the dropdown
 locations.forEach(function(location) {
