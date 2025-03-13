@@ -14,22 +14,6 @@ import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
-import {
-    setupUserLocation
-} from './PathFinding/userLocation.js';
-
-import {
-    findLocation
-} from './PathFinding/userLocation.js';
-
-import {
-    getSelectedStartLocation
-} from './PathFinding/userLocation.js';
-
-import {
-    createRoute
-} from './PathFinding/routeManager.js';
-
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
@@ -56,6 +40,36 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 var routingControl = null;
 var userLatLng = null;
 var savedLocation = null;
+
+function setupUserLocation(map) {
+    var userMarker = null;
+
+    // Locate user without auto-centering or zooming
+    map.locate({watch:true,  enableHighAccuracy: true, setView: false });
+
+    map.on('locationfound', function (e) {
+        console.log(e.latlng);
+        userLatLng = e.latlng; // Store user location
+
+        if (userMarker) {
+            userMarker.setLatLng(userLatLng); // Update marker position
+        } else {
+            // Add marker for the first time
+            userMarker = L.marker(userLatLng).addTo(map)
+                .bindPopup("You are here.");
+        }
+    });
+
+    // Prevent auto-following after first location find
+    map.on('locationfound', function () {
+        map.stopLocate();
+    });
+
+    // Prevent auto-panning or resetting view
+    map.on('movestart moveend drag mousedown', function () {
+        map.stopLocate();
+    });
+}
 
 setupUserLocation(map);
 
@@ -194,7 +208,6 @@ function showPopupMenu(locationName, lat, lng) {
     resetGoButton();
 }
 
-/*
 function findLocation(locationName,lat,lng) {
     let startLocation;
     popupMenu.style.display = "block";
@@ -216,13 +229,7 @@ function getSelectedStartLocation() {
         return JSON.parse(selectedValue);
     }
 }
-    */
 
-findLocation();
-
-getSelectedStartLocation();
-
-/*
 // Function to Create Route When "GO" is Pressed
 function createRoute(start, destination) {
     if (!start || !destination) {
@@ -253,9 +260,6 @@ function createRoute(start, destination) {
 
     popupMenu.style.display = "none"; // Hide the popup after starting the route
 }
-    */
-
-createRoute()
 
 function calculateETA(start,destination) {
     
@@ -333,13 +337,6 @@ locations.forEach(function(location) {
     option.value = JSON.stringify([location.lat, location.lng]); // Store coordinates as a string
     option.textContent = location.name;
     startLocationSelect.appendChild(option);
-});
-
-// Adds Lat and Lng Values to Map
-locations.forEach(function(location) {
-    L.marker([location.lat, location.lng])
-        .addTo(map)
-        .bindPopup(location.name);
 });
 
 locations.forEach(function(location) {
