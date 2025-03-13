@@ -1,12 +1,12 @@
 /*
 // Fetch logic to get location markers
-export const fetchLocationMarkers = async () => {
+export var fetchLocationMarkers = async () => {
   try {
-      const response = await fetch('/api/markers');  // API endpoint for marker data
+      var response = await fetch('/api/markers');  // API endpoint for marker data
       if (!response.ok) {
           throw new Error('Network response was not ok');
       }
-      const markers = await response.json();
+      var markers = await response.json();
       return markers;  // Return the fetched markers
   } catch (error) {
       console.error('Error fetching marker data:', error);
@@ -16,7 +16,7 @@ export const fetchLocationMarkers = async () => {
 */
 
 // Lat and Lng Values of All Markers on Map
-export const locations = [
+export var locations = [
     { lat: 51.49651417611058, lng: -3.2147777080535893, name: "Block O" },
     { lat: 51.496527534845214, lng: -3.212637305259705, name: "Block B" },
     { lat: 51.496346592087235, lng: -3.2115620254400006, name: "Block F" },

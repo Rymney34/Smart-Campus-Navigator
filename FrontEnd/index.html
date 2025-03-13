@@ -6,13 +6,14 @@
     <title>Campus Navigation</title>
     
     <!--CSS Logic-->
-    <link rel="styleSheet" href="../StyleSheets/global.css">
+    <link rel="stylesheet" href="../StyleSheets/global.css">
     <link rel="stylesheet" href="../StyleSheets/directions.css">
     <link rel="stylesheet" href="../StyleSheets/layout.css">
     <link rel="stylesheet" href="../StyleSheets/sideBar.css">
-    <link rel="stylesheet" href="../StyleSheets/directions.css">
-    <link rel="stylesheet" href="../StyleSheets/map.css">
     
+    <!--Leaflet CSS Stylesheet (Leaflet.css Logic) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 <body>
     <!--Main View (Contains Side-Bar and Map View Columns)-->
@@ -49,9 +50,6 @@
         <div id="map"></div>
     </div>
 
-    <!--Leaflet CSS Stylesheet (Leaflet.css Logic) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <!--Leaflet JavaScript Logic (Leaflet.js Logic)-->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -62,12 +60,5 @@
     <script src="side-bar.js"></script>
     <!--Map Data and PathFinding Logic-->
     <script type="module" src="index.js"></script>
-
-    <!--Fetch Polygon Markers Logic-->
-    <script type="module" src="/FetchMethods/fetchPolygonMarkers.js"></script>
-    <!--Fetch Marker Location Logic-->
-    <script type="module" src="/FetchMethods/fetchLocationMarkers.js"></script>
-    <!--Fetch Polygon Colour Logic-->
-    <script type="module" src="/Utility/mapPolygonColour.js"></script>
 </body>
 </html>
