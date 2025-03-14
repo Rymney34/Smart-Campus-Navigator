@@ -9,6 +9,11 @@ html, body {
     height: 90vh;
 }
 
+#image1 {
+    width: 20%;
+    height: 20%;
+}
+
 .mainTest{
     margin-bottom: 30px;
 }

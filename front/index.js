@@ -321,7 +321,7 @@ const h2 = document.getElementsByClassName("titleName")[0];
                 console.log(data); 
 
                 // Set the image src using the base64 string
-                imgElement.src = `data:image/png;base64,${data.image}`;
+                imgElement.src = data.image;
             } catch (error) {
                 console.error("Error fetching image:", error);
             }

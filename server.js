@@ -1,11 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const sharp = require("sharp");
 // Scema import 
-const floors = require("./floors");
-const Locations = require("./locations.js");
-const locationType = require("./locationType");
-const Images = require("./images.js")
-const icons = require("./icons.js")
+const floors = require("./schemas/floors.js");
+const Locations = require("./schemas/locations.js");
+const locationType = require("./schemas/locationType.js");
+const Images = require("./schemas/images.js")
+const icons = require("./schemas/icons.js")
+const blocks = require("./schemas/blocks.js")
+
 // const images = require('./images');
 
 const {test2} = require("./test1");
@@ -40,18 +43,18 @@ async function connectDB() {
     
 //     try{
         
-//         const imagePath = './dumble.png';
+//         const imagePath = './bus.png';
 
     
 //         const imageBuffer =  await fs.readFile(imagePath);
-//         // const base64I = imageBuffer.toString('base64')
-//         // const mimeType = 'image/png';
+//         const base64I = imageBuffer.toString('base64')
+//         const mimeType = 'image/png';
 
-//         const newIcon = new icons({
+//         const newImage = new icons({
 //             image: imageBuffer
 //           });
 
-//           const result = await newIcon.save();
+//           const result = await newImage.save();
 //           console.log(result)
 
 //     }catch (e){
@@ -62,18 +65,151 @@ async function connectDB() {
 
 // iconsUpload()
 
-async function run(){
-    try{
-        const imagePath = "./t1.png"; 
-        const imageBuffer = fs.readFileSync(imagePath);
+//adding block documents
+
+async function addBlock(){
+    try {
+        
+        const doc = [
+            {
+               
+                idFloor: "67cddfc3a2c7bca87f8ae8ee",
+                openTime: "08:00",
+                closeTime: "21:00",
+                places: [
+                  {roomNumber: "T.01"},
+                  {roomNumber: "T.02"},
+                  {roomNumber: "T.03"},
+                ]
+              },
+            //   {
+               
+            //     idFloor: "67cddfc3a2c7bca87f8ae8ef",
+            //     openTime: "08:00",
+            //     closeTime: "20:00",
+            //     places: [
+            //         {idType: "67d1db2ceb00f496f5ff8073",
+            //         isFacility:true
+            //         },
+                    
+            //     ]
+            //   },
+              {
+               
+                idFloor: "67cddfc3a2c7bca87f8ae8ee",
+                openTime: "07:00",
+                closeTime: "21:00",
+                places: [
+                    {idType: "67d1db2ceb00f496f5ff8076",
+                    isFacility:true
+                    },
+                    
+                ]
+              },
+
+            //   {
+               
+            //     idFloor: "67cddf64e9c8af0f44bd1af8",
+            //     openTime: "08:00",
+            //     closeTime: "20:00",
+            //     places: [
+            //         {roomNumber: "L.020"},
+            //         {roomNumber: "Global Lounge"},
+            //     ]
+            //   },
+            {
+                idFloor: "67cddfc3a2c7bca87f8ae8ef",
+                openTime: "08:00",
+                closeTime: "21:00",
+                places: [
+                    {roomNumber: "T.0002"},
+                    
+                ]
+              },
+              {
+                idFloor: "67cddfc3a2c7bca87f8ae8f0",
+                openTime: "08:00",
+                closeTime: "21:00",
+                places: [
+                    {roomNumber: "T.010"},
+                    {roomNumber: "T.020"},
+                    {roomNumber: "T.030"},
+                    {roomNumber: "T.040"},
+                    {roomNumber: "T.050"},
+                   
+                ]
+              },
+             
+        ];
+
+        const result = await Locations.insertMany(doc);
+
+        console.log(result)
+    }catch(e){
+        console.log(e.message)
+    }
+
+}
+
+addBlock()
+
+// async function addInfo(){
+//     try {
+
+//         const block = await blocks.findOne({ name: "Block L2" });
+        
+//         const doc = [
+//             { 
+//                 floorNum:0,
+//                 id_block: block._id
+//             },
+//             { 
+//                 floorNum:1,
+//                 id_block: block._id
+//             },
+//             { 
+//                 floorNum:2,
+//                 id_block: block._id
+//             },
+//             { 
+//                 floorNum:3,
+//                 id_block: block._id
+//             },
+            
+            
+        
+//             // {
+//             //     blockInfo: "Block information",
+//             //     name:"Block F",
+//             //     title: "PDR(Product Design & Developemnt Research)",
+//             // },
+
+//         ];
+
+//         const result = await floors.insertMany(doc);
+
+//         console.log(result)
+//     }catch(e){
+//         console.log(e.message)
+//     }
+
+// }
+
+// addInfo()
+
+
+// async function run(){
+//     try{
+//         const imagePath = "./t1.png"; 
+//         const imageBuffer = fs.readFileSync(imagePath);
 
         
   
 
-    }catch(e){
-        console.log(e.message);
-    }
-}
+//     }catch(e){
+//         console.log(e.message);
+//     }
+// }
 
 
 
@@ -83,7 +219,7 @@ async function imag1() {
     try {
         const q = [
             { 
-                $match: { _id: new mongoose.Types.ObjectId("67c080d1b861b5153f6f83d2") }
+                $match: { _id: new mongoose.Types.ObjectId("67d0a986728ea5740fdb8e3f") }
             },
             {
                 $project: {
@@ -109,20 +245,25 @@ app.get("/image", async (req, res) => {
        
         const result = await imag1();
        
-        const base64Image = result.image.toString('base64');
+        // const base64Image = result.image.toString('base64');
        
-        res.json({ image: base64Image });
+        // res.json({ image: base64Image });
+       
+
+        res.send(result);
+
     } catch (e) {
         console.error("Error in /image route:", e.message);
         res.status(500).json({ error: "Failed to fetch image" });
     }
 });
 
+
 async function ic1() {
     try {
         const q = [
             { 
-                $match: { _id: new mongoose.Types.ObjectId("67c216db632f0ba7e393a950") }
+                $match: { _id: new mongoose.Types.ObjectId("67d0df626f2159b45ed6a6c3") }
             },
             {
                 $project: {
@@ -156,6 +297,7 @@ app.get("/icon", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch image" });
     }
 });
+
 
 
 app.get('/test2', async (req, res) => {

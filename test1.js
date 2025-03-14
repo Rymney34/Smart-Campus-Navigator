@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const floors = require("./floors");
+const floors = require("./schemas/floors");
 // ç
 
 // Random test!!!!!!!!!
