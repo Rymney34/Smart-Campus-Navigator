@@ -1,41 +1,33 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
-import { mapClickHandler } from "/util/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
+import { mapClickHandler } from "/Utility/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
 // Import Building Coordinates
-import {
-    buildingCoordsBlockO,
-    buildingCoordsBlockT,
-    buildingCoordsBlockM,
-    buildingCoordsBlockN,
-    buildingCoordsBlockD,
-    buildingCoordsBlockL,
-    buildingCoordsBlockB,
-    buildingCoordsBlockA,
-    buildingCoordsBlockF,
-    buildingCoordsBlockP,
-    buildingCoordsBlockC
-} from './FetchMethods/fetchPolygonMarkers.js';
+import { buildingCoords } from './FetchMethods/fetchPolygonMarkers.js';
 
 // Import Polygon Colour Setting
 import {
     polygonStyle
-} from './util/mapPolygonColour.js';
+} from './Utility/mapPolygonColour.js';
 
 // Import Marker Location Coordinates
 import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
-var bounds = L.latLngBounds(
-    L.latLng(51.494, -3.216), // South-West corner
-    L.latLng(51.498, -3.210)  // North-East corner
-);
+import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA,
+} from './FetchMethods/fetchIcons.js'
+
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
+    /*
     minZoom: 10,
-    maxBounds: bounds, // Restrict panning
+    maxBounds: L.latLngBounds(
+        L.latLng(51.494, -3.216), // South-West corner
+        L.latLng(51.498, -3.210)  // North-East corner
+    ), // Restrict panning
     maxBoundsViscosity: 1.0 // Prevents dragging outside the bounds
+    */
 }).setView([51.496212259288775, -3.2133038818782333], 50);
 
 // Add OpenStreetMap Tile Layer
@@ -150,7 +142,6 @@ document.body.appendChild(popupMenu); // Ensures it's not inside the map
 // Get the dropdown element
 const startLocationSelect = document.getElementById("startLocationSelect");
 
-
 document.getElementById("startLocationSelect").addEventListener("change", function () {
     let startLocation = getSelectedStartLocation();
     
@@ -220,7 +211,8 @@ function showPopupMenu(locationName, lat, lng) {
     resetGoButton();
 }
 
-
+// When commented out no noticable change on website
+/* 
 function findLocation(locationName,lat,lng) {
     let startLocation;
     popupMenu.style.display = "block";
@@ -233,6 +225,7 @@ function findLocation(locationName,lat,lng) {
     calculateETA(startLocation,[lat,lng]);
     return startLocation;
 }
+*/
 
 function getSelectedStartLocation() {
     let selectedValue = startLocationSelect.value;
@@ -321,35 +314,12 @@ function calculateETA(start,destination) {
 // Call Map Click Handler - Removable Feature (Developer Only Feature)
 mapClickHandler(map); // REMOVE FEATURE ON LAUNCH
 
-// Block O Polygon
-L.polygon(buildingCoordsBlockO, polygonStyle).addTo(map);
-// Block T Polygon
-L.polygon(buildingCoordsBlockT, polygonStyle).addTo(map);
-// Block L Polygons
-L.polygon(buildingCoordsBlockL, polygonStyle).addTo(map);
-// Block P Polygon
-L.polygon(buildingCoordsBlockP, polygonStyle).addTo(map);
-// Block B Polygon
-L.polygon(buildingCoordsBlockB, polygonStyle).addTo(map);
-// Block M Polygon
-L.polygon(buildingCoordsBlockM, polygonStyle).addTo(map);
-// Block N Polygon
-L.polygon(buildingCoordsBlockN, polygonStyle).addTo(map);
-// Block D Polygon
-L.polygon(buildingCoordsBlockD, polygonStyle).addTo(map);
-// Block F Polygon
-L.polygon(buildingCoordsBlockF, polygonStyle).addTo(map);
-// Block A Polygon
-L.polygon(buildingCoordsBlockA, polygonStyle).addTo(map);
-// Block C Polygon
-L.polygon(buildingCoordsBlockC, polygonStyle).addTo(map);
+// Array of block names
+const blockNames = ["BlockO", "BlockT", "BlockL", "BlockP", "BlockB", "BlockM", "BlockN", "BlockD", "BlockF", "BlockA", "BlockC"];
 
-
-// Adds Lat and Lng Values to Map
-locations.forEach(function(location) {
-    L.marker([location.lat, location.lng])
-        .addTo(map)
-        .bindPopup(location.name);
+// Add polygons for each block
+blockNames.forEach(block => {
+    L.polygon(buildingCoords[block], polygonStyle).addTo(map);
 });
 
 // Adds all locations to the dropdown
@@ -360,20 +330,49 @@ locations.forEach(function(location) {
     startLocationSelect.appendChild(option);
 });
 
-// Adds Lat and Lng Values to Map
-locations.forEach(function(location) {
-    L.marker([location.lat, location.lng])
-        .addTo(map)
-        .bindPopup(location.name);
-});
+let iconSize = [60, 60]
+let iconAnchor = [30, 30]
 
+// Function to generate custom icons for each block type
+function createCustomIcon(block, svgIcon) {
+    return L.divIcon({
+        className: 'custom-icon',
+        html: svgIcon,
+        iconSize: iconSize,
+        iconAnchor: iconAnchor,
+    });
+}
+
+// Map block types to SVG icons
+const blockIcons = {
+    "Block O": svgIconBlockO,
+    "Block B": svgIconBlockB,
+    "Block F": svgIconBlockF,
+    "Block M": svgIconBlockM,
+    "Block N": svgIconBlockN,
+    "Block D": svgIconBlockD,
+    "Block T": svgIconBlockT,
+    "Block L": svgIconBlockL,
+    "Block P": svgIconBlockP,
+    "Block A": svgIconBlockA,
+    "Block C": svgIconBlockC
+};
+
+// Create custom icons for each block type
+const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
+    icons[block] = createCustomIcon(block, blockIcons[block]);
+    return icons;
+}, {});
+
+// Add markers with custom icons
 locations.forEach(function(location) {
-    var marker = L.marker([location.lat, location.lng])
-        .addTo(map)
-        .bindPopup(location.name);
+    var marker = L.marker([location.lat, location.lng], {
+        icon: customIcons[location.name]
+    }).addTo(map)
+    .bindPopup(location.name);
 
     marker.on('click', function () {
-        savedLocation=location;
+        savedLocation = location;
         showPopupMenu(location.name, location.lat, location.lng);
     });
 });

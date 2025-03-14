@@ -1,17 +1,3 @@
-/*
-const Marker = require('./models/Marker');
-
-module.exports = function fetchPolygonMarkers() {
-  return Marker.find().select('blockName -_id')
-    .then(markers => {
-      console.log(markers); 
-    })
-    .catch(err => {
-      console.error("Error: ", err); 
-    });
-};
-*/
-
 // Building Coordinates
 // Block O
 export const buildingCoordsBlockO = [
@@ -178,3 +164,18 @@ export const buildingCoordsBlockC  = [
   [51.495849574119305, -3.2117932500518775],
   [51.49608702671106, -3.2122671604156494]
 ];
+
+// In fetchPolygonMarkers.js
+export const buildingCoords = {
+  BlockO: buildingCoordsBlockO,
+  BlockT: buildingCoordsBlockT,
+  BlockM: buildingCoordsBlockM,
+  BlockN: buildingCoordsBlockN,
+  BlockD: buildingCoordsBlockD,
+  BlockL: buildingCoordsBlockL,
+  BlockB: buildingCoordsBlockB,
+  BlockA: buildingCoordsBlockA,
+  BlockF: buildingCoordsBlockF,
+  BlockP: buildingCoordsBlockP,
+  BlockC: buildingCoordsBlockC
+};

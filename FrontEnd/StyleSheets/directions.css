@@ -1,63 +1,3 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-#layout {
-    display: flex;
-    height: 100%;
-}
-
-#side-bar {
-    width: 5%;
-    background-color: rgb(21, 21, 61);
-    color: rgba(255, 255, 255, 0);
-    transition: width 0.2s ease;
-    text-align: center;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#side-bar.active {
-    width: 25%;
-    color: white;
-}
-
-#searchDiv {
-    display: grid;
-    grid-template-columns: 0.8fr 0.2fr;
-    justify-items: center;
-}
-
-#side-bar #searchBar, #side-bar #searchButton {
-    display: none;
-}
-#side-bar.active #searchBar, #side-bar.active  #searchButton{
-    display: block;
-}
-
-#map {
-    flex-grow: 1;
-    height: 100vh;
-    transition: margin-left 0.3s ease;
-}
-
-#side-barButton {
-    background-color: #333;
-    color: white;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-}
-
-#buildingInfo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
 .location-input {
     background: rgba(255, 255, 255, 0.1);
     padding: 10px;
@@ -166,7 +106,7 @@ html, body {
     color: white;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 
 #popupMenu {
     font-family: 'Inter', sans-serif;
@@ -244,8 +184,6 @@ html, body {
     align-items: flex-start; /* Ensures left alignment */
 }
 
-
-
 /* Ensure dropdown options are properly visible */
 #startLocationSelect option {
     background-color: white;
@@ -253,8 +191,6 @@ html, body {
     padding: 10px;
     text-align: left;
 }
-
-
 
 .location-input label {
     font-size: 14px;
@@ -278,3 +214,5 @@ html, body {
     margin-left: 30px;
     padding: 8px;
 }
+
+
