@@ -1,9 +1,0 @@
-const mongoose = require("mongoose")
-
-const locationTypeSchema = new mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId },
-    idImage: { type: mongoose.Schema.Types.ObjectId},
-    typeName: { type:String },
-});
-
-module.exports = mongoose.model("locationType", locationTypeSchema)
