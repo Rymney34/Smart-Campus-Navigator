@@ -15,8 +15,11 @@ import {
 } from './FetchMethods/fetchLocationMarkers.js';
 
 import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA,
-} from './FetchMethods/fetchIcons.js'
+} from './FetchMethods/fetchIcons.js';
 
+import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
+
+document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {

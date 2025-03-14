@@ -229,8 +229,8 @@ export const svgIconFireAssemply = `
 
 export const svgIconSideBarButton = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
-  <rect x="43.95" y="114.41" width="511.35" height="43.74" rx="21.87" ry="21.87"/>
-  <rect x="43.95" y="277.76" width="511.35" height="43.74" rx="21.87" ry="21.87"/>
-  <rect x="43.95" y="441.11" width="511.35" height="43.74" rx="21.87" ry="21.87"/>
+  <rect x="43.95" y="114.41" width="511.35" height="43.74" rx="21.87" ry="21.87" fill="white"/>
+  <rect x="43.95" y="277.76" width="511.35" height="43.74" rx="21.87" ry="21.87" fill="white"/>
+  <rect x="43.95" y="441.11" width="511.35" height="43.74" rx="21.87" ry="21.87" fill="white"/>
 </svg>
 `;
