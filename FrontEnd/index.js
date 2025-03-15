@@ -2,6 +2,8 @@
 import { mapClickHandler } from "/Utility/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
 import PathFinder from "./Models/Path-finder.js"
+import Location from "./Models/Location.js"
+import Block from "./Models/Block.js"
 // Import Building Coordinates
 import { buildingCoords } from './FetchMethods/fetchPolygonMarkers.js';
 
@@ -152,7 +154,7 @@ function resetGoButton() {
     goButton.onclick = function () {
         let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
         if (!startLocation) {
-            alert("Start location not available!");
+            alert("Start location not available! Please allow the website to acess your live location on your browser.");
             p.setupUserLocation();
             popupMenu.style.display = "none";
             return;
@@ -217,10 +219,14 @@ mapClickHandler(map); // REMOVE FEATURE ON LAUNCH
 
 // Array of block names
 const blockNames = ["BlockO", "BlockT", "BlockL", "BlockP", "BlockB", "BlockM", "BlockN", "BlockD", "BlockF", "BlockA", "BlockC"];
+const blockObjects = [];
 
-// Add polygons for each block
-blockNames.forEach(block => {
-    L.polygon(buildingCoords[block], polygonStyle).addTo(map);
+blockNames.forEach(blockName => {
+    if (buildingCoords[blockName]) {
+        const block = new Block(blockName, buildingCoords[blockName], polygonStyle);
+        block.addToMap(map);
+        blockObjects.push(block);
+    }
 });
 
 // Adds all locations to the dropdown
@@ -231,6 +237,7 @@ locations.forEach(function(location) {
     startLocationSelect.appendChild(option);
 });
 
+/*
 let iconSize = [60, 60]
 let iconAnchor = [30, 30]
 
@@ -242,7 +249,7 @@ function createCustomIcon(block, svgIcon) {
         iconSize: iconSize,
         iconAnchor: iconAnchor,
     });
-}
+}*/
 
 // Map block types to SVG icons
 const blockIcons = {
@@ -260,20 +267,23 @@ const blockIcons = {
 };
 
 // Create custom icons for each block type
-const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
+/*const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
     icons[block] = createCustomIcon(block, blockIcons[block]);
     return icons;
-}, {});
+}, {});*/
 
-// Add markers with custom icons
-locations.forEach(function(location) {
-    var marker = L.marker([location.lat, location.lng], {
-        icon: customIcons[location.name]
-    }).addTo(map)
-    .bindPopup(location.name);
+const locationObjects = locations.map(locData => {
+    const loc = new Location(locData.name, locData.lat, locData.lng, L.divIcon({
+        className: 'custom-icon',
+        html: blockIcons[locData.name],
+        iconSize: [60, 60],
+        iconAnchor: [30, 30]
+    }));
+    loc.createMarker(map, showPopupMenu);
+    return loc;
+});
 
-    marker.on('click', function () {
-        savedLocation = location;
-        showPopupMenu(location.name, location.lat, location.lng);
-    });
+const locationMap = {};
+locationObjects.forEach(loc => {
+    locationMap[loc.name] = loc;
 });

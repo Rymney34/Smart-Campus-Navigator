@@ -3,11 +3,18 @@ class Block {
         this.name = name;
         this.coordinates = coordinates;
         this.style = style;
+        this.polygon = null; // Store the polygon reference
     }
 
     addToMap(map) {
-        L.polygon(this.coordinates, this.style).addTo(map);
+        this.polygon = L.polygon(this.coordinates, this.style).addTo(map);
+    }
+
+    removeFromMap(map) {
+        if (this.polygon) {
+            map.removeLayer(this.polygon);
+        }
     }
 }
 
-export default Block
+export default Block;
