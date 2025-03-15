@@ -1,9 +1,9 @@
 class Location {
-    constructor(name, lat, lng, icon) {
+    constructor(name, lat, lng) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
-        this.icon = icon;
+        this.icon = null;
     }
 
     getLatLng() {
