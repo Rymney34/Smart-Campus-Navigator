@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const sharp = require("sharp");
 // Scema import 
 const floors = require("./schemas/floors.js");
 const Locations = require("./schemas/locations.js");

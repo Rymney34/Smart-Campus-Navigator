@@ -1,6 +1,7 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
 import { mapClickHandler } from "/Utility/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
+import PathFinder from "./Models/Path-finder.js"
 // Import Building Coordinates
 import { buildingCoords } from './FetchMethods/fetchPolygonMarkers.js';
 
@@ -18,6 +19,8 @@ import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlock
 } from './FetchMethods/fetchIcons.js';
 
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
+
+console.log(L.Routing)
 
 document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
 
@@ -46,6 +49,17 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 var routingControl = null;
 var userLatLng = null;
 var savedLocation = null;
+var p;
+
+
+/*document.addEventListener("DOMContentLoaded", () => {
+    console.log("✅ Leaflet and Routing Machine fully loaded.");
+    console.log(L.Routing)
+    p = new PathFinder(map);
+    p.setupUserLocation();
+});*/
+p = new PathFinder(map);
+p.setupUserLocation();
 
 function setupUserLocation(map) {
     var userMarker = null;
@@ -77,7 +91,7 @@ function setupUserLocation(map) {
     });
 }
 
-setupUserLocation(map);
+
 
 var popupMenu = document.createElement("div");
 popupMenu.id = "popupMenu";
@@ -146,10 +160,10 @@ document.body.appendChild(popupMenu); // Ensures it's not inside the map
 const startLocationSelect = document.getElementById("startLocationSelect");
 
 document.getElementById("startLocationSelect").addEventListener("change", function () {
-    let startLocation = getSelectedStartLocation();
+    let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
     
     if (startLocation && currentTargetLocation) {
-        calculateETA(startLocation, currentTargetLocation);
+        p.calculateETA(startLocation, currentTargetLocation, document);
     }
     resetGoButton()
 });
@@ -168,14 +182,14 @@ function resetGoButton() {
     goButton.style.border = "none";
 
     goButton.onclick = function () {
-        let startLocation = getSelectedStartLocation();
+        let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
         if (!startLocation) {
             alert("Start location not available!");
-            setupUserLocation(map);
+            p.setupUserLocation();
             popupMenu.style.display = "none";
             return;
         }
-        createRoute(startLocation, currentTargetLocation);
+        p.createRoute(startLocation, currentTargetLocation);
         popupMenu.style.display = "block";
         goButton.textContent = "END";
         goButton.style.background = "#444";
@@ -205,10 +219,10 @@ function showPopupMenu(locationName, lat, lng) {
     goButton.style.border = "none";
     
 
-    let startLocation = getSelectedStartLocation();
+    let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
     console.log(startLocation+"!!!!");
     if (startLocation) {
-        calculateETA(startLocation, [lat, lng]);
+        p.calculateETA(startLocation, [lat, lng], document);
     }
 
     resetGoButton();
@@ -229,15 +243,6 @@ function findLocation(locationName,lat,lng) {
     return startLocation;
 }
 */
-
-function getSelectedStartLocation() {
-    let selectedValue = startLocationSelect.value;
-    if (selectedValue === "live") {
-        return userLatLng ? [userLatLng.lat, userLatLng.lng] : null; // Use live location
-    } else {
-        return JSON.parse(selectedValue);
-    }
-}
 
 // Function to Create Route When "GO" is Pressed
 function createRoute(start, destination) {
@@ -268,50 +273,6 @@ function createRoute(start, destination) {
     }, 10);
 
     popupMenu.style.display = "none"; // Hide the popup after starting the route
-}
-
-function calculateETA(start,destination) {
-    
-    if (!start) {
-        document.getElementById("eta").textContent = `Location unavailable`;
-        return;
-    }
-    document.getElementById("eta").textContent = `Loading`;
-    
-
-    let router = L.Routing.control({
-        waypoints: [
-            L.latLng(start[0], start[1]),
-            L.latLng(destination[0], destination[1])
-        ],
-        routeWhileDragging: false,
-        createMarker: function () { return null; }, // Hide markers
-        show: false, // Hide UI panel
-        lineOptions: {
-            styles: [{ color: "transparent", opacity: 0, weight: 0 }] // 👈 Make the line invisible
-        }
-    }).addTo(map);
-
-    setTimeout(() => {
-        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-    }, 0);
-
-    router.route();
-    
-    router.on('routesfound', function (e) {
-        console.log("✅ Route found:", e.routes[0]);
-        let route = e.routes[0];
-        let distanceMeters = route.summary.totalDistance; // Distance in meters
-        let walkingSpeed = 1.39; // meters per second
-        let etaSeconds = distanceMeters / walkingSpeed;
-        let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
-        
-        document.getElementById("eta").textContent = `${etaMinutes} min`;
-
-        
-        setTimeout(() => map.removeControl(router), 0);
-    });
-   
 }
 
 // Call Map Click Handler - Removable Feature (Developer Only Feature)
