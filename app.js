@@ -8,8 +8,7 @@ const path = require('path') // Require path module (Handle File Paths) Used whe
 
 // MongoDB Connect
 // ! Database Connection is to practice DB not real DB (Connection String needs Updating to the Correct DB) !
-mongoose.connect('mongodb+srv://james-harris:48De40@campusnavigationsystemc.hmo0v.mongodb.net/campNavDB') // Connect to MongoDB Database
-  .then(() => console.log('Connected to MongoDB!'))
+mongoose.connect('mongodb+srv://first_db_userT:Gazoz_228@campus-navigator.qe53f.mongodb.net/user_details_db?retryWrites=true&w=majority') // Connect to MongoDB Database  .then(() => console.log('Connected to MongoDB!'))
   .catch(err => console.error('Connection error:', err));
 
 // Middleware
