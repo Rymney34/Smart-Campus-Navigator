@@ -13,6 +13,10 @@ mongoose.connect('mongodb+srv://james-harris:48De40@campusnavigationsystemc.hmo0
 // Launch Website Front End
 // Requires: const path = require('path')
 // When local host is launched display the files in the folder FrontEnd as the main application.
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'FrontEnd', 'login.html')); // Serve login.html
+});
+
 app.use(express.static(path.join(__dirname, 'FrontEnd')));
 
 // Start Server on Local Host (http://localhost:3000)
