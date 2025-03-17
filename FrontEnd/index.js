@@ -49,8 +49,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 
 // -- Added --
 var routingControl = null;
-var userLatLng = null;
-var savedLocation = null;
 var p;
 
 
