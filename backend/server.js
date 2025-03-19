@@ -1,12 +1,13 @@
 const express = require('express');
 
 
-const icons = require("./schemas/icons.js")
-const blocks = require("./schemas/blocks.js")
+// const icons = require("./schemas/icons.js")
+// const blocks = require("./schemas/blocks.js")
 const getDb = require("./config/db.js")
 
 const imgSend = require("./routes/getImage.js");
 const iconSend = require("./routes/getIcon.js");
+const iconAllSend = require("./routes/getMapIcon.js");
 
 const fs = require("fs").promises;
 
@@ -16,7 +17,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use(express.static('../front')); 
+app.use(express.static('../FrontEnd')); 
 
 getDb.then(() => {
     
@@ -56,5 +57,7 @@ getDb.then(() => {
 // icnSend()
 app.use(imgSend);
 
-app.use(iconSend);
+// app.use(iconSend);
+
+app.use(iconAllSend);
 
