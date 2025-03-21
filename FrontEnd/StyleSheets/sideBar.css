@@ -1,9 +1,31 @@
+#side-barHeader {
+    width: 75%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 10%;
+}
+
+#side-barHeader.active {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+    
 #side-barButton {
-    background-color: #333;
-    color: white;
+    background-color: #ffffff;
+    color: #15153d;
     cursor: pointer;
     width: 50px;
     height: 50px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 20px;
+    right: 0;
+}
+
+#side-barButton:hover {
+    background-color: #555;
 }
 
 #searchDiv {
@@ -12,15 +34,22 @@
     justify-items: center;
 }
 
-#side-bar #searchBar, #side-bar #searchButton, #side-bar #settingsDiv {
+#side-bar #searchBar, #side-bar #settingsDiv, #side-bar #campus-list-container {
     display: none;
 }
-#side-bar.active #searchBar, #side-bar.active  #searchButton, #side-bar.active #settingsDiv{
+
+#side-bar.active #searchBar, #side-bar.active #settingsDiv, #side-bar.active #campus-list-container {
     display: block;
 }
 
 #campus-list-container {
-    width: auto;
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    padding: 15px;
+    transition: .25s;
 }
 
 #buildingInfo {
@@ -28,3 +57,38 @@
     grid-template-columns: 1fr 1fr;
 }
 
+#searchBar {
+border-radius: 5px;
+border: 0;
+height: 20px;
+width: 250px;
+padding: 10px;
+font-size: 15px;
+}
+
+#sideBarImage {
+    width: 10px;
+    height: auto;
+}
+
+#settingsDiv {
+    width: 100%;
+    background-color: black;
+    margin-top: 20px;
+    gap: 10%;
+    background-color: #0f0f2d;
+}
+
+#settingsButtonDiv {
+    margin-right: 70%;
+}
+
+#settingsButton {
+    padding: 20px;
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0);
+    border: 0;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+}
