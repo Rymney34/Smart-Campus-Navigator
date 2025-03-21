@@ -14,10 +14,21 @@ import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
-import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA,
+import {
+    svgIconBlockA,
+    svgIconBlockB,
+    svgIconBlockC,
+    svgIconBlockD, svgIconBlockF,
+    svgIconBlockL,
+    svgIconBlockM,
+    svgIconBlockN,
+    svgIconBlockO,
+    svgIconBlockP,
+    svgIconBlockT,
 } from './FetchMethods/fetchIcons.js';
 
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
+//import axios from '../node_modules/axios';
 
 document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
 
@@ -379,3 +390,33 @@ locations.forEach(function(location) {
         showPopupMenu(location.name, location.lat, location.lng);
     });
 });
+
+const iconEle = document.getElementById("icn_1");
+
+const iconG = async () => {
+    try {
+        const response = await fetch("./getIcons");
+
+        const data = await response.json();
+
+        // Test of Icon dispaying and getting for Block E
+        console.log(data.filter(item => item.name === 'Block E'));
+
+        // Test of Icon dispaying and getting for Block E in variable 
+        const icon = data.filter(item => item.name === 'Block E');
+
+    // Converting to base 64
+        const base64Image = icon[0].image.toString('base64');
+
+        // Set the image src using the base64 string
+        iconEle.src = `data:image/png;base64,${base64Image}`;
+
+        
+    } catch (error) {
+        console.error("Error fetching image:", error);
+    }
+};
+
+//axios.get('/icon').then((data)=> console.log(res))
+
+iconG();
