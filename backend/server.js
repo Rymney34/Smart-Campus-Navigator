@@ -22,7 +22,7 @@ app.use(express.static('../FrontEnd'));
 getDb.then(() => {
     
     app.listen(port, () => {
-        console.log(`Listening on port ${port}`);
+        console.log(`Server running on port http://localhost:${port}`);
         
     });
 }).catch(err => console.error('Startup error:', err));
