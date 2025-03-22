@@ -98,7 +98,6 @@ font-size: 15px;
     align-items: flex-start;
     text-align: left;
     border-radius: 10px;
-    background-color: #15153d;
     color: white;
     margin-bottom: 5px;
 }
@@ -106,7 +105,6 @@ font-size: 15px;
 #titleContainer {
     text-align: center;
     width: 100%;
-    margin-bottom: 25px;
 }
 
 /*
@@ -120,11 +118,12 @@ font-size: 15px;
 #feedbackContainer {
 
 }
+    */
 
 #settingsTitleText {
     text-decoration: underline;
 }
-    */
+
 
 h1 {
     margin: 5px 0;
@@ -135,6 +134,7 @@ p {
     margin-bottom: 25px;
     font-style: italic;
     color: rgb(190, 190, 190);
+    font-size: 15px;
 }
 
 a {
@@ -159,3 +159,17 @@ a::after {
 a:hover::after {
     transform: scaleX(1);
 }
+
+/*
+#smallFontSizeText {
+    font-size: 15px;
+}
+
+#smallAboutAppText {
+    font-size: 15px;
+}
+
+#smallFeedbackText {
+    font-size: 15px;
+}
+    */
