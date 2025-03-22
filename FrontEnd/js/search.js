@@ -6,10 +6,6 @@ document.getElementById("searchBar").addEventListener("keydown", function(event)
     }
 });
 
-document.getElementById("searchButton").addEventListener("click", function() {
-    performSearch();
-});
-
 function performSearch() {
     let searchBar = document.getElementById("searchBar"); 
     let query = searchBar.value.trim();

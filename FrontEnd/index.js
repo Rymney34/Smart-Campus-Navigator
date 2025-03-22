@@ -17,7 +17,7 @@ import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
-import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA,
+import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
 } from './FetchMethods/fetchIcons.js';
 
 /*
@@ -262,7 +262,8 @@ const blockIcons = {
     "Block L": svgIconBlockL,
     "Block P": svgIconBlockP,
     "Block A": svgIconBlockA,
-    "Block C": svgIconBlockC
+    "Block C": svgIconBlockC,
+    "Block E": svgIconBlockE,
 };
 
 // Create custom icons for each block type
