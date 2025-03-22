@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Navigation System Login</title>
 
-    <link rel="stylesheet" href="/StyleSheets/register.css">
     <link rel="stylesheet" href="/StyleSheets/global.css">
+    <link rel="stylesheet" href="/StyleSheets/loginRegister.css">
+    <link rel="stylesheet" href="/StyleSheets/loadingScreen.css">
 
 </head>
 <body>
@@ -15,9 +16,9 @@
         <p>Registering... Please wait.</p>
     </div>
     <div id="containerDiv">
-        <div id="register-div">
+        <div id="lR-div">
             <form action="http://localhost:3000/api/users" id="registerForm" method="post">
-                <div id="registerFormDiv">
+                <div id="lRFormDiv">
                     <h1>Register</h1>
                     <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
                     <input type="text" id="surname" name="surname" placeholder="Surname" required>
