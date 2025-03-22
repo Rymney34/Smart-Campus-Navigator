@@ -4,21 +4,12 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 const userRoutes = require("./routes/userRoutes");
-require('dotenv').config(); // Require dotenv module (Environment Variables) Used to store sensitive information such as API keys and passwords
 const path = require('path') // Require path module (Handle File Paths) Used when launching the website FrontEnd 
 
-const uri_user = process.env.MONGODB_URI_UserDB;
-const uri_other = process.env.MONGODB_URI_OtherDB;
-
-// MongoDB Connect (Users Database)
-mongoose.connect(uri_user) // Connect to MongoDB Database  .then(() => console.log('Connected to MongoDB!'))
-  .then(() => console.log('Connected to MongoDB (Users Database)'))
+// MongoDB Connect
+// ! Database Connection is to practice DB not real DB (Connection String needs Updating to the Correct DB) !
+mongoose.connect('mongodb+srv://first_db_userT:Gazoz_228@campus-navigator.qe53f.mongodb.net/user_details_db?retryWrites=true&w=majority') // Connect to MongoDB Database  .then(() => console.log('Connected to MongoDB!'))
   .catch(err => console.error('Connection error:', err));
-
-// MongoDB Connect (Others Database)
-mongoose.connect(uri_other) // Connect to MongoDB Database  .then(() => console.log('Connected to MongoDB!'))
-.then(() => console.log('Connected to MongoDB (Others Database)'))
-.catch(err => console.error('Connection error:', err));
 
 // Middleware
 app.use(express.json()); // Parse JSON requests
