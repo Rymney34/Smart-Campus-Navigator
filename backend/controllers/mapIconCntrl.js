@@ -34,9 +34,9 @@ async function mapIc1() {
         const res = await blocks.aggregate(q).exec();
             // const icons = res[0]
 
-        console.log(res[0].image)
+        // console.log(res[0].image)
         
-        console.log(res);
+        // console.log(res);
         // console.log(icons)
 
         

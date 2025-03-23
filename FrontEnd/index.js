@@ -417,6 +417,24 @@ const iconG = async () => {
     }
 };
 
+const getLocationData = async () => {
+    try {
+    //    Block id that you would like to pass 
+        const blockId = '67b90f414df331b174fe8e83';
+
+    // link to the route
+    fetch(`/getLocations/${blockId}`)
+        .then(response => response.json())
+        .then(data => console.log('Location Data:', data));
+
+       
+    }
+    catch (error) {
+        console.error("Error fetching location data:", error);
+    }
+};
+
+getLocationData();
 //axios.get('/icon').then((data)=> console.log(res))
 
 iconG();

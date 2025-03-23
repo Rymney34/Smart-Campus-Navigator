@@ -8,6 +8,7 @@ const getDb = require("./config/db.js")
 const imgSend = require("./routes/getImage.js");
 const iconSend = require("./routes/getIcon.js");
 const iconAllSend = require("./routes/getMapIcon.js");
+const getLocations = require("./routes/getLocations.js");
 
 const fs = require("fs").promises;
 
@@ -17,7 +18,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use(express.static('../FrontEnd')); 
+app.use(express.static('./FrontEnd')); 
 
 getDb.then(() => {
     
@@ -56,6 +57,8 @@ getDb.then(() => {
 
 // icnSend()
 app.use(imgSend);
+
+app.use(getLocations);
 
 // app.use(iconSend);
 
