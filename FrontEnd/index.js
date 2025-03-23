@@ -435,6 +435,7 @@ const getLocationData = async () => {
 };
 
 getLocationData();
+//123
 //axios.get('/icon').then((data)=> console.log(res))
 
 iconG();
