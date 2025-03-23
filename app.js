@@ -13,9 +13,8 @@ app.use(express.json()); // Parse JSON requests
 app.use(cors()); // Enable CORS
 
 // Launch Website Front End
-// Requires: const path = require('path')
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'FrontEnd', 'Views', 'login.html')); // Serve login.html
+  res.sendFile(path.join(__dirname, 'FrontEnd', 'login.html')); // Serve login.html
 });
 
 // API Routes
