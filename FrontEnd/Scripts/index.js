@@ -5,7 +5,7 @@ import PathFinder from "../Models/Path-finder.js"
 import Location from "../Models/Location.js"
 import Block from "../Models/Block.js"
 // Import Building Coordinates
-import { buildingCoords } from '../FetchMethods/fetchPolygonMarkers.js';
+import { buildingCoords } from '../Assets/FetchMethods/fetchPolygonMarkers.js';
 
 // Import Polygon Colour Setting
 import {
@@ -15,10 +15,10 @@ import {
 // Import Marker Location Coordinates
 import {
     locations
-} from '../FetchMethods/fetchLocationMarkers.js';
+} from '../Assets/FetchMethods/fetchLocationMarkers.js';
 
 import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
-} from '../FetchMethods/fetchIcons.js';
+} from '../Assets/FetchMethods/fetchIcons.js';
 
 /*
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
