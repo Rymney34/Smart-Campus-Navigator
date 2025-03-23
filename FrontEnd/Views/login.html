@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Navigation System Login</title>
+
+    <link rel="stylesheet" href="/StyleSheets/global.css">
+    <link rel="stylesheet" href="/StyleSheets/layout.css">
+    <link rel="stylesheet" href="/StyleSheets/loginRegister.css">
+    <link rel="stylesheet" href="/StyleSheets/loadingScreen.css">
+
+</head>
+<body>
+    <div id="loadingScreen" style="display: none;">
+        <div class="loader"></div>
+        <p>Registering... Please wait.</p>
+    </div>
+    <div id="containerDiv">
+        <div id="lR-div">
+            <form id="loginForm" method="POST">
+                <div id="lRFormDiv">
+                    <h1>Login</h1>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                    <a href="/Views/register.html">Don't have an account? Register Here</a>
+                </div>
+            </form>
+        </div>
+
+        <!--Login Script-->
+        <script src="/js/login.js"></script>
+</body>
+</html>

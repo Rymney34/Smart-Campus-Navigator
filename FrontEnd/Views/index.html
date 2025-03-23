@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Navigation</title>
+    
+    <!--CSS Logic-->
+    <link rel="stylesheet" href="/StyleSheets/global.css">
+    <link rel="stylesheet" href="/StyleSheets/directions.css">
+    <link rel="stylesheet" href="/StyleSheets/layout.css">
+    <link rel="stylesheet" href="/StyleSheets/sideBar.css">
+    
+    <!--Leaflet CSS Stylesheet (Leaflet.css Logic) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+
+<body>
+    <!--Main View (Contains Side-Bar and Map View Columns)-->
+    <div id="webView">
+        <!--Side Bar-->
+        <div id="side-bar" class="side-bar">
+            <!--Expand/Collapse Side Bar Button-->
+            <div id="side-barHeader">
+                <div id="side-barButtonDiv">
+                    <button id="side-barButton">☰</button>
+                </div>
+
+                <!--Search Bar-->
+                <div id="searchDiv">
+                    <div>
+                        <input id="searchBar" type="text" placeholder="Search:">
+                    </div>
+                </div>                
+            </div>  
+
+            <!--Display Database Info-->
+            <div id="campus-list-container">
+                <div><h1 id="dynamicTitle"></h1></div>
+                <div><img id="sideBarImage" src="" alt=""><h1></h1></div>
+                <div id="buildingInfo">
+                    <h1 id="dynamicRooms"></h1>
+                    <h1 id="dynamicFacilities"></h1>
+                </div>
+
+            </div>
+            <!--Settings-->
+            <div id="settingsDiv">
+                <div id="settingsButtonDiv">
+                    <button id="settingsButton">Settings</button>
+                </div>
+            </div>
+        </div>
+        <!--Map View-->
+        <div id="map"></div>
+    </div>
+
+    <!--Leaflet JavaScript Logic (Leaflet.js Logic)-->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!--Leaflet Routing Machine JavaScript Logic (Leaflet-Routing-Machine.js Logic)-->
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    
+    <!--Side Bar Logic-->
+    <script src="/side-bar.js"></script>
+
+    <!-- Search Logic -->
+    <script src="/js/search.js"></script>
+
+    <script src="/js/settings.js"></script>
+
+    <!--Pathfinding Logic-->
+    <script type="module" src="/Models/Block.js"></script>
+    <script type="module" src="/Models/Location.js"></script>
+    <script type="module" src="/Models/Path-finder.js"></script>
+    
+    <!--Map Data and PathFinding Logic-->
+    <script type="module" src="/index.js"></script>
+</body>
+</html>
