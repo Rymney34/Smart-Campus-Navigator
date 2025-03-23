@@ -9,22 +9,3 @@ html, body {
 body {
     font-family: 'Inter', sans-serif;
 }
-
-#webView {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100%;
-}
-
-#containerDiv {
-    background-color: #15153d;
-}
-
-#containerDiv1 {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100%;
-    background-color: #15153d;
-}
