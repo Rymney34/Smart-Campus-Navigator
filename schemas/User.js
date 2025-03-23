@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const { usersConnection } = require("../dbConnect"); // Make sure to import usersConnection
 
+// Define the schema and model using usersConnection
 const UserSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
   firstName: { type: String, required: true, unique: true },
@@ -12,4 +14,7 @@ const UserSchema = new mongoose.Schema({
   collection: 'Users' // Set collection name to 'Users'
 });
 
-module.exports = mongoose.model("User", UserSchema);
+// Create the model using the usersConnection
+const User = usersConnection.model("User", UserSchema);
+
+module.exports = User;
