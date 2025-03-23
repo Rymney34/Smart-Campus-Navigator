@@ -152,6 +152,20 @@ export const svgIconBlockA = `
 </svg>
 `;
 
+export const svgIconBlockE = `
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <circle cx="299.63" cy="299.63" r="256" fill="#15153d"/>
+  <path class="cls-1" d="M390.37,425.08h-181.47v-250.89h181.47v48.53h-117.11v43.3h108.68v48.53h-108.68v62.01h117.11v48.53Z"/>
+</svg>
+`;
+
 export const svgIconGym = `
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 599.26 599.26">
   <rect x="222.14" y="181.3" width="330.5" height="61.12" rx="30.56" ry="30.56" transform="translate(263.28 -211.88) rotate(45)"/>

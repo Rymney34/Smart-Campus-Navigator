@@ -17,14 +17,15 @@ import {
     locations
 } from './FetchMethods/fetchLocationMarkers.js';
 
-import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA,
+import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
 } from './FetchMethods/fetchIcons.js';
 
+/*
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
+document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
+*/
 
 console.log(L.Routing)
-
-document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
@@ -261,7 +262,8 @@ const blockIcons = {
     "Block L": svgIconBlockL,
     "Block P": svgIconBlockP,
     "Block A": svgIconBlockA,
-    "Block C": svgIconBlockC
+    "Block C": svgIconBlockC,
+    "Block E": svgIconBlockE,
 };
 
 // Create custom icons for each block type

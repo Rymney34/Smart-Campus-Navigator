@@ -1,5 +1,7 @@
 const User = require("../schemas/User");
+const bcrypt = require("bcryptjs");
 
+/* Not Currently in Use (Can be used for Admin (View all Users)) */
 // Fetch all users
 const getUsers = async (req, res) => {
   try {
