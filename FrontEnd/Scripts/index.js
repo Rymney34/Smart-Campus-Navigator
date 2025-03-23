@@ -1,24 +1,24 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
-import { mapClickHandler } from "./Tools/MapTools/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
+import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
-import PathFinder from "./Models/Path-finder.js"
-import Location from "./Models/Location.js"
-import Block from "./Models/Block.js"
+import PathFinder from "../Models/Path-finder.js"
+import Location from "../Models/Location.js"
+import Block from "../Models/Block.js"
 // Import Building Coordinates
-import { buildingCoords } from './FetchMethods/fetchPolygonMarkers.js';
+import { buildingCoords } from '../FetchMethods/fetchPolygonMarkers.js';
 
 // Import Polygon Colour Setting
 import {
     polygonStyle
-} from './Tools/MapTools/mapPolygonColour.js';
+} from '../Tools/MapTools/mapPolygonColour.js';
 
 // Import Marker Location Coordinates
 import {
     locations
-} from './FetchMethods/fetchLocationMarkers.js';
+} from '../FetchMethods/fetchLocationMarkers.js';
 
 import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
-} from './FetchMethods/fetchIcons.js';
+} from '../FetchMethods/fetchIcons.js';
 
 /*
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';

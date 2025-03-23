@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.message === 'Login successful') {
                 alert('Login successful');
-                window.location.href = 'index.html'; // Redirect to index.html (Map View)
+                window.location.href = '/Views/index.html'; // Redirect to index.html (Map View)
             } else {
                 alert('Error logging in');
             }
