@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Prevent the default form submission
         showLoading();
 
-
         // Collect form data
         const formData = {
             firstName: document.getElementById('firstName').value,
