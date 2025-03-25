@@ -100,7 +100,9 @@ class PathFinder {
             
             setTimeout(() => {
                 router.getPlan().setWaypoints([]); 
-                this.map.removeControl(router);  
+                if (this.map) { // Ensure this.map exists
+                    this.map.removeControl(router);  
+                }
             }, 0);
         });
 }
@@ -112,8 +114,6 @@ class PathFinder {
             return JSON.parse(selectedValue);
         }
     }
-
-
 }
 
 export default PathFinder;
