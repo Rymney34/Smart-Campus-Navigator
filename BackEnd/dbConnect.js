@@ -19,5 +19,6 @@ usersConnection.on('error', (err) => {
   console.error('Connection error (user_details_db):', err);
 });
 
+
 // Export both the default and secondary connections if needed later in the app
 module.exports = { usersConnection };
