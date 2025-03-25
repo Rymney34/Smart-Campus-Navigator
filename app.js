@@ -2,7 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require("cors");
 const userRoutes = require("./BackEnd/routes/userRoutes");
-const imageRoutes = require("./BackEnd/routes/getImage");
+
+const imgSend = require("./BackEnd/routes/getImage.js");
+const iconSend = require("./BackEnd/routes/getIcon.js");
+const iconAllSend = require("./BackEnd/routes/getMapIcon.js");
+const getLocations = require("./BackEnd/routes/getLocations.js");
 
 const path = require('path') // Require path module (Handle File Paths) Used when launching the website FrontEnd 
 // require('./BackEnd/dbConnect'); 
@@ -22,7 +26,9 @@ app.get('/', (req, res) => {
 
 // API Routes
 app.use("/api", userRoutes);
-app.use("/api", imageRoutes);
+app.use( imgSend);
+app.use( getLocations);
+app.use( iconAllSend);
 
 app.use(express.static(path.join(__dirname, 'FrontEnd')));
 
