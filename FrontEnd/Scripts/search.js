@@ -1,40 +1,53 @@
 document.getElementById("searchBar").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Prevent form submission if inside a form
-        campusListContainer.style.backgroundColor = "rgba(255, 255, 255, 1)";
         performSearch();
     }
 });
 
-function performSearch() {
+async function performSearch() {
     let searchBar = document.getElementById("searchBar"); 
     let query = searchBar.value.trim();
 
     if (query) {
-        updateCampusList(query); // Example function for updating results
-    } else {
-        
+        updateCampusList(query); // Fetch and display block info
     }
 
-    // Clear input field after search
+    // Clear the input field after search
     searchBar.value = "";
 }
 
-// Example: Update the campus list based on search results
-function updateCampusList(query) {
+async function updateCampusList(query) {
     let campusListContainer = document.getElementById("campus-list-container");
-    
-    // Temporary Example: Display search query (replace with actual filtering logic)
-    campusListContainer.innerHTML = 
-    
-    `
-    <div><h1>Block No. - School of ?</h1></div>
-                <div><img src="" alt=""><h1>Img Here</h1></div>
+
+    try {
+        // Send request to backend to fetch the image for the block
+        const response = await fetch(`http://localhost:3000/api/images/block/${query}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            // Update the campus list container with the block's information and image
+            campusListContainer.innerHTML = `
+                <div>
+                    <h1>Block: ${query}</h1>
+                </div>
+                <div>
+                    <img id="sideBarImage" src="${data.image}" alt="Image for ${query}">
+                </div>
                 <div id="buildingInfo">
-                    <!--Facilities Inside Building-->
                     <h1>|Rooms|</h1>
-                    <!--Rooms Inside Building-->
                     <h1>|Facilities|</h1>
                 </div>
-    `;
+            `;
+        } else {
+            campusListContainer.innerHTML = `
+                <div><h1>No image found for ${query}</h1></div>
+            `;
+        }
+    } catch (error) {
+        console.error("Error fetching block image:", error);
+        campusListContainer.innerHTML = `
+            <div><h1>Error fetching image for ${query}</h1></div>
+        `;
+    }
 }

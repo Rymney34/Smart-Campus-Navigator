@@ -66,8 +66,9 @@ font-size: 15px;
 }
 
 #sideBarImage {
-    width: 10px;
-    height: auto;
+    width: 300px;
+    height: 150px;
+    object-fit: cover;
 }
 
 #settingsDiv {
