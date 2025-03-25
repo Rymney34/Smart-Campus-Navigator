@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const cors = require("cors");
 const userRoutes = require("./BackEnd/routes/userRoutes");
 const path = require('path') // Require path module (Handle File Paths) Used when launching the website FrontEnd 
-require('./BackEnd/dbConnect'); // Connect to MongoDB Databases
+// require('./BackEnd/dbConnect'); 
+require("./BackEnd/config/dbConnect"); // Connect to MongoDB Databases
 
 const app = express();
 const port = 3000;
