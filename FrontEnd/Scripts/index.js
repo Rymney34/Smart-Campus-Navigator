@@ -269,7 +269,6 @@ const blockIcons = {
     "Block E": svgIconBlockE,
 };
 
-
 // Create custom icons for each block type
 /*const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
     icons[block] = createCustomIcon(block, blockIcons[block]);
@@ -296,11 +295,13 @@ locationObjects.forEach(loc => {
 
 // Function to create the marker with a base64 PNG icon
 const createMarkerWithIcon = (location, blockIconsMap) => {
+    console.log("Creating marker for location:", location); // Debugging
+
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
     if (blockImage) {
-
         // Log marker data before creating the icon
         console.log('Marker Data:', {
+            id: location.id, // Ensure id is logged
             name: location.name,
             lat: location.lat,
             lng: location.lng,
@@ -316,11 +317,10 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
             iconAnchor: [30, 30],
         });
     } else {
-        // Fallback to a default icon if no image is found
         console.error(`No image found for ${location.name}`);
         return L.divIcon({
             className: 'custom-icon',
-            html: `<span>${location.name}</span>`, // Fallback if no icon
+            html: `<span>${location.name}</span>`,
             iconSize: [60, 60],
             iconAnchor: [30, 30],
         });
@@ -342,16 +342,30 @@ const iconG = async () => {
             }
         });
 
-        // Create location objects with custom icons (base64 PNGs)
-        const locationObjects = locations.map(locData => {
-            const loc = new Location(locData.name, locData.lat, locData.lng, createMarkerWithIcon(locData, blockIconsMap));
-            loc.createMarker(map, showPopupMenu);
-            return loc;
-        });
+        // Debugging: Print fetched block icon mapping
+        console.log("Block Icons Map:", blockIconsMap);
 
-        const locationMap = {};
-        locationObjects.forEach(loc => {
-            locationMap[loc.name] = loc;
+        // Create location objects with custom icons (base64 PNGs)
+        locations.forEach(locData => {
+            console.log("Location Data Before Creating Marker:", locData); // Debugging
+
+            if (!locData.id) {
+                console.warn(`Location ${locData.name} is missing an ID!`);
+            }
+
+            const loc = new Location(
+                locData.name,
+                locData.lat,
+                locData.lng,
+                createMarkerWithIcon({ 
+                    id: locData.id,  // Ensure id is explicitly passed
+                    name: locData.name, 
+                    lat: locData.lat, 
+                    lng: locData.lng 
+                }, blockIconsMap)
+            );
+
+            loc.createMarker(map, showPopupMenu);
         });
 
     } catch (error) {
@@ -359,16 +373,23 @@ const iconG = async () => {
     }
 };
 
-// Get Location Data (Example for fetching a specific block's locations)
+// Get Location Data (Fetch locations based on a specific block ID)
 const getLocationData = async () => {
     try {
-        // Block id that you would like to pass 
-        const blockId = '67b916474df331b174fe8e85'; // Block O atm
+        const blockId = '67b916474df331b174fe8e85'; // Example Block O ID
 
-        // link to the route
-        fetch(`/getLocations/${blockId}`)
-            .then(response => response.json())
-            .then(data => console.log('Location Data:', data));
+        const response = await fetch(`/getLocations/${blockId}`);
+        const data = await response.json();
+
+        console.log('Fetched Location Data:', data);
+
+        // Ensure each location object has an id
+        data.forEach(loc => {
+            if (!loc.id) {
+                console.warn(`Warning: Location ${loc.name} is missing an ID.`);
+            }
+        });
+
     } catch (error) {
         console.error("Error fetching location data:", error);
     }
