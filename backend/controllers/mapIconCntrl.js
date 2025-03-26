@@ -20,7 +20,7 @@ async function mapIc1() {
 
             {
                 $project: {
-                    _id: 0, 
+                    _id: 1, 
                     name:1,
                     idIcon: 1,
                     image: { $arrayElemAt: ["$icons.image", 0] } 
