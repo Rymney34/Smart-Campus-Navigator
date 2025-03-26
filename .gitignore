@@ -1,3 +1,4 @@
 node_modules
 .env
 BackEnd/schemas/blocks.js
+backend/schemas/blocks.js
