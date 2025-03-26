@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { usersConnection } = require("../dbConnect"); // Make sure to import usersConnection
+const { usersConnection } = require("../config/dbConnect"); // Make sure to import usersConnection
 
 // Define the schema and model using usersConnection
 const UserSchema = new mongoose.Schema({

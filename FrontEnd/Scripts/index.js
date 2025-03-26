@@ -1,36 +1,33 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
-import { mapClickHandler } from "/Utility/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
+import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
+import PathFinder from "../Models/Path-finder.js"
+import Location from "../Models/Location.js"
+import Block from "../Models/Block.js"
 // Import Building Coordinates
-import { buildingCoords } from './FetchMethods/fetchPolygonMarkers.js';
+import { buildingCoords } from '../Assets/FetchMethods/fetchPolygonMarkers.js';
 
 // Import Polygon Colour Setting
 import {
     polygonStyle
-} from './Utility/mapPolygonColour.js';
+} from '../Tools/MapTools/mapPolygonColour.js';
 
 // Import Marker Location Coordinates
 import {
     locations
-} from './FetchMethods/fetchLocationMarkers.js';
+} from '../Assets/FetchMethods/fetchLocationMarkers.js';
 
-import {
-    svgIconBlockA,
-    svgIconBlockB,
-    svgIconBlockC,
-    svgIconBlockD, svgIconBlockF,
-    svgIconBlockL,
-    svgIconBlockM,
-    svgIconBlockN,
-    svgIconBlockO,
-    svgIconBlockP,
-    svgIconBlockT,
-} from './FetchMethods/fetchIcons.js';
+/*
+import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
+} from '../Assets/FetchMethods/fetchIcons.js';
+*/
 
+/*
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
-//import axios from '../node_modules/axios';
-
 document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
+*/
+
+console.log(L.Routing)
 
 // Initialize the Map and Set View to Cardiff Met Landaff Campus
 var map = L.map('map', {
@@ -55,40 +52,17 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 
 // -- Added --
 var routingControl = null;
-var userLatLng = null;
-var savedLocation = null;
+var p;
 
-function setupUserLocation(map) {
-    var userMarker = null;
 
-    // Locate user without auto-centering or zooming
-    map.locate({watch:true,  enableHighAccuracy: true, setView: false });
-
-    map.on('locationfound', function (e) {
-        console.log(e.latlng);
-        userLatLng = e.latlng; // Store user location
-
-        if (userMarker) {
-            userMarker.setLatLng(userLatLng); // Update marker position
-        } else {
-            // Add marker for the first time
-            userMarker = L.marker(userLatLng).addTo(map)
-                .bindPopup("You are here.");
-        }
-    });
-
-    // Prevent auto-following after first location find
-    map.on('locationfound', function () {
-        map.stopLocate();
-    });
-
-    // Prevent auto-panning or resetting view
-    map.on('movestart moveend drag mousedown', function () {
-        map.stopLocate();
-    });
-}
-
-setupUserLocation(map);
+/*document.addEventListener("DOMContentLoaded", () => {
+    console.log("✅ Leaflet and Routing Machine fully loaded.");
+    console.log(L.Routing)
+    p = new PathFinder(map);
+    p.setupUserLocation();
+});*/
+p = new PathFinder(map);
+p.setupUserLocation();
 
 var popupMenu = document.createElement("div");
 popupMenu.id = "popupMenu";
@@ -157,10 +131,10 @@ document.body.appendChild(popupMenu); // Ensures it's not inside the map
 const startLocationSelect = document.getElementById("startLocationSelect");
 
 document.getElementById("startLocationSelect").addEventListener("change", function () {
-    let startLocation = getSelectedStartLocation();
+    let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
     
     if (startLocation && currentTargetLocation) {
-        calculateETA(startLocation, currentTargetLocation);
+        p.calculateETA(startLocation, currentTargetLocation, document);
     }
     resetGoButton()
 });
@@ -179,14 +153,14 @@ function resetGoButton() {
     goButton.style.border = "none";
 
     goButton.onclick = function () {
-        let startLocation = getSelectedStartLocation();
+        let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
         if (!startLocation) {
-            alert("Start location not available!");
-            setupUserLocation(map);
+            alert("Start location not available! Please allow the website to acess your live location on your browser.");
+            p.setupUserLocation();
             popupMenu.style.display = "none";
             return;
         }
-        createRoute(startLocation, currentTargetLocation);
+        p.createRoute(startLocation, currentTargetLocation);
         popupMenu.style.display = "block";
         goButton.textContent = "END";
         goButton.style.background = "#444";
@@ -216,10 +190,10 @@ function showPopupMenu(locationName, lat, lng) {
     goButton.style.border = "none";
     
 
-    let startLocation = getSelectedStartLocation();
+    let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
     console.log(startLocation+"!!!!");
     if (startLocation) {
-        calculateETA(startLocation, [lat, lng]);
+        p.calculateETA(startLocation, [lat, lng], document);
     }
 
     resetGoButton();
@@ -241,99 +215,19 @@ function findLocation(locationName,lat,lng) {
 }
 */
 
-function getSelectedStartLocation() {
-    let selectedValue = startLocationSelect.value;
-    if (selectedValue === "live") {
-        return userLatLng ? [userLatLng.lat, userLatLng.lng] : null; // Use live location
-    } else {
-        return JSON.parse(selectedValue);
-    }
-}
-
-// Function to Create Route When "GO" is Pressed
-function createRoute(start, destination) {
-    if (!start || !destination) {
-        alert("Location not available!");
-        return;
-    }
-
-    // Remove existing route if it exists
-    if (routingControl) {
-        map.removeControl(routingControl);
-    }
-
-    // Create route using Leaflet Routing Machine
-    routingControl = L.Routing.control({
-        waypoints: [
-            L.latLng(start[0], start[1]),
-            L.latLng(destination[0], destination[1])
-        ],
-        routeWhileDragging: false,
-        addWaypoints: false,
-        draggableWaypoints: false, 
-
-    }).addTo(map);
-
-    setTimeout(() => {
-        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-    }, 10);
-
-    popupMenu.style.display = "none"; // Hide the popup after starting the route
-}
-
-function calculateETA(start,destination) {
-    
-    if (!start) {
-        document.getElementById("eta").textContent = `Location unavailable`;
-        return;
-    }
-    document.getElementById("eta").textContent = `Loading`;
-    
-
-    let router = L.Routing.control({
-        waypoints: [
-            L.latLng(start[0], start[1]),
-            L.latLng(destination[0], destination[1])
-        ],
-        routeWhileDragging: false,
-        createMarker: function () { return null; }, // Hide markers
-        show: false, // Hide UI panel
-        lineOptions: {
-            styles: [{ color: "transparent", opacity: 0, weight: 0 }] // 👈 Make the line invisible
-        }
-    }).addTo(map);
-
-    setTimeout(() => {
-        document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
-    }, 0);
-
-    router.route();
-    
-    router.on('routesfound', function (e) {
-        console.log("✅ Route found:", e.routes[0]);
-        let route = e.routes[0];
-        let distanceMeters = route.summary.totalDistance; // Distance in meters
-        let walkingSpeed = 1.39; // meters per second
-        let etaSeconds = distanceMeters / walkingSpeed;
-        let etaMinutes = Math.ceil(etaSeconds / 60); // Round up
-        
-        document.getElementById("eta").textContent = `${etaMinutes} min`;
-
-        
-        setTimeout(() => map.removeControl(router), 0);
-    });
-   
-}
-
 // Call Map Click Handler - Removable Feature (Developer Only Feature)
 mapClickHandler(map); // REMOVE FEATURE ON LAUNCH
 
 // Array of block names
 const blockNames = ["BlockO", "BlockT", "BlockL", "BlockP", "BlockB", "BlockM", "BlockN", "BlockD", "BlockF", "BlockA", "BlockC"];
+const blockObjects = [];
 
-// Add polygons for each block
-blockNames.forEach(block => {
-    L.polygon(buildingCoords[block], polygonStyle).addTo(map);
+blockNames.forEach(blockName => {
+    if (buildingCoords[blockName]) {
+        const block = new Block(blockName, buildingCoords[blockName], polygonStyle);
+        block.addToMap(map);
+        blockObjects.push(block);
+    }
 });
 
 // Adds all locations to the dropdown
@@ -344,6 +238,7 @@ locations.forEach(function(location) {
     startLocationSelect.appendChild(option);
 });
 
+/*
 let iconSize = [60, 60]
 let iconAnchor = [30, 30]
 
@@ -355,8 +250,9 @@ function createCustomIcon(block, svgIcon) {
         iconSize: iconSize,
         iconAnchor: iconAnchor,
     });
-}
+}*/
 
+/*
 // Map block types to SVG icons
 const blockIcons = {
     "Block O": svgIconBlockO,
@@ -369,73 +265,115 @@ const blockIcons = {
     "Block L": svgIconBlockL,
     "Block P": svgIconBlockP,
     "Block A": svgIconBlockA,
-    "Block C": svgIconBlockC
+    "Block C": svgIconBlockC,
+    "Block E": svgIconBlockE,
 };
+
 
 // Create custom icons for each block type
-const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
+/*const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
     icons[block] = createCustomIcon(block, blockIcons[block]);
     return icons;
-}, {});
+}, {});*/
 
-// Add markers with custom icons
-locations.forEach(function(location) {
-    var marker = L.marker([location.lat, location.lng], {
-        icon: customIcons[location.name]
-    }).addTo(map)
-    .bindPopup(location.name);
-
-    marker.on('click', function () {
-        savedLocation = location;
-        showPopupMenu(location.name, location.lat, location.lng);
-    });
+/*
+const locationObjects = locations.map(locData => {
+    const loc = new Location(locData.name, locData.lat, locData.lng, L.divIcon({
+        className: 'custom-icon',
+        html: blockIcons[locData.name],
+        iconSize: [60, 60],
+        iconAnchor: [30, 30]
+    }));
+    loc.createMarker(map, showPopupMenu);
+    return loc;
 });
 
-const iconEle = document.getElementById("icn_1");
+const locationMap = {};
+locationObjects.forEach(loc => {
+    locationMap[loc.name] = loc;
+});
+*/
 
-const iconG = async () => {
-    try {
-        const response = await fetch("./getIcons");
+// Function to create the marker with a base64 PNG icon
+const createMarkerWithIcon = (location, blockIconsMap) => {
+    const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
+    if (blockImage) {
 
-        const data = await response.json();
+        // Log marker data before creating the icon
+        console.log('Marker Data:', {
+            name: location.name,
+            lat: location.lat,
+            lng: location.lng,
+            iconSrc: `data:image/png;base64,${blockImage}`,
+            iconSize: [60, 60], // Size of the icon
+            iconAnchor: [30, 30] // Anchor point of the icon
+        });
 
-        // Test of Icon dispaying and getting for Block E
-        console.log(data.filter(item => item.name === 'Block E'));
-
-        // Test of Icon dispaying and getting for Block E in variable 
-        const icon = data.filter(item => item.name === 'Block E');
-
-    // Converting to base 64
-        const base64Image = icon[0].image.toString('base64');
-
-        // Set the image src using the base64 string
-        iconEle.src = `data:image/png;base64,${base64Image}`;
-
-        
-    } catch (error) {
-        console.error("Error fetching image:", error);
+        return L.divIcon({
+            className: 'custom-icon',
+            html: `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`,
+            iconSize: [60, 60],
+            iconAnchor: [30, 30],
+        });
+    } else {
+        // Fallback to a default icon if no image is found
+        console.error(`No image found for ${location.name}`);
+        return L.divIcon({
+            className: 'custom-icon',
+            html: `<span>${location.name}</span>`, // Fallback if no icon
+            iconSize: [60, 60],
+            iconAnchor: [30, 30],
+        });
     }
 };
 
+// Fetch icons and update markers on the map with base64 PNG images
+const iconG = async () => {
+    try {
+        // Fetch all block icons from the server (base64 images)
+        const response = await fetch("/getIcons");
+        const data = await response.json();
+
+        // Map the block names to their corresponding base64 PNG
+        const blockIconsMap = {};
+        data.forEach(item => {
+            if (item.name && item.image) {
+                blockIconsMap[item.name] = item.image; // Store the base64 image for each block by name
+            }
+        });
+
+        // Create location objects with custom icons (base64 PNGs)
+        const locationObjects = locations.map(locData => {
+            const loc = new Location(locData.name, locData.lat, locData.lng, createMarkerWithIcon(locData, blockIconsMap));
+            loc.createMarker(map, showPopupMenu);
+            return loc;
+        });
+
+        const locationMap = {};
+        locationObjects.forEach(loc => {
+            locationMap[loc.name] = loc;
+        });
+
+    } catch (error) {
+        console.error("Error fetching icons:", error);
+    }
+};
+
+// Get Location Data (Example for fetching a specific block's locations)
 const getLocationData = async () => {
     try {
-    //    Block id that you would like to pass 
-        const blockId = '67b90f414df331b174fe8e83';
+        // Block id that you would like to pass 
+        const blockId = '67b916474df331b174fe8e85'; // Block O atm
 
-    // link to the route
-    fetch(`/getLocations/${blockId}`)
-        .then(response => response.json())
-        .then(data => console.log('Location Data:', data));
-
-       
-    }
-    catch (error) {
+        // link to the route
+        fetch(`/getLocations/${blockId}`)
+            .then(response => response.json())
+            .then(data => console.log('Location Data:', data));
+    } catch (error) {
         console.error("Error fetching location data:", error);
     }
 };
 
+// Call the functions
 getLocationData();
-//123
-//axios.get('/icon').then((data)=> console.log(res))
-
 iconG();

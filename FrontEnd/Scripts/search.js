@@ -11,9 +11,7 @@ function performSearch() {
     let query = searchBar.value.trim();
 
     if (query) {
-        updateCampusList(query); // Example function for updating results
-    } else {
-        
+        updateCampusList(query);
     }
 
     // Clear input field after search
@@ -24,7 +22,7 @@ function performSearch() {
 function updateCampusList(query) {
     let campusListContainer = document.getElementById("campus-list-container");
     
-    // Temporary Example: Display search query (replace with actual filtering logic)
+    // Display Search Query Data
     campusListContainer.innerHTML = 
     
     `
