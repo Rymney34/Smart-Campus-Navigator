@@ -1,9 +1,9 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
 import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
 
-import PathFinder from "../Models/Path-finder.js"
-import Location from "../Models/Location.js"
-import Block from "../Models/Block.js"
+import Block from "../Models/Block.js";
+import Location from "../Models/Location.js";
+import PathFinder from "../Models/Path-finder.js";
 // Import Building Coordinates
 import { buildingCoords } from '../Assets/FetchMethods/fetchPolygonMarkers.js';
 
@@ -299,9 +299,11 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
     if (blockImage) {
 
+
         // Log marker data before creating the icon
         console.log('Marker Data:', {
             name: location.name,
+            _id: location._id,
             lat: location.lat,
             lng: location.lng,
             iconSrc: `data:image/png;base64,${blockImage}`,
@@ -334,6 +336,8 @@ const iconG = async () => {
         const response = await fetch("/getIcons");
         const data = await response.json();
 
+        
+      
         // Map the block names to their corresponding base64 PNG
         const blockIconsMap = {};
         data.forEach(item => {
