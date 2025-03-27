@@ -293,6 +293,7 @@ locationObjects.forEach(loc => {
 });
 */
 
+// Function to create the marker with a base64 PNG icon
 const createMarkerWithIcon = (location, blockIconsMap) => {
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
     
@@ -319,20 +320,29 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
     const marker = L.marker([location.lat, location.lng], { icon: icon });
 
     // Add the click event listener to the marker
-    marker.on('click', () => {
-        const locationData = locations.find(loc => loc.name === location.name);
+    marker.on('click', async () => {
+        // Fetch the location data using the blockId
+        const locationData = await fetchLocationData(location.blockId);
         if (locationData) {
-            // Log the location data to the console
-            console.log('Location Data:', {
-                name: locationData.name,
-                lat: locationData.lat,
-                lng: locationData.lng,
-                blockId: locationData.blockId
-            });
+            // Log the location data to the console (or display it on the UI)
+            console.log('Location Data:', locationData);
         }
     });
 
     return marker;
+};
+
+// Function to fetch location data based on the blockId
+const fetchLocationData = async (blockId) => {
+    try {
+        // Use the blockId to fetch the relevant location data
+        const response = await fetch(`/getLocations/${blockId}`);
+        const data = await response.json();
+        return data;  // Return the fetched data for further use
+    } catch (error) {
+        console.error("Error fetching location data:", error);
+        return null;
+    }
 };
 
 const iconG = async () => {
@@ -362,4 +372,5 @@ const iconG = async () => {
 
 // Call the iconG function to load the map markers
 iconG();
+
 
