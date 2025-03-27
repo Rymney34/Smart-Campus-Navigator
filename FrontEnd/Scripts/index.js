@@ -296,16 +296,21 @@ locationObjects.forEach(loc => {
 const createMarkerWithIcon = (location, blockIconsMap, blockId) => {
     const blockImage = blockIconsMap[location.name];
 
-    // Create marker and associate it with the blockId
-    const marker = L.divIcon({
+    // Create the divIcon for the marker
+    const icon = L.divIcon({
         className: 'custom-icon',
         html: blockImage 
             ? `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`
             : `<span>${location.name}</span>`,
         iconSize: [60, 60],
         iconAnchor: [30, 30],
+        popupAnchor: [0, -20], // Optional: Adjust popup position
     });
 
+    // Create the marker with the custom icon
+    const marker = L.marker([location.lat, location.lng], { icon: icon });
+
+    // Add click event listener to the marker
     marker.on('click', () => {
         // When the marker is clicked, call the function to fetch the location data
         fetchLocationData(blockId);
@@ -313,6 +318,8 @@ const createMarkerWithIcon = (location, blockIconsMap, blockId) => {
 
     return marker;
 };
+
+
 
 const iconG = async () => {
     try {
@@ -359,46 +366,3 @@ const fetchLocationData = async (blockId) => {
 };
 
 iconG();
-
-
-// // Function to fetch and display data for all blocks
-// async function fetchAllBlocksData() {
-//     try {
-//         const response = await fetch(`/getLocations/67b916474df331b174fe8e85`); // Use appropriate blockId if needed
-//         const data = await response.json();
-
-//         // Check if data is available
-//         if (data && Array.isArray(data) && data.length > 0) {
-//             // Loop through each block and log its associated data
-//             data.forEach(block => {
-//                 console.log("Block ID:", block._id); // Log block ID
-//                 console.log("Block Name:", block.name); // Log block name
-//                 console.log("Block Title:", block.title); // Log block title
-//                 console.log("Block Image Base64:", block.image); // Log block image (base64)
-//                 console.log("Floors:", block.floors); // Log associated floors
-
-//                 // Check if 'floorLocation' is an array and exists
-//                 if (Array.isArray(block.floorLocation)) {
-//                     // Loop through locations if it's an array
-//                     block.floorLocation.forEach(location => {
-//                         console.log("  Location ID:", location._id); // Log location ID
-//                         console.log("  Location Open Time:", location.opentime); // Log open time
-//                         console.log("  Location Close Time:", location.closetime); // Log close time
-//                         console.log("  Location Places:", location.places); // Log places associated with the location
-//                         console.log("  Location Type:", location.locationType); // Log location type
-//                         console.log("  Location Icon:", location.locationImage); // Log location icon (base64)
-//                     });
-//                 } else {
-//                     console.log("  No floorLocation data available or it's not an array.");
-//                 }
-//             });
-//         } else {
-//             console.log("No block data found.");
-//         }
-//     } catch (error) {
-//         console.error("Error fetching block data:", error);
-//     }
-// }
-
-// // Call the function to fetch and log all blocks' data
-// fetchAllBlocksData();
