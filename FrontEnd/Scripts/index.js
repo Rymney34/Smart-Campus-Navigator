@@ -293,27 +293,11 @@ locationObjects.forEach(loc => {
 });
 */
 
-const getLocationData = async () => {
-    try {
-    //    Block id that you would like to pass 
-        const blockId = '67b90f414df331b174fe8e83';
-
-    // link to the route
-        fetch(`/getLocations/${blockId}`)
-        .then(response => response.json())
-        .then(data => console.log('Location Data:', data));
-    }
-    catch (error) {
-        console.error("Error fetching location data:", error);
-    }
-};
-
-getLocationData();
-
-const createMarkerWithIcon = (location, blockIconsMap) => {
+const createMarkerWithIcon = (location, blockIconsMap, blockId) => {
     const blockImage = blockIconsMap[location.name];
 
-    return L.divIcon({
+    // Create marker and associate it with the blockId
+    const marker = L.divIcon({
         className: 'custom-icon',
         html: blockImage 
             ? `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`
@@ -321,46 +305,100 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
         iconSize: [60, 60],
         iconAnchor: [30, 30],
     });
+
+    marker.on('click', () => {
+        // When the marker is clicked, call the function to fetch the location data
+        fetchLocationData(blockId);
+    });
+
+    return marker;
 };
 
-// const iconG = async () => {
+const iconG = async () => {
+    try {
+        const response = await fetch("/getIcons");
+        const data = await response.json();
+
+        const blockIconsMap = {};
+        data.forEach(item => {
+            if (item.name && item.image) {
+                blockIconsMap[item.name] = item.image;
+            }
+        });
+
+        // Assume `locations` is an array of location objects that contain the blockId
+        locations.forEach(locData => {
+            const blockId = locData.blockId; // Ensure that `blockId` is part of the location data
+
+            const loc = new Location(
+                locData.name,
+                locData.lat,
+                locData.lng,
+                createMarkerWithIcon(locData, blockIconsMap, blockId)  // Pass blockId to the marker
+            );
+
+            loc.createMarker(map, showPopupMenu);
+        });
+
+    } catch (error) {
+        console.error("Error fetching icons:", error);
+    }
+};
+
+const fetchLocationData = async (blockId) => {
+    try {
+        // Use the blockId to fetch the relevant location data
+        const response = await fetch(`/getLocations/${blockId}`);
+        const data = await response.json();
+        console.log('Location Data:', data);
+
+        // You can now use the fetched data to update the map, popup, or any other UI elements
+    } catch (error) {
+        console.error("Error fetching location data:", error);
+    }
+};
+
+iconG();
+
+
+// // Function to fetch and display data for all blocks
+// async function fetchAllBlocksData() {
 //     try {
-//         const response = await fetch("/getIcons");
+//         const response = await fetch(`/getLocations/67b916474df331b174fe8e85`); // Use appropriate blockId if needed
 //         const data = await response.json();
 
-//         const blockIconsMap = {};
-//         data.forEach(item => {
-//             if (item.name && item.image) {
-//                 blockIconsMap[item.name] = item.image;
-//             }
-//         });
+//         // Check if data is available
+//         if (data && Array.isArray(data) && data.length > 0) {
+//             // Loop through each block and log its associated data
+//             data.forEach(block => {
+//                 console.log("Block ID:", block._id); // Log block ID
+//                 console.log("Block Name:", block.name); // Log block name
+//                 console.log("Block Title:", block.title); // Log block title
+//                 console.log("Block Image Base64:", block.image); // Log block image (base64)
+//                 console.log("Floors:", block.floors); // Log associated floors
 
-//         locations.forEach(locData => {
-//             const loc = new Location(
-//                 locData.name,
-//                 locData.lat,
-//                 locData.lng,
-//                 createMarkerWithIcon(locData, blockIconsMap)
-//             );
-
-//             // Log the location data before creating the marker
-//             console.log("Location Data Before Marker Creation:", locData);
-
-//             // Create the marker and show popup
-//             loc.createMarker(map, showPopupMenu);
-
-//             // Display the marker data with _id and other details
-//             console.log({
-//                 id: locData._id ? locData._id : "No ID Found",
-//                 name: locData.name,
-//                 lat: locData.lat,
-//                 lng: locData.lng
+//                 // Check if 'floorLocation' is an array and exists
+//                 if (Array.isArray(block.floorLocation)) {
+//                     // Loop through locations if it's an array
+//                     block.floorLocation.forEach(location => {
+//                         console.log("  Location ID:", location._id); // Log location ID
+//                         console.log("  Location Open Time:", location.opentime); // Log open time
+//                         console.log("  Location Close Time:", location.closetime); // Log close time
+//                         console.log("  Location Places:", location.places); // Log places associated with the location
+//                         console.log("  Location Type:", location.locationType); // Log location type
+//                         console.log("  Location Icon:", location.locationImage); // Log location icon (base64)
+//                     });
+//                 } else {
+//                     console.log("  No floorLocation data available or it's not an array.");
+//                 }
 //             });
-//         });
-
+//         } else {
+//             console.log("No block data found.");
+//         }
 //     } catch (error) {
-//         console.error("Error fetching icons:", error);
+//         console.error("Error fetching block data:", error);
 //     }
-// };
+// }
 
-// iconG();
+// // Call the function to fetch and log all blocks' data
+// fetchAllBlocksData();
