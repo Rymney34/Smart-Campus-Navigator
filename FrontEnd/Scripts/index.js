@@ -293,58 +293,66 @@ locationObjects.forEach(loc => {
 });
 */
 
-const createMarkerWithIcon = (location, blockIconsMap, blockId) => {
-    const blockImage = blockIconsMap[location.name];
+const createMarkerWithIcon = (location, blockIconsMap) => {
+    const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
+    
+    // Create the custom icon
+    let icon;
+    if (blockImage) {
+        icon = L.divIcon({
+            className: 'custom-icon',
+            html: `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`,
+            iconSize: [60, 60],
+            iconAnchor: [30, 30],
+        });
+    } else {
+        console.error(`No image found for ${location.name}`);
+        icon = L.divIcon({
+            className: 'custom-icon',
+            html: `<span>${location.name}</span>`,
+            iconSize: [60, 60],
+            iconAnchor: [30, 30],
+        });
+    }
 
-    // Create the divIcon for the marker
-    const icon = L.divIcon({
-        className: 'custom-icon',
-        html: blockImage 
-            ? `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`
-            : `<span>${location.name}</span>`,
-        iconSize: [60, 60],
-        iconAnchor: [30, 30],
-        popupAnchor: [0, -20], // Optional: Adjust popup position
-    });
-
-    // Create the marker with the custom icon
+    // Create a marker with the icon
     const marker = L.marker([location.lat, location.lng], { icon: icon });
 
-    // Add click event listener to the marker
+    // Add the click event listener to the marker
     marker.on('click', () => {
-        // When the marker is clicked, call the function to fetch the location data
-        fetchLocationData(blockId);
+        const locationData = locations.find(loc => loc.name === location.name);
+        if (locationData) {
+            // Log the location data to the console
+            console.log('Location Data:', {
+                name: locationData.name,
+                lat: locationData.lat,
+                lng: locationData.lng,
+                blockId: locationData.blockId
+            });
+        }
     });
 
     return marker;
 };
 
-
-
 const iconG = async () => {
     try {
+        // Fetch all block icons from the server (base64 images)
         const response = await fetch("/getIcons");
         const data = await response.json();
 
-        const blockIconsMap = {};
-        data.forEach(item => {
+        // Map the block names to their corresponding base64 PNG
+        const blockIconsMap = data.reduce((map, item) => {
             if (item.name && item.image) {
-                blockIconsMap[item.name] = item.image;
+                map[item.name] = item.image; // Store the base64 image for each block by name
             }
-        });
+            return map;
+        }, {});
 
-        // Assume `locations` is an array of location objects that contain the blockId
+        // Create location objects with custom icons (base64 PNGs)
         locations.forEach(locData => {
-            const blockId = locData.blockId; // Ensure that `blockId` is part of the location data
-
-            const loc = new Location(
-                locData.name,
-                locData.lat,
-                locData.lng,
-                createMarkerWithIcon(locData, blockIconsMap, blockId)  // Pass blockId to the marker
-            );
-
-            loc.createMarker(map, showPopupMenu);
+            const marker = createMarkerWithIcon(locData, blockIconsMap);
+            marker.addTo(map); // Add the marker to the map
         });
 
     } catch (error) {
@@ -352,17 +360,6 @@ const iconG = async () => {
     }
 };
 
-const fetchLocationData = async (blockId) => {
-    try {
-        // Use the blockId to fetch the relevant location data
-        const response = await fetch(`/getLocations/${blockId}`);
-        const data = await response.json();
-        console.log('Location Data:', data);
-
-        // You can now use the fetched data to update the map, popup, or any other UI elements
-    } catch (error) {
-        console.error("Error fetching location data:", error);
-    }
-};
-
+// Call the iconG function to load the map markers
 iconG();
+
