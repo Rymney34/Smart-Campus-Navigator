@@ -29,6 +29,7 @@ app.use("/api", userRoutes);
 app.use( imgSend);
 app.use( getLocations);
 app.use( iconAllSend);
+app.use( iconSend);
 
 app.use(express.static(path.join(__dirname, 'FrontEnd')));
 

@@ -293,108 +293,74 @@ locationObjects.forEach(loc => {
 });
 */
 
-// Function to create the marker with a base64 PNG icon
-const createMarkerWithIcon = (location, blockIconsMap) => {
-    console.log("Creating marker for location:", location); // Debugging
-
-    const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
-    if (blockImage) {
-        // Log marker data before creating the icon
-        console.log('Marker Data:', {
-            id: location.id, // Ensure id is logged
-            name: location.name,
-            lat: location.lat,
-            lng: location.lng,
-            iconSrc: `data:image/png;base64,${blockImage}`,
-            iconSize: [60, 60], // Size of the icon
-            iconAnchor: [30, 30] // Anchor point of the icon
-        });
-
-        return L.divIcon({
-            className: 'custom-icon',
-            html: `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`,
-            iconSize: [60, 60],
-            iconAnchor: [30, 30],
-        });
-    } else {
-        console.error(`No image found for ${location.name}`);
-        return L.divIcon({
-            className: 'custom-icon',
-            html: `<span>${location.name}</span>`,
-            iconSize: [60, 60],
-            iconAnchor: [30, 30],
-        });
-    }
-};
-
-// Fetch icons and update markers on the map with base64 PNG images
-const iconG = async () => {
-    try {
-        // Fetch all block icons from the server (base64 images)
-        const response = await fetch("/getIcons");
-        const data = await response.json();
-
-        // Map the block names to their corresponding base64 PNG
-        const blockIconsMap = {};
-        data.forEach(item => {
-            if (item.name && item.image) {
-                blockIconsMap[item.name] = item.image; // Store the base64 image for each block by name
-            }
-        });
-
-        // Debugging: Print fetched block icon mapping
-        console.log("Block Icons Map:", blockIconsMap);
-
-        // Create location objects with custom icons (base64 PNGs)
-        locations.forEach(locData => {
-            console.log("Location Data Before Creating Marker:", locData); // Debugging
-
-            if (!locData.id) {
-                console.warn(`Location ${locData.name} is missing an ID!`);
-            }
-
-            const loc = new Location(
-                locData.name,
-                locData.lat,
-                locData.lng,
-                createMarkerWithIcon({ 
-                    id: locData.id,  // Ensure id is explicitly passed
-                    name: locData.name, 
-                    lat: locData.lat, 
-                    lng: locData.lng 
-                }, blockIconsMap)
-            );
-
-            loc.createMarker(map, showPopupMenu);
-        });
-
-    } catch (error) {
-        console.error("Error fetching icons:", error);
-    }
-};
-
-// Get Location Data (Fetch locations based on a specific block ID)
 const getLocationData = async () => {
     try {
-        const blockId = '67b916474df331b174fe8e85'; // Example Block O ID
+    //    Block id that you would like to pass 
+        const blockId = '67b90f414df331b174fe8e83';
 
-        const response = await fetch(`/getLocations/${blockId}`);
-        const data = await response.json();
-
-        console.log('Fetched Location Data:', data);
-
-        // Ensure each location object has an id
-        data.forEach(loc => {
-            if (!loc.id) {
-                console.warn(`Warning: Location ${loc.name} is missing an ID.`);
-            }
-        });
-
-    } catch (error) {
+    // link to the route
+        fetch(`/getLocations/${blockId}`)
+        .then(response => response.json())
+        .then(data => console.log('Location Data:', data));
+    }
+    catch (error) {
         console.error("Error fetching location data:", error);
     }
 };
 
-// Call the functions
 getLocationData();
-iconG();
+
+const createMarkerWithIcon = (location, blockIconsMap) => {
+    const blockImage = blockIconsMap[location.name];
+
+    return L.divIcon({
+        className: 'custom-icon',
+        html: blockImage 
+            ? `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`
+            : `<span>${location.name}</span>`,
+        iconSize: [60, 60],
+        iconAnchor: [30, 30],
+    });
+};
+
+// const iconG = async () => {
+//     try {
+//         const response = await fetch("/getIcons");
+//         const data = await response.json();
+
+//         const blockIconsMap = {};
+//         data.forEach(item => {
+//             if (item.name && item.image) {
+//                 blockIconsMap[item.name] = item.image;
+//             }
+//         });
+
+//         locations.forEach(locData => {
+//             const loc = new Location(
+//                 locData.name,
+//                 locData.lat,
+//                 locData.lng,
+//                 createMarkerWithIcon(locData, blockIconsMap)
+//             );
+
+//             // Log the location data before creating the marker
+//             console.log("Location Data Before Marker Creation:", locData);
+
+//             // Create the marker and show popup
+//             loc.createMarker(map, showPopupMenu);
+
+//             // Display the marker data with _id and other details
+//             console.log({
+//                 id: locData._id ? locData._id : "No ID Found",
+//                 name: locData.name,
+//                 lat: locData.lat,
+//                 lng: locData.lng
+//             });
+//         });
+
+//     } catch (error) {
+//         console.error("Error fetching icons:", error);
+//     }
+// };
+
+// iconG();
