@@ -17,6 +17,8 @@ import {
     locations
 } from '../Assets/FetchMethods/fetchLocationMarkers.js';
 
+import { displayLocationData } from '../Scripts/displayContent.js';
+
 /*
 import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
 } from '../Assets/FetchMethods/fetchIcons.js';
@@ -321,11 +323,23 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
 
     // Add the click event listener to the marker
     marker.on('click', async () => {
-        // Fetch the location data using the blockId
+        console.log("Clicked Marker blockId requested :", location); 
+        console.log("blockId being sent:", location.blockId);
+    
+        if (!location.blockId) {
+            console.error("Error: blockId is undefined!");
+            return;
+        }
+    
         const locationData = await fetchLocationData(location.blockId);
-        if (locationData) {
-            // Log the location data to the console (or display it on the UI)
-            console.log('Location Data:', locationData);
+        
+        if (locationData && locationData.length > 0) {
+            console.log("Received Data:", locationData);
+            
+            // ✅ Ensure we're only passing one object (not an array)
+            displayLocationData(locationData[0]);
+        } else {
+            console.error("No data received for block ID:", location.blockId);
         }
     });
 

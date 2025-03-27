@@ -39,6 +39,11 @@
             <div id="campus-list-container">
                 <div><h1 id="dynamicTitle"></h1></div>
                 <div><img id="sideBarImage" src="" alt=""><h1></h1></div>
+                <div>
+                    <select id="floorDropdown">
+                        <option value="">Select a floor</option>
+                    </select>
+                </div>
                 <div id="buildingInfo">
                     <h1 id="dynamicRooms"></h1>
                     <h1 id="dynamicFacilities"></h1>
@@ -69,6 +74,8 @@
     <script src="/Scripts/search.js"></script>
 
     <script src="/Scripts/settings.js"></script>
+
+    <script type="module" src="/Scripts/displayContent.js"></script>
 
     <!--Pathfinding Logic-->
     <script type="module" src="/Models/Block.js"></script>
