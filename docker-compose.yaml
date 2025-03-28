@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: local-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: first_db_userT
+      MONGO_INITDB_ROOT_PASSWORD: Gazoz_228
+    volumes:
+      - mongo_data:/data/db
+      - ./dump:/dump
+    command: >
+      bash -c "
+        mongod --bind_ip_all --fork --logpath /var/log/mongodb.log &&
+        if ! mongosh --quiet --eval \"db.getMongo().getDBNames().includes('smart_campus_navigator')\" | grep true; then
+          echo 'Restoring from dump...';
+          mongorestore --username first_db_userT --password Gazoz_228 --authenticationDatabase admin --db smart_campus_navigator /dump/smart_campus_navigator;
+        else
+          echo 'Database already exists — skipping restore';
+        fi &&
+        tail -f /var/log/mongodb.log
+      "
+
+  node-app:
+    build: .
+    container_name: node-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://first_db_userT:Gazoz_228@mongodb:27017/smart_campus_navigator?authSource=admin
+
+volumes:
+  mongo_data: {}
