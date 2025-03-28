@@ -34,11 +34,11 @@
     justify-items: center;
 }
 
-#side-bar #searchBar, #side-bar #settingsDiv, #side-bar #campus-list-container, #side-bar #settingsContentDiv {
+#side-bar #searchBar, #side-bar #settingsDiv, #side-bar #campus-list-container, #side-bar #settingsContentDiv, #side-bar #floorDropDown {
     display: none;
 }
 
-#side-bar.active #searchBar, #side-bar.active #settingsDiv, #side-bar.active #campus-list-container, #side-bar.active #settingsContentDiv {
+#side-bar.active #searchBar, #side-bar.active #settingsDiv, #side-bar.active #campus-list-container, #side-bar.active #settingsContentDiv, #side-bar.active #floorDropDown {
     display: block;
 }
 

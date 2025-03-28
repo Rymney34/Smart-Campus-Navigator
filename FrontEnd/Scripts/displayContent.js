@@ -11,7 +11,7 @@ const displayLocationData = (locationData) => {
     if (titleElement && imageElement && roomsElement && facilitiesElement) {
         // Clear any previous content
         titleElement.textContent = locationData.name;
-        imageElement.src = locationData.image.image; // Default image if none provided
+        imageElement.src = locationData.image.image;
         imageElement.alt = locationData.name;
 
         if (locationData.floorLocation && locationData.floorLocation.places) {
@@ -19,7 +19,6 @@ const displayLocationData = (locationData) => {
         } else {
             roomsElement.textContent = "Rooms: Not Available";
         }
-        
         facilitiesElement.textContent = `Facilities: ${locationData.facilities}`;
     }
 };

@@ -4,7 +4,6 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes.js");
 
 const imgSend = require("./routes/getImage.js");
-const iconSend = require("./routes/getIcon.js");
 const iconAllSend = require("./routes/getMapIcon.js");
 const getLocations = require("./routes/getLocations.js");
 
@@ -32,7 +31,6 @@ app.use("/api", userRoutes);
 app.use( imgSend);
 app.use( getLocations);
 app.use( iconAllSend);
-app.use( iconSend);
 
 // Start Server on Local Host (http://localhost:3000)
 app.listen(port, () => {
