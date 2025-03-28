@@ -1,20 +1,17 @@
 const mongoose = require('mongoose');
-require('dotenv').config({ path: '../../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+
+
 
 
 // Default connection (smart_campus_navigator)
-mongoose.connect(process.env.MONGO_URI_MAIN, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI_MAIN)
   .then(() => console.log('Connected to MongoDB (smart_campus_navigator)'))
   .catch(err => console.error('Connection error (smart_campus_navigator):', err));
 
 // Secondary connection (user_details_db)
-const usersConnection = mongoose.mongoose.createConnection(process.env.MONGO_URI_USERS, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+const usersConnection = mongoose.mongoose.createConnection(process.env.MONGO_URI_USERS);
 
 usersConnection.on('connected', () => {
   console.log('Connected to MongoDB (user_details_db)');
