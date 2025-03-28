@@ -12,7 +12,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-// Add a new user
+// Add new user
 const createUser = async (req, res) => {
   try {
     const { firstName, surname, email, password, isAdmin = false } = req.body;

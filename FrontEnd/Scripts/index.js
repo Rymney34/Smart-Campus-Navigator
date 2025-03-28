@@ -17,8 +17,12 @@ import {
     locations
 } from '../Assets/FetchMethods/fetchLocationMarkers.js';
 
+import { displayLocationData } from '../Scripts/displayContent.js';
+
+/*
 import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
 } from '../Assets/FetchMethods/fetchIcons.js';
+*/
 
 /*
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
@@ -250,6 +254,7 @@ function createCustomIcon(block, svgIcon) {
     });
 }*/
 
+/*
 // Map block types to SVG icons
 const blockIcons = {
     "Block O": svgIconBlockO,
@@ -272,6 +277,7 @@ const blockIcons = {
     return icons;
 }, {});*/
 
+/*
 const locationObjects = locations.map(locData => {
     const loc = new Location(locData.name, locData.lat, locData.lng, L.divIcon({
         className: 'custom-icon',
@@ -287,3 +293,96 @@ const locationMap = {};
 locationObjects.forEach(loc => {
     locationMap[loc.name] = loc;
 });
+*/
+
+// Function to create the marker with a base64 PNG icon
+const createMarkerWithIcon = (location, blockIconsMap) => {
+    const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
+    
+    // Create the custom icon
+    let icon;
+    if (blockImage) {
+        icon = L.divIcon({
+            className: 'custom-icon',
+            html: `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`,
+            iconSize: [60, 60],
+            iconAnchor: [30, 30],
+        });
+    } else {
+        console.error(`No image found for ${location.name}`);
+        icon = L.divIcon({
+            className: 'custom-icon',
+            html: `<span>${location.name}</span>`,
+            iconSize: [60, 60],
+            iconAnchor: [30, 30],
+        });
+    }
+
+    // Create a marker with the icon
+    const marker = L.marker([location.lat, location.lng], { icon: icon });
+
+    // Add the click event listener to the marker
+    marker.on('click', async () => {
+        console.log("Clicked Marker blockId requested :", location); 
+        console.log("blockId being sent:", location.blockId);
+    
+        if (!location.blockId) {
+            console.error("Error: blockId is undefined!");
+            return;
+        }
+    
+        const locationData = await fetchLocationData(location.blockId);
+        
+        if (locationData && locationData.length > 0) {
+            console.log("Received Data:", locationData);
+            
+            // Pass an Object not an Array
+            displayLocationData(locationData[0]);
+        } else {
+            console.error("No data received for block ID:", location.blockId);
+        }
+    });
+
+    return marker;
+};
+
+// Function to fetch location data based on the blockId
+const fetchLocationData = async (blockId) => {
+    try {
+        // Use the blockId to fetch the relevant location data
+        const response = await fetch(`/getLocations/${blockId}`);
+        const data = await response.json();
+        return data;  // Return the fetched data for further use
+    } catch (error) {
+        console.error("Error fetching location data:", error);
+        return null;
+    }
+};
+
+const iconG = async () => {
+    try {
+        // Fetch all block icons from the server (base64 images)
+        const response = await fetch("/getIcons");
+        const data = await response.json();
+
+        // Map the block names to their corresponding base64 PNG
+        const blockIconsMap = data.reduce((map, item) => {
+            if (item.name && item.image) {
+                map[item.name] = item.image; // Store the base64 image for each block by name
+            }
+            return map;
+        }, {});
+
+        // Create location objects with custom icons (base64 PNGs)
+        locations.forEach(locData => {
+            const marker = createMarkerWithIcon(locData, blockIconsMap);
+            marker.addTo(map); // Add the marker to the map
+        });
+
+    } catch (error) {
+        console.error("Error fetching icons:", error);
+    }
+};
+
+// Call the iconG function to load the map markers
+iconG();
