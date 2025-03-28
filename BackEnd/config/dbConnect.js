@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 // Default connection (smart_campus_navigator)
-mongoose.connect(
-  'mongodb+srv://first_db_userT:Gazoz_228@campus-navigator.qe53f.mongodb.net/smart_campus_navigator?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGO_URI_MAIN, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => console.log('Connected to MongoDB (smart_campus_navigator)'))
   .catch(err => console.error('Connection error (smart_campus_navigator):', err));
 
 // Secondary connection (user_details_db)
-const usersConnection = mongoose.createConnection(
-  'mongodb+srv://first_db_userT:Gazoz_228@campus-navigator.qe53f.mongodb.net/user_details_db?retryWrites=true&w=majority'
-);
+const usersConnection = mongoose.mongoose.createConnection(process.env.MONGO_URI_USERS, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 usersConnection.on('connected', () => {
   console.log('Connected to MongoDB (user_details_db)');

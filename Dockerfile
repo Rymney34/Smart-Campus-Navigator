@@ -1,22 +1,19 @@
 # Use Node base image
 FROM node:18
 
-# Set work directory
+# Set working directory
 WORKDIR /app
 
-# Copy package.json files from BackEnd
-COPY BackEnd/package*.json ./BackEnd/
-
-# Install dependencies
-RUN cd BackEnd && npm install
-
-# Copy the rest of the backend code
+# Copy everything from BackEnd
 COPY BackEnd ./BackEnd
 
-# Switch to that directory for runtime
+# Set working directory to BackEnd
 WORKDIR /app/BackEnd
 
-# Expose the port your app runs on
+# Install dependencies
+RUN npm install
+
+# Expose port
 EXPOSE 3000
 
 # Start the server
