@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+require('dotenv').config({ path: '../../.env' });
+
 
 // Default connection (smart_campus_navigator)
 mongoose.connect(process.env.MONGO_URI_MAIN, {
