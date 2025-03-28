@@ -336,7 +336,7 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
         if (locationData && locationData.length > 0) {
             console.log("Received Data:", locationData);
             
-            // ✅ Ensure we're only passing one object (not an array)
+            // Pass an Object not an Array
             displayLocationData(locationData[0]);
         } else {
             console.error("No data received for block ID:", location.blockId);
@@ -386,5 +386,3 @@ const iconG = async () => {
 
 // Call the iconG function to load the map markers
 iconG();
-
-
