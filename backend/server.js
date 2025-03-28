@@ -4,7 +4,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes.js");
 
 const imgSend = require("./routes/getImage.js");
-const iconSend = require("./routes/getIcon.js");
+const facilitiesIcons = require("./routes/getFacilitiesIcons.js");
 const iconAllSend = require("./routes/getMapIcon.js");
 const getLocations = require("./routes/getLocations.js");
 
@@ -19,6 +19,8 @@ const port = 3000;
 app.use(express.json()); // Parse JSON requests
 app.use(cors()); // Enable CORS
 
+app.use(facilitiesIcons);
+
 // Launch Website Login.html First
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'FrontEnd', 'Views', 'login.html'));
@@ -32,7 +34,10 @@ app.use("/api", userRoutes);
 app.use( imgSend);
 app.use( getLocations);
 app.use( iconAllSend);
-app.use( iconSend);
+
+
+
+
 
 // Start Server on Local Host (http://localhost:3000)
 app.listen(port, () => {
