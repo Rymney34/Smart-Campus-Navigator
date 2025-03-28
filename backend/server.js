@@ -1,66 +1,40 @@
-const express = require('express');
-
-
-// const icons = require("./schemas/icons.js")
-// const blocks = require("./schemas/blocks.js")
-const getDb = require("./config/db.js")
+const express = require('express'); 
+const mongoose = require('mongoose');
+const cors = require("cors");
+const userRoutes = require("./routes/userRoutes.js");
 
 const imgSend = require("./routes/getImage.js");
 const iconSend = require("./routes/getIcon.js");
 const iconAllSend = require("./routes/getMapIcon.js");
 const getLocations = require("./routes/getLocations.js");
 
-const fs = require("fs").promises;
-
+const path = require('path') // Require path module (Handle File Paths) Used when launching the website FrontEnd 
+// require('./BackEnd/dbConnect'); 
+require("./config/dbConnect.js"); // Connect to MongoDB Databases
 
 const app = express();
 const port = 3000;
 
-app.use(express.json());
+// Middleware
+app.use(express.json()); // Parse JSON requests
+app.use(cors()); // Enable CORS
 
-app.use(express.static('./FrontEnd/Views')); 
+// Launch Website Login.html First
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'FrontEnd', 'Views', 'login.html'));
+});
 
-getDb.then(() => {
-    
-    app.listen(port, () => {
-        console.log(`Server running on port http://localhost:${port}`);
-        
-    });
-}).catch(err => console.error('Startup error:', err));
+// Serve Front End Folder
+app.use(express.static(path.resolve(__dirname, '..', 'FrontEnd')));
 
+// API Routes
+app.use("/api", userRoutes);
+app.use( imgSend);
+app.use( getLocations);
+app.use( iconAllSend);
+app.use( iconSend);
 
-
-
-
-//Adding image to db 
-
-// async function iconsUpload () {
-    
-//     try{
-        
-//         const imagePath = './icon-block-e-23.png';
-    
-//         const imageBuffer =  await fs.readFile(imagePath);
-//         const base64I = imageBuffer.toString('base64')
-//         const mimeType = 'image/png';
-
-//         const newImage = new icons({
-//             image: imageBuffer
-//           });
-//           const result = await newImage.save();
-//           console.log(result)
-
-//     }catch (e){
-//         console.log(e.message)
-//     }
-// }
-
-// icnSend()
-app.use(imgSend);
-
-app.use(getLocations);
-
-// app.use(iconSend);
-
-app.use(iconAllSend);
-
+// Start Server on Local Host (http://localhost:3000)
+app.listen(port, () => {
+  console.log(`Server running on port http://localhost:${port}`);
+});
