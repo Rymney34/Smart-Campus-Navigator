@@ -42,12 +42,30 @@ const displayLocationData = (locationData) => {
         }
     };
 
+    // Function to update facilities display when a floor is selected
+    const updateFacilitiesDisplay = (selectedFloor) => {
+        // Find all entries for the selected floor
+        const floorEntries = locationData.filter(floorData => floorData.floors.floorNum == selectedFloor);
+        
+        // Find the entry that contains locationType (facility)
+        const floorWithFacility = floorEntries.find(floorData => floorData.locationType?.typeName);
+
+        if (floorWithFacility) {
+            // Display the facility name
+            facilitiesElement.textContent = `Facility: ${floorWithFacility.locationType.typeName}`;
+        } else {
+            facilitiesElement.textContent = "Facilities: No facilities available for this floor.";
+        }
+    };
+
     // Set default floor selection
     updateRoomsDisplay(floors[0]);
+    updateFacilitiesDisplay(floors[0]);
 
     // Add event listener for dropdown changes
     floorDropdownElement.addEventListener("change", (event) => {
         updateRoomsDisplay(event.target.value);
+        updateFacilitiesDisplay(event.target.value);
     });
 };
 
