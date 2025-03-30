@@ -324,7 +324,7 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
 
     // Add the click event listener to the marker
     marker.on('click', async () => {
-        console.log("Clicked Marker blockId requested :", location); 
+        console.log("Clicked Marker blockId requested :", location);
         console.log("blockId being sent:", location.blockId);
     
         if (!location.blockId) {
@@ -333,16 +333,18 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
         }
     
         const locationData = await fetchLocationData(location.blockId);
-        
-        if (locationData && locationData.length > 0) {
+    
+        if (locationData.length > 0) {
             console.log("Received Data:", locationData);
-            
-            // Pass an Object not an Array
-            displayLocationData(locationData[0]);
+    
+            // Pass the entire array instead of just one object
+            displayLocationData(locationData);
         } else {
             console.error("No data received for block ID:", location.blockId);
         }
     });
+    
+    
 
     return marker;
 };
@@ -350,13 +352,14 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
 // Function to fetch location data based on the blockId
 const fetchLocationData = async (blockId) => {
     try {
-        // Use the blockId to fetch the relevant location data
         const response = await fetch(`/getLocations/${blockId}`);
-        const data = await response.json();
-        return data;  // Return the fetched data for further use
+        let data = await response.json();
+
+        // Ensure it's always an array
+        return Array.isArray(data) ? data : [data];
     } catch (error) {
         console.error("Error fetching location data:", error);
-        return null;
+        return [];
     }
 };
 
