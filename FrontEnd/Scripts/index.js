@@ -322,6 +322,7 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
     // Create a marker with the icon
     const marker = L.marker([location.lat, location.lng], { icon: icon });
 
+
     // Add the click event listener to the marker
     marker.on('click', async () => {
         console.log("Clicked Marker blockId requested :", location);

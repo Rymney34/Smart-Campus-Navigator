@@ -1,3 +1,10 @@
+import SideBar from '/Scripts/side-bar.js'; // Import the SideBar class
+import Settings from '/Scripts/settings.js'; // Import the Settings class
+
+// Instantiate the SideBar and Settings classes
+const sideBar = new SideBar();
+const settings = new Settings("campus-list-container"); // Pass the container ID to the Settings class
+
 const displayLocationData = (locationData) => {
     // Ensure locationData is always an array
     if (!Array.isArray(locationData)) {
@@ -62,11 +69,19 @@ const displayLocationData = (locationData) => {
     updateRoomsDisplay(floors[0]);
     updateFacilitiesDisplay(floors[0]);
 
+    // Open the sidebar when data is displayed
+    sideBar.openSideBar();  // Call the method to open the sidebar
+
     // Add event listener for dropdown changes
     floorDropdownElement.addEventListener("change", (event) => {
         updateRoomsDisplay(event.target.value);
         updateFacilitiesDisplay(event.target.value);
     });
 };
+
+// Event listener for the settings button
+document.getElementById("settingsButton").addEventListener("click", function() {
+    settings.displaySettingsContent(); // Call the method to display the settings content
+});
 
 export { displayLocationData };
