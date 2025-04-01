@@ -296,7 +296,7 @@ locationObjects.forEach(loc => {
 */
 
 // Function to create the marker with a base64 PNG icon
-const createMarkerWithIcon = (location, blockIconsMap) => {
+const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
     
     // Create the custom icon
@@ -340,6 +340,7 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
     
             // Pass the entire array instead of just one object
             displayLocationData(locationData);
+            showPopupMenu(locationData[0]);
         } else {
             console.error("No data received for block ID:", location.blockId);
         }
@@ -380,7 +381,7 @@ const iconG = async () => {
 
         // Create location objects with custom icons (base64 PNGs)
         locations.forEach(locData => {
-            const marker = createMarkerWithIcon(locData, blockIconsMap);
+            const marker = createMarkerWithIcon(locData, blockIconsMap, showPopupMenu);
             marker.addTo(map); // Add the marker to the map
         });
 
@@ -390,4 +391,4 @@ const iconG = async () => {
 };
 
 // Call the iconG function to load the map markers
-iconG();
+iconG(showPopupMenu);
