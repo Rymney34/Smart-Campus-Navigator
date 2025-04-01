@@ -181,21 +181,14 @@ function resetGoButton() {
 
 
 // Function to Show Popup Menu
-function showPopupMenu(locationName, lat, lng) {
-    currentTargetLocation = [lat, lng]; // Store target location globally
-    document.getElementById("destinationText").textContent = locationName;
+function showPopupMenu(location) {
+    currentTargetLocation = [location.lat, location.lng];
+    document.getElementById("destinationText").textContent = location.name;
     popupMenu.style.display = "block";
 
-    const goButton = document.getElementById("goButton");
-    goButton.textContent = "GO";
-    goButton.style.background = "red";
-    goButton.style.border = "none";
-    
-
     let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
-    console.log(startLocation+"!!!!");
     if (startLocation) {
-        p.calculateETA(startLocation, [lat, lng], document);
+        p.calculateETA(startLocation, [location.lat, location.lng], document);
     }
 
     resetGoButton();
@@ -381,8 +374,34 @@ const iconG = async () => {
 
         // Create location objects with custom icons (base64 PNGs)
         locations.forEach(locData => {
-            const marker = createMarkerWithIcon(locData, blockIconsMap, showPopupMenu);
-            marker.addTo(map); // Add the marker to the map
+            const blockImage = blockIconsMap[locData.name];
+            const icon = blockImage ? L.divIcon({
+                className: 'custom-icon',
+                html: `<img src="data:image/png;base64,${blockImage}" alt="${locData.name}" style="width: 60px; height: 60px;" />`,
+                iconSize: [60, 60],
+                iconAnchor: [30, 30],
+            }) : L.divIcon({
+                className: 'custom-icon',
+                html: `<span>${locData.name}</span>`,
+                iconSize: [60, 60],
+                iconAnchor: [30, 30],
+            });
+
+            const location = new Location(locData.name, locData.lat, locData.lng);
+            location.icon = icon;
+            const marker = L.marker(location.getLatLng(), { icon });
+
+            marker.on('click', async () => {
+                const locationData = await fetchLocationData(locData.blockId);
+                if (locationData.length > 0) {
+                    displayLocationData(locationData);
+                    showPopupMenu(location);
+                } else {
+                    console.error("No data received for block ID:", locData.blockId);
+                }
+            });
+
+            marker.addTo(map);
         });
 
     } catch (error) {
