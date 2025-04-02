@@ -1,6 +1,6 @@
 node_modules
 .env
-BackEnd/schemas/blocks.js
+
 dump/
 .DS_Store
 
