@@ -154,7 +154,7 @@ async function getLocation(blockId) {
         const blockInfo = await block.aggregate(q).exec();
             // const icons = res[0]
 
-        console.log(blockInfo);
+        // console.log(blockInfo);
         
         // console.log(res);
      

@@ -385,5 +385,20 @@ const iconG = async () => {
     }
 };
 
+const getAllIcons = async () => {
+    try {
+        // Fetch all block icons from the server (base64 images)
+        const response = await fetch("/getFacilitiesicons");
+        const data = await response.json();
+
+    } catch (error) {
+        console.error("Error fetching icons:", error);
+    }
+};
+
+
+
+
+getAllIcons()
 // Call the iconG function to load the map markers
 iconG();
