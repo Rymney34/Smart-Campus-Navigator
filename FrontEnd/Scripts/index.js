@@ -1,5 +1,5 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
-import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js"; // REMOVE FEATURE ON LAUNCH
+import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js";
 
 import PathFinder from "../Models/Path-finder.js"
 import Location from "../Models/Location.js"
@@ -217,8 +217,8 @@ function findLocation(locationName,lat,lng) {
 }
 */
 
-// Call Map Click Handler - Removable Feature (Developer Only Feature)
-mapClickHandler(map); // REMOVE FEATURE ON LAUNCH
+// Call Map Click Handler (Developer Only Feature)
+mapClickHandler(map);
 
 // Array of block names
 const blockNames = ["BlockO", "BlockT", "BlockL", "BlockP", "BlockB", "BlockM", "BlockN", "BlockD", "BlockF", "BlockA", "BlockC"];
@@ -308,6 +308,7 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
             iconSize: [60, 60],
             iconAnchor: [30, 30],
         });
+        
     } else {
         console.error(`No image found for ${location.name}`);
         icon = L.divIcon({

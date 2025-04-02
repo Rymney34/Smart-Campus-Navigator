@@ -36,9 +36,6 @@ app.use( getLocations);
 app.use( iconAllSend);
 
 
-
-
-
 // Start Server on Local Host (http://localhost:3000)
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}`);
