@@ -27,7 +27,7 @@ function displaySettingsContent() {
                         <p id="smallAboutAppText" >Version Info, Credits</p>
                     </div>
                     <div id="feedbackContainer">
-                        <a href="feedback.html"><h1>Feedback & Support</h1></a>
+                        <a href="../Views/feedback.html"><h1>Feedback & Support</h1></a>
                         <p id="smallFeedbackText" >Help Improve the App</p>
                     </div>
                 </div>

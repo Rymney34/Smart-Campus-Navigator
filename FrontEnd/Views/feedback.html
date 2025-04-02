@@ -1,31 +1,40 @@
+<!-- Views/feedback.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Navigation System Login</title>
-
-    <link rel="stylesheet" href="/StyleSheets/global.css">
-
+  <meta charset="UTF-8" />
+  <title>Feedback</title>
+  <style>
+    body { font-family: Arial; padding: 2rem; max-width: 600px; margin: auto; }
+    label { display: block; margin: 0.5rem 0 0.2rem; }
+    textarea { width: 100%; height: 100px; }
+    button { margin-top: 1rem; }
+  </style>
 </head>
 <body>
-    <div id="containerDiv1">
-        <div id="feedbackContainer">
-            <form action="">
-                <select name="" id="">
-                    <option value="1">Problem</option>
-                    <option value="2">Complaint</option>
-                    <option value="3">Suggestion</option>
-                    <option value="3">Other</option>
-                </select>
+  <h1>Leave Feedback</h1>
+  <form id="feedbackForm">
+    <label>Name:</label>
+    <input type="text" name="name" required />
 
-                <label for="feedbackMessage">Your Message:</label>
-                <textarea id="feedbackMessage" rows="5" placeholder="Please describe your feedback..."></textarea>
-    
-                <button id="submitFeedbackButton">Submit Feedback</button>
+    <label>Category:</label>
+    <select name="category" required>
+      <option>UI/UX</option>
+      <option>Bug Report</option>
+      <option>Feature Request</option>
+      <option>Other</option>
+    </select>
 
-            </form>
-        </div>
-    </div>
+    <label>Message:</label>
+    <textarea name="message" required></textarea>
+
+    <button type="submit">Submit Feedback</button>
+  </form>
+
+  <p id="response"></p>
+
+  <button onclick="window.location.href='settings.html'">⬅ Back to Settings</button>
+
+  <script type="module" src="../Scripts/feedback.js"></script>
 </body>
 </html>

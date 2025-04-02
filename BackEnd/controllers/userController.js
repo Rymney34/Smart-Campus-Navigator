@@ -1,4 +1,5 @@
 const User = require("../schemas/User");
+const Feedback = require('../schemas/feedback');
 const bcrypt = require("bcryptjs");
 
 /* Not Currently in Use (Can be used for Admin (View all Users)) */
@@ -62,10 +63,28 @@ const loginUser = async (req, res) => {
     }
 
     // If credentials are correct, return success message
-    res.json({ message: 'Login successful' });
+    res.json({ message: 'Login successful' ,
+      user: {
+        _id: user._id,                  
+        firstName: user.firstName,
+        surname: user.surname,
+        email: user.email,
+        isAdmin: user.isAdmin
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { getUsers, createUser, loginUser };
+const postFeedback = async (req, res) => {
+  try {
+    const feedback = new Feedback(req.body);
+    await feedback.save();
+    res.status(201).json({ message: 'Feedback submitted!' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+module.exports = { getUsers, createUser, loginUser, postFeedback };
