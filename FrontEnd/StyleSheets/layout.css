@@ -41,3 +41,10 @@
     height: 100%;
     background-color: #15153d;
 }
+
+#contentBox {
+    background-color: white;
+    height: 100%;
+    border-radius: 10px;
+    padding: 10px;
+}

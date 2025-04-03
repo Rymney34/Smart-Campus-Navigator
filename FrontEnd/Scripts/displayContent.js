@@ -1,9 +1,8 @@
-import SideBar from '/Scripts/side-bar.js'; // Import the SideBar class
-import Settings from '/Scripts/settings.js'; // Import the Settings class
+import SideBar from '/Scripts/side-bar.js';
+import Settings from '/Scripts/settings.js';
 
-// Instantiate the SideBar and Settings classes
 const sideBar = new SideBar();
-const settings = new Settings("campus-list-container"); // Pass the container ID to the Settings class
+const settings = new Settings("campus-list-container");
 
 const displayLocationData = (locationData) => {
     // Ensure locationData is always an array
@@ -16,12 +15,17 @@ const displayLocationData = (locationData) => {
     const roomsElement = document.getElementById("dynamicRooms");
     const facilitiesElement = document.getElementById("dynamicFacilities");
     const floorDropdownElement = document.getElementById("floorDropdown");
+    const roomLabel = document.getElementById("roomLabel");
+    const facilitiesLabel = document.getElementById("facilitiesLabel");
 
     if (!titleElement || !imageElement || !roomsElement || !facilitiesElement || !floorDropdownElement) return;
 
-    // Update building title and image (first floor's data as default)
-    titleElement.textContent = locationData[0]?.name || "Unknown Building";
-    imageElement.src = locationData[0]?.image?.image || "default-image.jpg";
+    roomLabel.textContent = "Rooms"
+    facilitiesLabel.textContent = "Facilities"
+
+    // Building title and image (first floor's data as default)
+    titleElement.textContent = locationData[0]?.name || "Unavailable";
+    imageElement.src = locationData[0]?.image?.image || "Image Unavailable";
     imageElement.alt = locationData[0]?.name || "Building Image";
 
     // Clear previous dropdown options
@@ -41,13 +45,23 @@ const displayLocationData = (locationData) => {
     // Function to update rooms display when a floor is selected
     const updateRoomsDisplay = (selectedFloor) => {
         const selectedFloorData = locationData.find(floorData => floorData.floors.floorNum == selectedFloor);
-
+    
+        roomsElement.innerHTML = ""; // Clear previous content
+    
         if (selectedFloorData?.floorLocation?.places?.length) {
-            roomsElement.textContent = `Rooms: ${selectedFloorData.floorLocation.places.map(room => room.roomNumber).join(', ')}`;
+            // Only add room elements if rooms are defined and not empty
+            selectedFloorData.floorLocation.places.forEach(room => {
+                if (room.roomNumber) {  // Check if roomNumber exists
+                    const roomElement = document.createElement("div");
+                    roomElement.textContent = `${room.roomNumber}`;
+                    roomsElement.appendChild(roomElement);
+                }
+            });
         } else {
-            roomsElement.textContent = "Rooms: No rooms available on this floor.";
+            roomsElement.textContent = "";  // Display nothing if there are no rooms
         }
     };
+    
 
     // Function to update facilities display when a floor is selected
     const updateFacilitiesDisplay = (selectedFloor) => {
@@ -59,9 +73,9 @@ const displayLocationData = (locationData) => {
 
         if (floorWithFacility) {
             // Display the facility name
-            facilitiesElement.textContent = `Facility: ${floorWithFacility.locationType.typeName}`;
+            facilitiesElement.textContent = `${floorWithFacility.locationType.typeName}`;
         } else {
-            facilitiesElement.textContent = "Facilities: No facilities available for this floor.";
+            facilitiesElement.textContent = "";
         }
     };
 

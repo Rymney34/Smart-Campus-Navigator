@@ -1,4 +1,4 @@
-import Settings from '/Scripts/settings.js';  // Import the Settings class
+import Settings from '/Scripts/settings.js'; 
 
 class SideBar {
     constructor() {
@@ -8,14 +8,10 @@ class SideBar {
         this.campusListContainer = document.getElementById("campus-list-container");
         this.settingsButton = document.getElementById("settingsButton");
 
-        // Instantiate the Settings class with the container ID
-        this.settings = new Settings("campus-list-container");  // Pass the ID of the container where the settings will be displayed
-
-        // Bind events
+        this.settings = new Settings("campus-list-container");
         this.bindEvents();
     }
 
-    // Bind events
     bindEvents() {
         this.sideBarButton.addEventListener("click", () => this.toggleSideBar());
         this.settingsButton?.addEventListener("click", () => this.displaySettings());
@@ -42,12 +38,12 @@ class SideBar {
         }
     }
 
-    // Handle Settings button click
+    // Settings button click
     displaySettings() {
-        this.settings.displaySettingsContent();  // Call the displaySettingsContent method from the Settings class
+        this.settings.displaySettingsContent(); 
     }
 
-    // Optionally: Method to open sidebar when data is displayed
+    // Method to open sidebar when data is displayed
     openSideBar() {
         this.sideBar.classList.add("active");
         this.sideBarButton.classList.add("active");

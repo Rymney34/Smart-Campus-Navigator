@@ -34,21 +34,22 @@
     justify-items: center;
 }
 
-#side-bar #searchBar, #side-bar #settingsDiv, #side-bar #campus-list-container, #side-bar #settingsContentDiv, #side-bar #floorDropDown {
+#side-bar #searchBar, #side-bar #settingsDiv, #side-bar #campus-list-container, #side-bar #settingsContentDiv, #side-bar #floorDropdown {
     display: none;
 }
 
-#side-bar.active #searchBar, #side-bar.active #settingsDiv, #side-bar.active #campus-list-container, #side-bar.active #settingsContentDiv, #side-bar.active #floorDropDown {
+#side-bar.active #searchBar, #side-bar.active #settingsDiv, #side-bar.active #campus-list-container, #side-bar.active #settingsContentDiv, #side-bar.active #floorDropdown {
     display: block;
 }
 
 #campus-list-container {
-    width: 80%;
+    width: 90%;
     height: 80%;
     border-radius: 10px;
     color: black;
     padding: 15px;
     transition: .25s;
+    margin-bottom: 25px;
 }
 
 #buildingInfo {
@@ -108,25 +109,12 @@ font-size: 15px;
     width: 100%;
 }
 
-/*
-#fontsizeContainer {
-}
-
-#versionContainer {
-
-}
-
-#feedbackContainer {
-
-}
-    */
-
 #settingsTitleText {
     text-decoration: underline;
 }
 
 
-h1 {
+#setTitleText {
     margin: 5px 0;
 }
 
@@ -174,3 +162,29 @@ a:hover::after {
     font-size: 15px;
 }
     */
+
+#dynamicTitle {
+}
+
+#dropdownContainer {
+    width: 100%;
+    text-align: right;
+
+}
+
+#floorDropdown {
+    margin-left: auto;
+    margin-right: 55px;
+    border: none;
+}
+
+#dynamicRooms {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+#dynamicFacilities {
+
+}
