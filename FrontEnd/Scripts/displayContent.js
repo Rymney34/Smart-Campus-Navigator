@@ -10,6 +10,32 @@ const displayLocationData = (locationData) => {
         locationData = [locationData]; 
     }
 
+    // Create and append only the necessary new elements
+    const container = document.getElementById("campus-list-container");
+    const contentBox = document.createElement("div");
+    contentBox.id = "contentBox";
+    contentBox.innerHTML = `
+        <div><h1 id="dynamicTitle">Llandaff Campus</h1></div>
+        <div><img id="sideBarImage" src="imageUrl" alt=""><h1></h1></div>
+        <div id="dropdownContainer">
+            <select id="floorDropdown"></select>
+        </div>
+        <div>
+            <div id="buildingInfo">
+                <h1 id="roomLabel"></h1>
+                <h1 id="facilitiesLabel"></h1>
+            </div>
+            <div id="buildingInfo">
+                <h2 id="dynamicRooms"></h2>
+                <h2 id="dynamicFacilities"></h2>
+            </div>
+        </div>
+    `;
+
+    // Append it to the container
+    container.innerHTML = ''; // Clear existing content
+    container.appendChild(contentBox);
+
     const titleElement = document.getElementById("dynamicTitle");
     const imageElement = document.getElementById("sideBarImage");
     const roomsElement = document.getElementById("dynamicRooms");

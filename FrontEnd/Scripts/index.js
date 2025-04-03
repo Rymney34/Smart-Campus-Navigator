@@ -315,7 +315,6 @@ const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
     // Create a marker with the icon
     const marker = L.marker([location.lat, location.lng], { icon: icon });
 
-
     // Add the click event listener to the marker
     marker.on('click', async () => {
         console.log("Clicked Marker blockId requested :", location);
@@ -339,8 +338,6 @@ const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
         }
     });
     
-    
-
     return marker;
 };
 
@@ -419,9 +416,6 @@ const getAllIcons = async () => {
         console.error("Error fetching icons:", error);
     }
 };
-
-
-
 
 getAllIcons()
 // Call the iconG function to load the map markers

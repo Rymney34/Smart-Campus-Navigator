@@ -44,10 +44,9 @@
 
 #campus-list-container {
     width: 90%;
-    height: 80%;
+    height: 100%;
     border-radius: 10px;
     color: black;
-    padding: 15px;
     transition: .25s;
     margin-bottom: 25px;
 }
@@ -58,12 +57,12 @@
 }
 
 #searchBar {
-border-radius: 5px;
-border: 0;
-height: 20px;
-width: 250px;
-padding: 10px;
-font-size: 15px;
+    border-radius: 5px;
+    border: 0;
+    height: 20px;
+    width: 250px;
+    padding: 10px;
+    font-size: 15px;
 }
 
 #sideBarImage {
@@ -75,7 +74,6 @@ font-size: 15px;
 #settingsDiv {
     width: 100%;
     background-color: black;
-    margin-top: 20px;
     gap: 10%;
     background-color: #0f0f2d;
 }
@@ -163,9 +161,6 @@ a:hover::after {
 }
     */
 
-#dynamicTitle {
-}
-
 #dropdownContainer {
     width: 100%;
     text-align: right;
@@ -182,9 +177,4 @@ a:hover::after {
     display: flex;
     flex-direction: column;
     gap: 5px;
-}
-
-
-#dynamicFacilities {
-
 }
