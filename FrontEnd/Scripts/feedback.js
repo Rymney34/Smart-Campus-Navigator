@@ -1,6 +1,8 @@
 const form = document.getElementById('feedbackForm');
 const response = document.getElementById('response');
+const submitButton = form.querySelector('button[type="submit"]');
 const user = JSON.parse(localStorage.getItem('user'));
+
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -24,8 +26,26 @@ form.addEventListener('submit', async (e) => {
       });
   
       const result = await res.json();
-      response.textContent = result.message || result.error;
+      
+      if (res.status === 429) {
+        response.textContent = result.error;
+        submitButton.disabled = true;
+        submitButton.textContent = "Daily Limit Reached";
+        submitButton.style.opacity = "0.5";
+      } else {
+        showToast(result.message);
+      }
     } catch (err) {
-      response.textContent = "Error submitting feedback. Please try again.";
+      response.textContent =err;
     }
   });
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+  
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000); // 3 seconds
+  }

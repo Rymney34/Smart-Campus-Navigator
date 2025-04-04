@@ -1,40 +1,39 @@
-<!-- Views/feedback.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Feedback</title>
-  <style>
-    body { font-family: Arial; padding: 2rem; max-width: 600px; margin: auto; }
-    label { display: block; margin: 0.5rem 0 0.2rem; }
-    textarea { width: 100%; height: 100px; }
-    button { margin-top: 1rem; }
-  </style>
+  <link rel="stylesheet" href="../StyleSheets/feedback.css" />
 </head>
 <body>
-  <h1>Leave Feedback</h1>
-  <form id="feedbackForm">
-    <label>Name:</label>
-    <input type="text" name="name" required />
+  <div class="feedback-container">
+    <div class="header">
+      <div class="back-arrow" onclick="window.history.back()">←</div>
+      <h1>Feedback</h1>
+    </div>
 
-    <label>Category:</label>
-    <select name="category" required>
-      <option>UI/UX</option>
-      <option>Bug Report</option>
-      <option>Feature Request</option>
-      <option>Other</option>
-    </select>
+    <form id="feedbackForm">
+      <label>Name:</label>
+      <input type="text" name="name" required />
 
-    <label>Message:</label>
-    <textarea name="message" required></textarea>
+      <label>Category:</label>
+      <select name="category" required>
+        <option>UI/UX</option>
+        <option>Bug Report</option>
+        <option>Feature Request</option>
+        <option>Other</option>
+      </select>
 
-    <button type="submit">Submit Feedback</button>
-  </form>
+      <label>Message:</label>
+      <textarea name="message" placeholder="Type Message Here . . ." required></textarea>
 
-  <p id="response"></p>
+      <button type="submit">Submit Feedback</button>
+    </form>
 
-  <button onclick="window.location.href='settings.html'">⬅ Back to Settings</button>
-
+    <p id="response"></p>
+  </div>
+ 
   <script type="module" src="../Scripts/feedback.js"></script>
+  <div id="toast" class="toast"></div>
 </body>
 </html>

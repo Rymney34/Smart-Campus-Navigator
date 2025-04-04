@@ -79,9 +79,33 @@ const loginUser = async (req, res) => {
 
 const postFeedback = async (req, res) => {
   try {
-    const feedback = new Feedback(req.body);
+    const { userId, name, category, message } = req.body;
+
+    // Calculate start & end of today
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Count how many feedbacks this user has submitted today
+    const feedbackCount = await Feedback.countDocuments({
+      userId,
+      submittedAt: { $gte: startOfDay, $lte: endOfDay }
+    });
+
+    if (feedbackCount >= 3) {
+      return res.status(429).json({
+        error: 'Daily feedback limit reached. Come back tomorrow!'
+      });
+    }
+
+    // Save the feedback if under the limit
+    const feedback = new Feedback({ name, category, message, userId });
     await feedback.save();
+
     res.status(201).json({ message: 'Feedback submitted!' });
+
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
