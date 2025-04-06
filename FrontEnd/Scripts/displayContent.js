@@ -1,26 +1,127 @@
-// display.Content.js
+import SideBar from '/Scripts/side-bar.js';
+import Settings from '/Scripts/settings.js';
 
-// Function to display location data in the sidebar
+const sideBar = new SideBar();
+const settings = new Settings("campus-list-container");
+
 const displayLocationData = (locationData) => {
+    // Ensure locationData is always an array
+    if (!Array.isArray(locationData)) {
+        locationData = [locationData]; 
+    }
+
+    // Create and append only the necessary new elements
+    const container = document.getElementById("campus-list-container");
+    const contentBox = document.createElement("div");
+    contentBox.id = "contentBox";
+    contentBox.innerHTML = `
+        <div><h1 id="dynamicTitle">Llandaff Campus</h1></div>
+        <div><img id="sideBarImage" src="imageUrl" alt=""><h1></h1></div>
+        <div id="dropdownContainer">
+            <select id="floorDropdown"></select>
+        </div>
+        <div>
+            <div id="buildingInfo">
+                <h1 id="roomLabel"></h1>
+                <h1 id="facilitiesLabel"></h1>
+            </div>
+            <div id="buildingInfo">
+                <h2 id="dynamicRooms"></h2>
+                <h2 id="dynamicFacilities"></h2>
+            </div>
+        </div>
+    `;
+
+    // Append it to the container
+    container.innerHTML = ''; // Clear existing content
+    container.appendChild(contentBox);
+
     const titleElement = document.getElementById("dynamicTitle");
     const imageElement = document.getElementById("sideBarImage");
     const roomsElement = document.getElementById("dynamicRooms");
     const facilitiesElement = document.getElementById("dynamicFacilities");
+    const floorDropdownElement = document.getElementById("floorDropdown");
+    const roomLabel = document.getElementById("roomLabel");
+    const facilitiesLabel = document.getElementById("facilitiesLabel");
 
-    // Assuming locationData contains fields for title, image URL, rooms, and facilities
-    if (titleElement && imageElement && roomsElement && facilitiesElement) {
-        // Clear any previous content
-        titleElement.textContent = locationData.name;
-        imageElement.src = locationData.image.image;
-        imageElement.alt = locationData.name;
+    if (!titleElement || !imageElement || !roomsElement || !facilitiesElement || !floorDropdownElement) return;
 
-        if (locationData.floorLocation && locationData.floorLocation.places) {
-            roomsElement.textContent = `Rooms: ${locationData.floorLocation.places.map(room => room.roomNumber).join(', ')}`;
+    roomLabel.textContent = "Rooms"
+    facilitiesLabel.textContent = "Facilities"
+
+    // Building title and image (first floor's data as default)
+    titleElement.textContent = locationData[0]?.name || "Unavailable";
+    imageElement.src = locationData[0]?.image?.image || "Image Unavailable";
+    imageElement.alt = locationData[0]?.name || "Building Image";
+
+    // Clear previous dropdown options
+    floorDropdownElement.innerHTML = "";
+
+    // Get unique floor numbers
+    const floors = [...new Set(locationData.map(floorData => floorData.floors.floorNum))].sort((a, b) => a - b);
+
+    // Populate the dropdown
+    floors.forEach(floorNum => {
+        const option = document.createElement("option");
+        option.value = floorNum;
+        option.textContent = `Floor ${floorNum}`;
+        floorDropdownElement.appendChild(option);
+    });
+
+    // Function to update rooms display when a floor is selected
+    const updateRoomsDisplay = (selectedFloor) => {
+        const selectedFloorData = locationData.find(floorData => floorData.floors.floorNum == selectedFloor);
+    
+        roomsElement.innerHTML = ""; // Clear previous content
+    
+        if (selectedFloorData?.floorLocation?.places?.length) {
+            // Only add room elements if rooms are defined and not empty
+            selectedFloorData.floorLocation.places.forEach(room => {
+                if (room.roomNumber) {  // Check if roomNumber exists
+                    const roomElement = document.createElement("div");
+                    roomElement.textContent = `${room.roomNumber}`;
+                    roomsElement.appendChild(roomElement);
+                }
+            });
         } else {
-            roomsElement.textContent = "Rooms: Not Available";
+            roomsElement.textContent = "";  // Display nothing if there are no rooms
         }
-        facilitiesElement.textContent = `Facilities: ${locationData.facilities}`;
-    }
+    };
+    
+
+    // Function to update facilities display when a floor is selected
+    const updateFacilitiesDisplay = (selectedFloor) => {
+        // Find all entries for the selected floor
+        const floorEntries = locationData.filter(floorData => floorData.floors.floorNum == selectedFloor);
+        
+        // Find the entry that contains locationType (facility)
+        const floorWithFacility = floorEntries.find(floorData => floorData.locationType?.typeName);
+
+        if (floorWithFacility) {
+            // Display the facility name
+            facilitiesElement.textContent = `${floorWithFacility.locationType.typeName}`;
+        } else {
+            facilitiesElement.textContent = "";
+        }
+    };
+
+    // Set default floor selection
+    updateRoomsDisplay(floors[0]);
+    updateFacilitiesDisplay(floors[0]);
+
+    // Open the sidebar when data is displayed
+    sideBar.openSideBar();  // Call the method to open the sidebar
+
+    // Add event listener for dropdown changes
+    floorDropdownElement.addEventListener("change", (event) => {
+        updateRoomsDisplay(event.target.value);
+        updateFacilitiesDisplay(event.target.value);
+    });
 };
+
+// Event listener for the settings button
+document.getElementById("settingsButton").addEventListener("click", function() {
+    settings.displaySettingsContent(); // Call the method to display the settings content
+});
 
 export { displayLocationData };

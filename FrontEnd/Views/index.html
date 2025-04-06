@@ -37,16 +37,23 @@
 
             <!--Display Database Info-->
             <div id="campus-list-container">
-                <div><h1 id="dynamicTitle"></h1></div>
-                <div><img id="sideBarImage" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.R0qwjyKFLZ9tdJprNa_wMQHaFP%26pid%3DApi&f=1&ipt=7f7591b164589e44dacd47296c8a22f1e72572de12021d4904ec96a3edc4602d&ipo=images" alt=""><h1></h1></div>
-                <div>
-                    <select id="floorDropdown">
-                        <option value="">Select a floor</option>
-                    </select>
-                </div>
-                <div id="buildingInfo">
-                    <h1 id="dynamicRooms"></h1>
-                    <h1 id="dynamicFacilities"></h1>
+                <div id="contentBox">
+                    <div><h1 id="dynamicTitle">Llandaff Campus</h1></div>
+                    <div><img id="sideBarImage" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.R0qwjyKFLZ9tdJprNa_wMQHaFP%26pid%3DApi&f=1&ipt=7f7591b164589e44dacd47296c8a22f1e72572de12021d4904ec96a3edc4602d&ipo=images" alt=""><h1></h1></div>
+                    <div id="dropdownContainer">
+                        <select id="floorDropdown">
+                        </select>
+                    </div>
+                    <div>
+                        <div id="buildingInfo">
+                            <h1 id="roomLabel"></h1>
+                            <h1 id="facilitiesLabel"></h1>
+                        </div>
+                        <div id="buildingInfo">
+                            <h2 id="dynamicRooms"></h2>
+                            <h2 id="dynamicFacilities"></h2>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -68,12 +75,12 @@
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     
     <!--Side Bar Logic-->
-    <script src="/Scripts/side-bar.js"></script>
+    <script type="module" src="/Scripts/side-bar.js"></script>
 
     <!-- Search Logic -->
     <script src="/Scripts/search.js"></script>
 
-    <script src="/Scripts/settings.js"></script>
+    <script type="module" src="/Scripts/settings.js"></script>
 
     <script type="module" src="/Scripts/displayContent.js"></script>
 

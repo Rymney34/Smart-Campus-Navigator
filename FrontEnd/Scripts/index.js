@@ -181,21 +181,14 @@ function resetGoButton() {
 
 
 // Function to Show Popup Menu
-function showPopupMenu(locationName, lat, lng) {
-    currentTargetLocation = [lat, lng]; // Store target location globally
-    document.getElementById("destinationText").textContent = locationName;
+function showPopupMenu(location) {
+    currentTargetLocation = [location.lat, location.lng];
+    document.getElementById("destinationText").textContent = location.name;
     popupMenu.style.display = "block";
 
-    const goButton = document.getElementById("goButton");
-    goButton.textContent = "GO";
-    goButton.style.background = "red";
-    goButton.style.border = "none";
-    
-
     let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
-    console.log(startLocation+"!!!!");
     if (startLocation) {
-        p.calculateETA(startLocation, [lat, lng], document);
+        p.calculateETA(startLocation, [location.lat, location.lng], document);
     }
 
     resetGoButton();
@@ -296,7 +289,7 @@ locationObjects.forEach(loc => {
 */
 
 // Function to create the marker with a base64 PNG icon
-const createMarkerWithIcon = (location, blockIconsMap) => {
+const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
     
     // Create the custom icon
@@ -324,7 +317,7 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
 
     // Add the click event listener to the marker
     marker.on('click', async () => {
-        console.log("Clicked Marker blockId requested :", location); 
+        console.log("Clicked Marker blockId requested :", location);
         console.log("blockId being sent:", location.blockId);
     
         if (!location.blockId) {
@@ -333,30 +326,32 @@ const createMarkerWithIcon = (location, blockIconsMap) => {
         }
     
         const locationData = await fetchLocationData(location.blockId);
-        
-        if (locationData && locationData.length > 0) {
+    
+        if (locationData.length > 0) {
             console.log("Received Data:", locationData);
-            
-            // Pass an Object not an Array
-            displayLocationData(locationData[0]);
+    
+            // Pass the entire array instead of just one object
+            displayLocationData(locationData);
+            showPopupMenu(locationData[0]);
         } else {
             console.error("No data received for block ID:", location.blockId);
         }
     });
-
+    
     return marker;
 };
 
 // Function to fetch location data based on the blockId
 const fetchLocationData = async (blockId) => {
     try {
-        // Use the blockId to fetch the relevant location data
         const response = await fetch(`/getLocations/${blockId}`);
-        const data = await response.json();
-        return data;  // Return the fetched data for further use
+        let data = await response.json();
+
+        // Ensure it's always an array
+        return Array.isArray(data) ? data : [data];
     } catch (error) {
         console.error("Error fetching location data:", error);
-        return null;
+        return [];
     }
 };
 
@@ -376,8 +371,34 @@ const iconG = async () => {
 
         // Create location objects with custom icons (base64 PNGs)
         locations.forEach(locData => {
-            const marker = createMarkerWithIcon(locData, blockIconsMap);
-            marker.addTo(map); // Add the marker to the map
+            const blockImage = blockIconsMap[locData.name];
+            const icon = blockImage ? L.divIcon({
+                className: 'custom-icon',
+                html: `<img src="data:image/png;base64,${blockImage}" alt="${locData.name}" style="width: 60px; height: 60px;" />`,
+                iconSize: [60, 60],
+                iconAnchor: [30, 30],
+            }) : L.divIcon({
+                className: 'custom-icon',
+                html: `<span>${locData.name}</span>`,
+                iconSize: [60, 60],
+                iconAnchor: [30, 30],
+            });
+
+            const location = new Location(locData.name, locData.lat, locData.lng);
+            location.icon = icon;
+            const marker = L.marker(location.getLatLng(), { icon });
+
+            marker.on('click', async () => {
+                const locationData = await fetchLocationData(locData.blockId);
+                if (locationData.length > 0) {
+                    displayLocationData(locationData);
+                    showPopupMenu(location);
+                } else {
+                    console.error("No data received for block ID:", locData.blockId);
+                }
+            });
+
+            marker.addTo(map);
         });
 
     } catch (error) {
@@ -396,9 +417,6 @@ const getAllIcons = async () => {
     }
 };
 
-
-
-
 getAllIcons()
 // Call the iconG function to load the map markers
-iconG();
+iconG(showPopupMenu);

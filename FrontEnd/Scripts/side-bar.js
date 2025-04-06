@@ -1,27 +1,57 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const sideBarButton = document.getElementById("side-barButton");
-    const sideBar = document.getElementById("side-bar");
-    const sideBarHeader = document.getElementById("side-barHeader");
-    const campusListContainer = document.getElementById("campus-list-container");
+import Settings from '/Scripts/settings.js'; 
 
-    // Event Listener for toggling the sidebar
-    sideBarButton.addEventListener("click", function () {
-        sideBar.classList.toggle("active");
-        sideBarButton.classList.toggle("active");
-        sideBarHeader.classList.toggle("active");
+class SideBar {
+    constructor() {
+        this.sideBarButton = document.getElementById("side-barButton");
+        this.sideBar = document.getElementById("side-bar");
+        this.sideBarHeader = document.getElementById("side-barHeader");
+        this.campusListContainer = document.getElementById("campus-list-container");
+        this.settingsButton = document.getElementById("settingsButton");
 
-        // Change Icon when Active
-        sideBarButton.innerHTML = sideBarButton.innerHTML === "☰" ? "✖" : "☰";
+        this.settings = new Settings("campus-list-container");
+        this.bindEvents();
+    }
 
-         // Toggle background color
-         if (sideBar.classList.contains("active")) {
-            campusListContainer.style.backgroundColor = "rgba(255, 255, 255, 1)";
+    bindEvents() {
+        this.sideBarButton.addEventListener("click", () => this.toggleSideBar());
+        this.settingsButton?.addEventListener("click", () => this.displaySettings());
+    }
+
+    // Toggle Sidebar
+    toggleSideBar() {
+        this.sideBar.classList.toggle("active");
+        this.sideBarButton.classList.toggle("active");
+        this.sideBarHeader.classList.toggle("active");
+
+        // Change Icon based on active state
+        this.updateButtonIcon();
+    }
+
+    // Update the button icon based on sidebar state
+    updateButtonIcon() {
+        if (this.sideBar.classList.contains("active")) {
+            // If the sidebar is active, set button icon to "✖"
+            this.sideBarButton.innerHTML = "✖";
+        } else {
+            // If the sidebar is not active, set button icon to "☰"
+            this.sideBarButton.innerHTML = "☰";
         }
+    }
 
-        document.getElementById("settingsButton").addEventListener("click", function() {
-            campusListContainer.style.backgroundColor = "rgba(255, 255, 255, 0)";
-            displaySettingsContent();
-        });
+    // Settings button click
+    displaySettings() {
+        this.settings.displaySettingsContent(); 
+    }
 
-    });
-});
+    // Method to open sidebar when data is displayed
+    openSideBar() {
+        this.sideBar.classList.add("active");
+        this.sideBarButton.classList.add("active");
+        this.sideBarHeader.classList.add("active");
+
+        // Update the icon when opening the sidebar manually
+        this.updateButtonIcon();
+    }
+}
+
+export default SideBar;
