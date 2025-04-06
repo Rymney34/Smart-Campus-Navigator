@@ -19,6 +19,8 @@ import {
 
 import { displayLocationData } from '../Scripts/displayContent.js';
 
+import { extendedLocations } from '../Assets/FetchMethods/fetchExtendedLocationMarkers.js';
+
 /*
 import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
 } from '../Assets/FetchMethods/fetchIcons.js';
@@ -288,6 +290,7 @@ locationObjects.forEach(loc => {
 });
 */
 
+/*
 // Function to create the marker with a base64 PNG icon
 const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
@@ -343,6 +346,7 @@ const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
 
     return marker;
 };
+*/
 
 // Function to fetch location data based on the blockId
 const fetchLocationData = async (blockId) => {
@@ -363,6 +367,8 @@ const iconG = async () => {
         // Fetch all block icons from the server (base64 images)
         const response = await fetch("/getIcons");
         const data = await response.json();
+
+        console.log("Retrieved icon data:", data);
 
         // Map the block names to their corresponding base64 PNG
         const blockIconsMap = data.reduce((map, item) => {
@@ -394,6 +400,8 @@ const iconG = async () => {
             marker.on('click', async () => {
                 const locationData = await fetchLocationData(locData.blockId);
                 if (locationData.length > 0) {
+                    console.log("Clicked Marker blockId requested :", location);
+                    console.log("blockId being sent:", location.blockId);
                     displayLocationData(locationData);
                     showPopupMenu(location);
                 } else {
@@ -409,5 +417,8 @@ const iconG = async () => {
     }
 };
 
+
+
 // Call the iconG function to load the map markers
 iconG(showPopupMenu);
+

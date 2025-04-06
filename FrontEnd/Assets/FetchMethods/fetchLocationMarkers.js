@@ -12,4 +12,5 @@ export const locations = [
     { lat: 51.4961059391983, lng: -3.212060487692494, name: "Block A", blockId:"67b90f414df331b174fe8e83" },
     { lat: 51.49580949730753, lng: -3.2121276855468754, name: "Block C", blockId:"67cb4e7f1c224389bba721b8" },
     { lat: 51.495878911942164, lng: -3.2129484415054326, name: "Block E", blockId:"67cb49e353dce04fb8017212" },  
+    
 ];
