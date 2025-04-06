@@ -13,7 +13,7 @@ router.get("/getFacilitiesicons", async (req, res) => {
         const result = await ic1();
     
         // const base64Image = result.image.toString('base64');
-        console.log(result);
+        // console.log(result);
 
         res.json(result);
     } catch (e) {

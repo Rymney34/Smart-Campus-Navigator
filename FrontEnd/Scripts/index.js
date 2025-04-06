@@ -417,6 +417,28 @@ const getAllIcons = async () => {
     }
 };
 
-getAllIcons()
+
+const getSearchData = async (searchTerm) => {
+  
+    try {
+
+        const response = await fetch (`/getSearchData/${searchTerm}`);
+        if (!response.ok) throw new Error("Fetch failed");
+        const data = await response.json();
+
+        console.log("Gazoz")
+        
+
+        return Array.isArray(data) ? data : [data];
+      
+    }catch (error) {
+        console.error("Error fetching location data:", error);
+        return [];
+    }
+};
+
+getSearchData("Block A");
+
+getAllIcons();
 // Call the iconG function to load the map markers
 iconG(showPopupMenu);

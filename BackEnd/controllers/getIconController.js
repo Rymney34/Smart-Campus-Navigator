@@ -39,7 +39,7 @@ async function ic1() {
         
         const res = await locationType.aggregate(q).exec();
         
-        console.log("TEST LOG" + res)
+        // console.log("TEST LOG" + res)
 
         return res;
 
