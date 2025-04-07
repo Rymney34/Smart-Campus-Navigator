@@ -1,6 +1,9 @@
 // Import Map Click Feature - Removable Feature (Developer Only Feature)
 import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js";
 
+// Import Function that ignores the OSRM warning that we are using OSRM's Demo Server (We know)
+import { suppressOSRMSWarning } from "../Tools/MapTools/suppressWarnings.js";
+
 import PathFinder from "../Models/Path-finder.js"
 import Location from "../Models/Location.js"
 import Block from "../Models/Block.js"
@@ -33,6 +36,10 @@ import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlock
 import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
 document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
 */
+
+// Suppress OSRM demo server warning
+suppressOSRMSWarning();
+
 
 console.log(L.Routing)
 
@@ -293,6 +300,7 @@ locationObjects.forEach(loc => {
 });
 */
 
+/*
 // Function to create the marker with a base64 PNG icon
 const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
     const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
@@ -345,6 +353,7 @@ const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
     
     return marker;
 };
+*/
 
 // Function to fetch location data based on the blockId
 const fetchLocationData = async (blockId) => {
@@ -394,15 +403,23 @@ const iconG = async () => {
             const marker = L.marker(location.getLatLng(), { icon });
 
             marker.on('click', async () => {
-                const locationData = await fetchLocationData(locData.blockId);
-                if (locationData.length > 0) {
-                    displayLocationData(locationData);
-                    showPopupMenu(location);
-                } else {
-                    console.error("No data received for block ID:", locData.blockId);
+                console.log("Clicked marker for:", locData.name, ":", locData.blockId);
+                console.log("Requesting data for block ID:", locData.blockId);
+            
+                try {
+                    const locationData = await fetchLocationData(locData.blockId);
+                    console.log("Data received from server:", locationData);
+            
+                    if (locationData.length > 0) {
+                        displayLocationData(locationData);
+                        showPopupMenu(location);
+                    } else {
+                        console.warn("No matching data found for block ID:", locData.blockId);
+                    }
+                } catch (err) {
+                    console.error("Error during data fetch:", err);
                 }
             });
-
             marker.addTo(map);
         });
 
@@ -463,8 +480,6 @@ const displayExtendedLocations = async () => {
         console.error("Error displaying extended locations:", error);
     }
 };
-
-
 
 //getAllIcons()
 iconG(showPopupMenu);
