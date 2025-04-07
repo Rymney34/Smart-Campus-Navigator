@@ -324,5 +324,26 @@ getAllLocationData();
 getAllIcons()
 */
 
+
+const getSearchData = async (searchTerm) => {
+  
+    try {
+
+        const response = await fetch (`/getSearchData/${searchTerm}`);
+        if (!response.ok) throw new Error("Fetch failed");
+        const data = await response.json();
+
+        return Array.isArray(data) ? data : [data];
+      
+    }catch (error) {
+        console.error("Error fetching location data:", error);
+        return [];
+    }
+};
+
+getSearchData("Block A");
+
+
+// Call the iconG function to load the map markers
 iconG(showPopupMenu);
 displayExtendedLocations()

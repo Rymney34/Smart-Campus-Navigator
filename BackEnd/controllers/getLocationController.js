@@ -163,7 +163,7 @@ async function getLocation(blockId) {
         return blockInfo;
 
     } catch (error) {
-        console.error("Error in imag1:", error.message);
+        console.error("Error in location controller:", error.message);
         throw error;
     }
 }
