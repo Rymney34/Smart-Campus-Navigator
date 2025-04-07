@@ -17,6 +17,11 @@ import {
     locations
 } from '../Assets/FetchMethods/fetchLocationMarkers.js';
 
+// Import Marker Location Coordinates
+import {
+    extendedLocations
+} from '../Assets/FetchMethods/fetchLocationMarkers.js';
+
 import { displayLocationData } from '../Scripts/displayContent.js';
 
 /*
@@ -412,11 +417,55 @@ const getAllIcons = async () => {
         const response = await fetch("/getFacilitiesicons");
         const data = await response.json();
 
+        console.log("Icons fetched:", data);
+
+
     } catch (error) {
         console.error("Error fetching icons:", error);
     }
 };
 
-getAllIcons()
-// Call the iconG function to load the map markers
+const displayExtendedLocations = async () => {
+    try {
+        // Fetch facility icons from the server
+        const response = await fetch("/getFacilitiesicons");
+        const data = await response.json();
+
+        // Map facility types (typeName) to base64 icons
+        const facilityIconsMap = data.reduce((map, item) => {
+            if (item.typeName && item.image) {
+                map[item.typeName] = item.image;
+            }
+            return map;
+        }, {});
+
+        // Loop through extendedLocations and place markers with custom icons
+        extendedLocations.forEach(locData => {
+            const facilityImage = facilityIconsMap[locData.name]; // locData.name matches typeName
+            const icon = facilityImage ? L.divIcon({
+                className: 'custom-icon',
+                html: `<img src="data:image/png;base64,${facilityImage}" alt="${locData.name}" style="width: 50px; height: 50px;" />`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15],
+            }) : L.divIcon({
+                className: 'custom-icon',
+                html: `<span>${locData.name}</span>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15],
+            });
+
+            const marker = L.marker([locData.lat, locData.lng], { icon });
+
+            marker.addTo(map);
+        });
+
+    } catch (error) {
+        console.error("Error displaying extended locations:", error);
+    }
+};
+
+
+
+//getAllIcons()
 iconG(showPopupMenu);
+displayExtendedLocations()
