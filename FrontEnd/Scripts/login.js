@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.message === 'Login successful') {
                 alert('Login successful');
+                localStorage.setItem('user', JSON.stringify(data.user));
                 window.location.href = '/Views/index.html'; // Redirect to index.html (Map View)
             } else {
                 alert('Error logging in');
