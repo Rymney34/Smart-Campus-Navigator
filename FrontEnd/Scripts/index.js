@@ -1,45 +1,28 @@
-// Import Map Click Feature - Removable Feature (Developer Only Feature)
+// Import Tools
 import { mapClickHandler } from "../Tools/MapTools/mapClickHandler.js";
-
-// Import Function that ignores the OSRM warning that we are using OSRM's Demo Server (We know)
 import { suppressOSRMSWarning } from "../Tools/MapTools/suppressWarnings.js";
 
+// Import Directions Logic
 import PathFinder from "../Models/Path-finder.js"
 import Location from "../Models/Location.js"
 import Block from "../Models/Block.js"
-// Import Building Coordinates
+
+// Import Polygon Logic
 import { buildingCoords } from '../Assets/FetchMethods/fetchPolygonMarkers.js';
+import { polygonStyle } from '../Tools/MapTools/mapPolygonColour.js';
 
-// Import Polygon Colour Setting
-import {
-    polygonStyle
-} from '../Tools/MapTools/mapPolygonColour.js';
+// Import Marker Location Logic
+import { locations } from '../Assets/FetchMethods/fetchLocationMarkers.js';
+import { extendedLocations } from '../Assets/FetchMethods/fetchLocationMarkers.js';
 
-// Import Marker Location Coordinates
-import {
-    locations
-} from '../Assets/FetchMethods/fetchLocationMarkers.js';
-
-// Import Marker Location Coordinates
-import {
-    extendedLocations
-} from '../Assets/FetchMethods/fetchLocationMarkers.js';
+// Import Testing Tools
+import { getAllIcons } from '../Tools/TestingTools/markerTestingTools.js';
+import { getAllLocationData } from '../Tools/TestingTools/markerTestingTools.js';
 
 import { displayLocationData } from '../Scripts/displayContent.js';
 
-/*
-import {svgIconBlockO, svgIconBlockB, svgIconBlockM, svgIconBlockT, svgIconBlockD, svgIconBlockF, svgIconBlockN, svgIconBlockL, svgIconBlockC, svgIconBlockP, svgIconBlockA, svgIconBlockE
-} from '../Assets/FetchMethods/fetchIcons.js';
-*/
-
-/*
-import { svgIconSideBarButton } from './FetchMethods/fetchIcons.js';
-document.getElementById("side-barButton").innerHTML = svgIconSideBarButton;
-*/
-
 // Suppress OSRM demo server warning
 suppressOSRMSWarning();
-
 
 console.log(L.Routing)
 
@@ -68,13 +51,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 var routingControl = null;
 var p;
 
-
-/*document.addEventListener("DOMContentLoaded", () => {
-    console.log("✅ Leaflet and Routing Machine fully loaded.");
-    console.log(L.Routing)
-    p = new PathFinder(map);
-    p.setupUserLocation();
-});*/
 p = new PathFinder(map);
 p.setupUserLocation();
 
@@ -156,6 +132,7 @@ document.getElementById("startLocationSelect").addEventListener("change", functi
 document.getElementById("popupHeader").addEventListener("click", function () {
     document.getElementById("popupMenu").classList.toggle("minimized");
 });
+
 // Global variable to store the current target location
 let currentTargetLocation = null;
 
@@ -206,22 +183,6 @@ function showPopupMenu(location) {
     resetGoButton();
 }
 
-// When commented out no noticable change on website
-/* 
-function findLocation(locationName,lat,lng) {
-    let startLocation;
-    popupMenu.style.display = "block";
-    let selectedValue = startLocationSelect.value;
-    if (selectedValue === "live") {
-        startLocation = [userLatLng.lat,userLatLng.lng]; // Use live location
-    } else {
-        startLocation = JSON.parse(selectedValue); // Convert stored coordinates back to an array
-    }
-    calculateETA(startLocation,[lat,lng]);
-    return startLocation;
-}
-*/
-
 // Call Map Click Handler (Developer Only Feature)
 mapClickHandler(map);
 
@@ -244,116 +205,6 @@ locations.forEach(function(location) {
     option.textContent = location.name;
     startLocationSelect.appendChild(option);
 });
-
-/*
-let iconSize = [60, 60]
-let iconAnchor = [30, 30]
-
-// Function to generate custom icons for each block type
-function createCustomIcon(block, svgIcon) {
-    return L.divIcon({
-        className: 'custom-icon',
-        html: svgIcon,
-        iconSize: iconSize,
-        iconAnchor: iconAnchor,
-    });
-}*/
-
-/*
-// Map block types to SVG icons
-const blockIcons = {
-    "Block O": svgIconBlockO,
-    "Block B": svgIconBlockB,
-    "Block F": svgIconBlockF,
-    "Block M": svgIconBlockM,
-    "Block N": svgIconBlockN,
-    "Block D": svgIconBlockD,
-    "Block T": svgIconBlockT,
-    "Block L": svgIconBlockL,
-    "Block P": svgIconBlockP,
-    "Block A": svgIconBlockA,
-    "Block C": svgIconBlockC,
-    "Block E": svgIconBlockE,
-};
-
-// Create custom icons for each block type
-/*const customIcons = Object.keys(blockIcons).reduce((icons, block) => {
-    icons[block] = createCustomIcon(block, blockIcons[block]);
-    return icons;
-}, {});*/
-
-/*
-const locationObjects = locations.map(locData => {
-    const loc = new Location(locData.name, locData.lat, locData.lng, L.divIcon({
-        className: 'custom-icon',
-        html: blockIcons[locData.name],
-        iconSize: [60, 60],
-        iconAnchor: [30, 30]
-    }));
-    loc.createMarker(map, showPopupMenu);
-    return loc;
-});
-
-const locationMap = {};
-locationObjects.forEach(loc => {
-    locationMap[loc.name] = loc;
-});
-*/
-
-/*
-// Function to create the marker with a base64 PNG icon
-const createMarkerWithIcon = (location, blockIconsMap, showPopupMenu) => {
-    const blockImage = blockIconsMap[location.name]; // Get the base64 PNG for this block
-    
-    // Create the custom icon
-    let icon;
-    if (blockImage) {
-        icon = L.divIcon({
-            className: 'custom-icon',
-            html: `<img src="data:image/png;base64,${blockImage}" alt="${location.name}" style="width: 60px; height: 60px;" />`,
-            iconSize: [60, 60],
-            iconAnchor: [30, 30],
-        });
-        
-    } else {
-        console.error(`No image found for ${location.name}`);
-        icon = L.divIcon({
-            className: 'custom-icon',
-            html: `<span>${location.name}</span>`,
-            iconSize: [60, 60],
-            iconAnchor: [30, 30],
-        });
-    }
-
-    // Create a marker with the icon
-    const marker = L.marker([location.lat, location.lng], { icon: icon });
-
-    // Add the click event listener to the marker
-    marker.on('click', async () => {
-        console.log("Clicked Marker blockId requested :", location);
-        console.log("blockId being sent:", location.blockId);
-    
-        if (!location.blockId) {
-            console.error("Error: blockId is undefined!");
-            return;
-        }
-    
-        const locationData = await fetchLocationData(location.blockId);
-    
-        if (locationData.length > 0) {
-            console.log("Received Data:", locationData);
-    
-            // Pass the entire array instead of just one object
-            displayLocationData(locationData);
-            showPopupMenu(locationData[0]);
-        } else {
-            console.error("No data received for block ID:", location.blockId);
-        }
-    });
-    
-    return marker;
-};
-*/
 
 // Function to fetch location data based on the blockId
 const fetchLocationData = async (blockId) => {
@@ -404,11 +255,11 @@ const iconG = async () => {
 
             marker.on('click', async () => {
                 console.log("Clicked marker for:", locData.name, ":", locData.blockId);
-                console.log("Requesting data for block ID:", locData.blockId);
+                console.log("   Requesting data for block ID:", locData.blockId);
             
                 try {
                     const locationData = await fetchLocationData(locData.blockId);
-                    console.log("Data received from server:", locationData);
+                    console.log("   Data received from server:", locationData);
             
                     if (locationData.length > 0) {
                         displayLocationData(locationData);
@@ -420,22 +271,9 @@ const iconG = async () => {
                     console.error("Error during data fetch:", err);
                 }
             });
+            
             marker.addTo(map);
         });
-
-    } catch (error) {
-        console.error("Error fetching icons:", error);
-    }
-};
-
-const getAllIcons = async () => {
-    try {
-        // Fetch all block icons from the server (base64 images)
-        const response = await fetch("/getFacilitiesicons");
-        const data = await response.json();
-
-        console.log("Icons fetched:", data);
-
 
     } catch (error) {
         console.error("Error fetching icons:", error);
@@ -481,6 +319,10 @@ const displayExtendedLocations = async () => {
     }
 };
 
-//getAllIcons()
+/* Testing Tools
+getAllLocationData();
+getAllIcons()
+*/
+
 iconG(showPopupMenu);
 displayExtendedLocations()
