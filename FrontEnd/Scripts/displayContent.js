@@ -16,6 +16,7 @@ const displayLocationData = (locationData) => {
     contentBox.id = "contentBox";
     contentBox.innerHTML = `
         <div><h1 id="dynamicTitle">Llandaff Campus</h1></div>
+        <div><h2 id="dynamicBuildingTitle"></h2></div>
         <div><img id="sideBarImage" src="imageUrl" alt=""><h1></h1></div>
         <div id="dropdownContainer">
             <select id="floorDropdown"></select>
@@ -37,6 +38,7 @@ const displayLocationData = (locationData) => {
     container.appendChild(contentBox);
 
     const titleElement = document.getElementById("dynamicTitle");
+    const buildingTitleElement = document.getElementById("dynamicBuildingTitle");
     const imageElement = document.getElementById("sideBarImage");
     const roomsElement = document.getElementById("dynamicRooms");
     const facilitiesElement = document.getElementById("dynamicFacilities");
@@ -44,13 +46,14 @@ const displayLocationData = (locationData) => {
     const roomLabel = document.getElementById("roomLabel");
     const facilitiesLabel = document.getElementById("facilitiesLabel");
 
-    if (!titleElement || !imageElement || !roomsElement || !facilitiesElement || !floorDropdownElement) return;
+    if (!titleElement || !buildingTitleElement || !imageElement || !roomsElement || !facilitiesElement || !floorDropdownElement) return;
 
     roomLabel.textContent = "Rooms"
     facilitiesLabel.textContent = "Facilities"
 
     // Building title and image (first floor's data as default)
     titleElement.textContent = locationData[0]?.name || "Unavailable";
+    buildingTitleElement.textContent = locationData[0]?.title || "Building Title Unavailable";
     imageElement.src = locationData[0]?.image?.image || "Image Unavailable";
     imageElement.alt = locationData[0]?.name || "Building Image";
 
