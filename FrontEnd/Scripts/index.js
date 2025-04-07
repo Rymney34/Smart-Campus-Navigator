@@ -319,6 +319,11 @@ const displayExtendedLocations = async () => {
     }
 };
 
+/* Testing Tools
+getAllLocationData();
+getAllIcons()
+*/
+
 
 const getSearchData = async (searchTerm) => {
   
@@ -340,11 +345,5 @@ getSearchData("Block A");
 
 
 // Call the iconG function to load the map markers
-
-/* Testing Tools
-getAllLocationData();
-getAllIcons()
-*/
-
 iconG(showPopupMenu);
 displayExtendedLocations()
