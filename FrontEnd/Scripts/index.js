@@ -426,9 +426,6 @@ const getSearchData = async (searchTerm) => {
         if (!response.ok) throw new Error("Fetch failed");
         const data = await response.json();
 
-        console.log("Gazoz")
-        
-
         return Array.isArray(data) ? data : [data];
       
     }catch (error) {

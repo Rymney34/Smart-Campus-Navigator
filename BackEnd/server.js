@@ -7,6 +7,7 @@ const imgSend = require("./routes/getImage.js");
 const facilitiesIcons = require("./routes/getFacilitiesIcons.js");
 const iconAllSend = require("./routes/getMapIcon.js");
 const getLocations = require("./routes/getLocations.js");
+const getSearchData = require("./routes/getSearchData.js")
 
 const path = require('path') // Require path module (Handle File Paths) Used when launching the website FrontEnd 
 // require('./BackEnd/dbConnect'); 
@@ -34,6 +35,7 @@ app.use("/api", userRoutes);
 app.use( imgSend);
 app.use( getLocations);
 app.use( iconAllSend);
+app.use( getSearchData)
 
 
 // Start Server on Local Host (http://localhost:3000)
