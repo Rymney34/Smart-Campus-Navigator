@@ -17,12 +17,15 @@ const createUser = async (req, res) => {
   try {
     const { firstName, surname, email, password, isAdmin = false } = req.body;
 
+    // Hash Password
+    const hashPass = await bcrypt.hash(password, 10);
+
     // Create a new user object with all necessary fields
     const newUser = new User({
       firstName,
       surname,
       email,
-      password,
+      password: hashPass, // Store the hashed password
       isAdmin
     });
 
@@ -35,7 +38,6 @@ const createUser = async (req, res) => {
       firstName: newUser.firstName,
       surname: newUser.surname,
       email: newUser.email,
-      password: newUser.password,
       isAdmin: newUser.isAdmin
     });
   } catch (err) {
@@ -43,8 +45,7 @@ const createUser = async (req, res) => {
   }
 };
 
-// Login user (Plain Text Password Comparison)
-// Will Need Revision When Hashing Password
+// Login user
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -56,8 +57,10 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    // Compare the entered password with the stored password
-    if (user.password !== password) {
+    // Compare the entered password with the hashed password stored in the database
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
