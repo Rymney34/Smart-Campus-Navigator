@@ -1,41 +1,60 @@
 import { displayLocationData } from "./displayContent.js";
-document.getElementById("searchBar").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Prevent form submission if inside a form
-        let campusListContainer = document.getElementById("campus-list-container");
-        campusListContainer.style.backgroundColor = "rgba(255, 255, 255, 1)";
-        performSearch();
-    }
-});
+const autocompleteList = document.getElementById("autocompleteList");
 
-function performSearch() {
-    let searchBar = document.getElementById("searchBar"); 
-    let query = searchBar.value.trim();
-
-    if (query) {
-        updateCampusList(query);
+searchBar.addEventListener("input", async function () {
+    const query = searchBar.value.trim();
+    if (!query) {
+        autocompleteList.innerHTML = "";
+        return;
     }
 
-    // Clear input field after search
-    searchBar.value = "";
-}
-
-// Example: Update the campus list based on search results
-async function updateCampusList(query) {
     try {
         const response = await fetch(`/getSearchData/${encodeURIComponent(query)}`);
         const data = await response.json();
 
-        if (!data || data.length === 0) {
-            document.getElementById("campus-list-container").innerHTML = "<p>No results found.</p>";
-            return;
-        }
+        // Remove old list
+        autocompleteList.innerHTML = "";
 
-        // ✅ Reuse the same layout renderer
-        displayLocationData(data);
+        const seen = new Set();
+
+        data.forEach(item => {
+            const building = item.name || "Unknown Block";
+            const title = item.title || "Unknown School";
+            const type = item.locationType?.typeName;
+            const label = type ? `${type} — ${building}` : `${building} — ${title}`;
+
+            if (seen.has(label)) return;
+            seen.add(label);
+
+            const entry = document.createElement("div");
+            entry.classList.add("autocomplete-item");
+            entry.textContent = label;
+
+            entry.addEventListener("click", () => {
+                displayLocationData(data.filter(d => {
+                    const b = d.name || "Unknown Block";
+                    const t = d.title || "Unknown School";
+                    const ty = d.locationType?.typeName;
+                    const lbl = ty ? `${ty} — ${b}` : `${b} — ${t}`;
+                    return lbl === label;
+                }));
+                autocompleteList.innerHTML = "";
+                searchBar.value = "";
+            });
+
+            autocompleteList.appendChild(entry);
+        });
 
     } catch (error) {
-        console.error("Search error:", error);
-        document.getElementById("campus-list-container").innerHTML = "<p>Something went wrong while searching.</p>";
+        console.error("Autocomplete fetch failed", error);
+        autocompleteList.innerHTML = "";
     }
-}
+});
+
+// Hide dropdown if user clicks elsewhere
+document.addEventListener("click", (event) => {
+    if (!autocompleteList.contains(event.target) && event.target !== searchBar) {
+        autocompleteList.innerHTML = "";
+    }
+});
+
