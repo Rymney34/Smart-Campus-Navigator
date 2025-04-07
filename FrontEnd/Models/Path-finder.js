@@ -100,7 +100,7 @@ class PathFinder {
             
             setTimeout(() => {
                 router.getPlan().setWaypoints([]); 
-                this.map.removeControl(router);  
+                //this.map.removeControl(router); // Commented out as kept throwing error in console
             }, 0);
         });
 }
