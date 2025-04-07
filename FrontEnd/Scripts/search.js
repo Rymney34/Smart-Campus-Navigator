@@ -1,4 +1,7 @@
 import { displayLocationData } from "./displayContent.js";
+import { showPopupMenu } from "./index.js";
+import { locations } from "../Assets/FetchMethods/fetchLocationMarkers.js";
+import Location from "../Models/Location.js"
 const autocompleteList = document.getElementById("autocompleteList");
 
 searchBar.addEventListener("input", async function () {
@@ -31,13 +34,30 @@ searchBar.addEventListener("input", async function () {
             entry.textContent = label;
 
             entry.addEventListener("click", () => {
-                displayLocationData(data.filter(d => {
+                const matchingItems = data.filter(d => {
                     const b = d.name || "Unknown Block";
                     const t = d.title || "Unknown School";
                     const ty = d.locationType?.typeName;
                     const lbl = ty ? `${ty} — ${b}` : `${b} — ${t}`;
                     return lbl === label;
-                }));
+                });
+            
+                if (matchingItems.length > 0) {
+                    const first = matchingItems[0];
+                    // This updates the popup/ETA/GO logic just like clicking a map marker
+                    const match = locations.find(loc => loc.name === item.name);
+
+                if (match) {
+                    const location = new Location(match.name, match.lat, match.lng); // or however you construct it
+                    showPopupMenu(location);
+                } else {
+                    console.warn("Could not find matching Location object for popup menu.");
+                }
+                displayLocationData(matchingItems); 
+
+
+                }
+            
                 autocompleteList.innerHTML = "";
                 searchBar.value = "";
             });
@@ -55,6 +75,18 @@ searchBar.addEventListener("input", async function () {
 document.addEventListener("click", (event) => {
     if (!autocompleteList.contains(event.target) && event.target !== searchBar) {
         autocompleteList.innerHTML = "";
+    }
+});
+
+searchBar.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        const firstItem = document.querySelector(".autocomplete-item");
+        if (firstItem) {
+            firstItem.click(); 
+        } else {
+            alert("No matching results found.");
+        }
     }
 });
 
