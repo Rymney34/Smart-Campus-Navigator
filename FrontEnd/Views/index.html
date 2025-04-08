@@ -28,9 +28,10 @@
                 </div>
 
                 <!--Search Bar-->
-                <div id="searchDiv">
+                <div id="searchDiv" style="position: relative;">
                     <div>
                         <input id="searchBar" type="text" placeholder="Search:">
+                        <div id="autocompleteList" class="autocomplete-list"></div> 
                     </div>
                 </div>                
             </div>  
@@ -79,7 +80,7 @@
     <script type="module" src="/Scripts/side-bar.js"></script>
 
     <!-- Search Logic -->
-    <script src="/Scripts/search.js"></script>
+    <script type=module src="/Scripts/search.js"></script>
 
     <script type="module" src="/Scripts/settings.js"></script>
 

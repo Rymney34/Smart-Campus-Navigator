@@ -178,3 +178,30 @@ a:hover::after {
     flex-direction: column;
     gap: 5px;
 }
+
+.autocomplete-list {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    color: black !important;
+}
+
+.autocomplete-item:hover {
+    background-color: #f0f0f0;
+    color: black !important;
+}
+
+#side-bar:not(.active) #autocompleteList {
+    display: none !important;
+}

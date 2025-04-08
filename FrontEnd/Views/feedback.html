@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Navigation System Login</title>
-
-    <link rel="stylesheet" href="/StyleSheets/global.css">
-
+  <meta charset="UTF-8" />
+  <title>Feedback</title>
+  <link rel="stylesheet" href="../StyleSheets/feedback.css" />
 </head>
 <body>
-    <div id="containerDiv1">
-        <div id="feedbackContainer">
-            <form action="">
-                <select name="" id="">
-                    <option value="1">Problem</option>
-                    <option value="2">Complaint</option>
-                    <option value="3">Suggestion</option>
-                    <option value="3">Other</option>
-                </select>
-
-                <label for="feedbackMessage">Your Message:</label>
-                <textarea id="feedbackMessage" rows="5" placeholder="Please describe your feedback..."></textarea>
-    
-                <button id="submitFeedbackButton">Submit Feedback</button>
-
-            </form>
-        </div>
+  <div class="feedback-container">
+    <div class="header">
+      <div class="back-arrow" onclick="window.history.back()">←</div>
+      <h1>Feedback</h1>
     </div>
+
+    <form id="feedbackForm">
+      <label>Name:</label>
+      <input type="text" name="name" required />
+
+      <label>Category:</label>
+      <select name="category" required>
+        <option>UI/UX</option>
+        <option>Bug Report</option>
+        <option>Feature Request</option>
+        <option>Other</option>
+      </select>
+
+      <label>Message:</label>
+      <textarea name="message" placeholder="Type Message Here . . ." required></textarea>
+
+      <button type="submit">Submit Feedback</button>
+    </form>
+
+    <p id="response"></p>
+  </div>
+ 
+  <script type="module" src="../Scripts/feedback.js"></script>
+  <div id="toast" class="toast"></div>
 </body>
 </html>

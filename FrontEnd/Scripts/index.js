@@ -158,9 +158,9 @@ function resetGoButton() {
         goButton.style.border = "2px solid red";
 
         goButton.onclick = function () {
-            if (routingControl) {
-                map.removeControl(routingControl);
-                routingControl = null;
+            if (p.routingControl) {
+                map.removeControl(p.routingControl);
+                p.routingControl = null;
             }
             resetGoButton();
             popupMenu.style.display = "none";
@@ -174,7 +174,7 @@ function showPopupMenu(location) {
     currentTargetLocation = [location.lat, location.lng];
     document.getElementById("destinationText").textContent = location.name;
     popupMenu.style.display = "block";
-
+    console.log(currentTargetLocation);
     let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
     if (startLocation) {
         p.calculateETA(startLocation, [location.lat, location.lng], document);
@@ -347,3 +347,5 @@ getSearchData("Block A");
 // Call the iconG function to load the map markers
 iconG(showPopupMenu);
 displayExtendedLocations()
+
+export{showPopupMenu }
