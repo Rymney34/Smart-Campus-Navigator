@@ -4,7 +4,10 @@ const blocks = require("../schemas/blocks.js")
 const searchService = require("../controllers/getSearchDetails.js");
 
 
+
 const router = express.Router();
+
+// route for search, getting data (search term) from front end and then passsing to query and getting matched data
 
 router.get("/getSearchData/:searchTerm", async (req, res) => {
     try {

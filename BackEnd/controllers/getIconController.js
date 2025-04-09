@@ -3,6 +3,7 @@ const express = require('express');
 
 const locationType = require("../schemas/locationType.js")
 
+// getting icon query to  mongodb 
 async function ic1() {
     try {
         const q = [
@@ -15,14 +16,7 @@ async function ic1() {
                     as: 'iconsImages'
                 }
             },
-            // {
-            //     $lookup: {
-            //         from: "blocks",
-            //         localField: 'iconsImages._id',
-            //         foreignField: 'idIcon',
-            //         as: 'blocksIcons'
-            //     }
-            // },
+          
 
             {
                 $project: {
@@ -39,7 +33,7 @@ async function ic1() {
         
         const res = await locationType.aggregate(q).exec();
         
-        // console.log("TEST LOG" + res)
+      
 
         return res;
 

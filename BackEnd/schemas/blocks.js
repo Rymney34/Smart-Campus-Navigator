@@ -8,5 +8,3 @@ const blockSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Blocks", blockSchema)
-
-//Just test

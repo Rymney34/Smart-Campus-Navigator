@@ -9,7 +9,7 @@ const iconAllSend = require("./routes/getMapIcon.js");
 const getLocations = require("./routes/getLocations.js");
 const getSearchData = require("./routes/getSearchData.js")
 
-const path = require('path') // Require path module (Handle File Paths) Used when launching the website FrontEnd 
+const path = require('path') // Used when launching the website FrontEnd 
 // require('./BackEnd/dbConnect'); 
 require("./config/dbConnect.js"); // Connect to MongoDB Databases
 

@@ -4,9 +4,8 @@ const Images = require("../schemas/images.js")
 const Icons = require("../schemas/icons.js")
 const block = require("../schemas/blocks.js")
 const location = require("../schemas/locations.js")
-// const ObjectId = new mongoose.Types.ObjectId;
 
-// const blockId = '67b916474df331b174fe8e85';
+// quert to mongo db  getting all info to show in side bar by passsing right blockid 
 
 async function getLocation(blockId) {
 

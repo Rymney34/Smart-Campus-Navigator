@@ -6,7 +6,7 @@
 
 #side-bar {
     width: 5%;
-    min-width: 100px;
+    min-width: 80px;
     background-color: rgb(21, 21, 61);
     color: rgba(255, 255, 255, 0);
     transition: width 0.2s ease;
@@ -17,9 +17,28 @@
     align-items: center;
 }
 
+@media (max-width: 375px){
+    #side-bar {
+        width: 5%;
+        min-width: 70px;
+        background-color: rgb(21, 21, 61);
+        color: rgba(255, 255, 255, 0);
+        transition: width 0.2s ease;
+        text-align: center;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+     
+    }
+
+
+
+}
+
 #side-bar.active {
     width: 25%;
-    min-width: 400px;
+    min-width: 375px;
     color: white;
 }
 

@@ -5,6 +5,8 @@ const iconService = require("../controllers/mapIconCntrl.js");
 
 const router = express.Router();
 
+// route of getting map icons 
+
 router.get("/getIcons", async (req, res) => {
     try {
     

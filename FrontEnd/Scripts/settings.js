@@ -6,10 +6,13 @@ class Settings {
     displaySettingsContent() {
         this.container.innerHTML = `
             <div id="settingsContentDiv">
+
                 <div id="titleContainer">
+                 
                     <h1 id="settingsTitleText">Settings</h1>
                     <p>Click the links below</p>
                 </div>
+           
                 <div id="fontSizeContainer">
                     <a href=""><h1 id="setTitleText" >Font Size</h1></a>
                     <p id="smallFontSizeText">Small, Medium, Large</p>
@@ -26,6 +29,8 @@ class Settings {
         `;
     }
 }
+
+
 
 // Export the Settings class so it can be used elsewhere
 export default Settings;

@@ -1,5 +1,7 @@
 import Settings from '/Scripts/settings.js'; 
 
+
+
 class SideBar {
     constructor() {
         this.sideBarButton = document.getElementById("side-barButton");
@@ -7,14 +9,19 @@ class SideBar {
         this.sideBarHeader = document.getElementById("side-barHeader");
         this.campusListContainer = document.getElementById("campus-list-container");
         this.settingsButton = document.getElementById("settingsButton");
+      
+
 
         this.settings = new Settings("campus-list-container");
         this.bindEvents();
+        
     }
+    
 
     bindEvents() {
         this.sideBarButton.addEventListener("click", () => this.toggleSideBar());
         this.settingsButton?.addEventListener("click", () => this.displaySettings());
+       
     }
 
     // Toggle Sidebar

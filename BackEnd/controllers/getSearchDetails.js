@@ -3,6 +3,8 @@ const express = require('express');
 
 const blocks = require("../schemas/blocks.js")
 
+//getting serach details 
+
 async function getSearchDetails(searchTerm) {
     try {
 
@@ -150,7 +152,7 @@ async function getSearchDetails(searchTerm) {
         
         const res = await blocks.aggregate(q).exec();
         
-        console.log("Search" + res)
+        
 
         return res;
 
