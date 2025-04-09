@@ -54,6 +54,7 @@
 #buildingInfo {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    padding: 10px;
 }
 
 #searchBar {
@@ -69,6 +70,7 @@
     width: 300px;
     height: 150px;
     object-fit: cover;
+    padding: 10px;
 }
 
 #settingsDiv {
@@ -164,6 +166,7 @@ a:hover::after {
 #dropdownContainer {
     width: 100%;
     text-align: right;
+    padding-top: 10px;
 
 }
 
