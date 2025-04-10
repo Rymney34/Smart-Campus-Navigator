@@ -20,6 +20,7 @@ import { getAllIcons } from '../Tools/TestingTools/markerTestingTools.js';
 import { getAllLocationData } from '../Tools/TestingTools/markerTestingTools.js';
 
 import { displayLocationData } from '../Scripts/displayContent.js';
+import SideBar from "./side-bar.js";
 
 // Suppress OSRM demo server warning
 suppressOSRMSWarning();
@@ -110,6 +111,16 @@ css.innerHTML = `
         z-index: 1000;
         font-family: "Gill Sans", sans-serif;
     }
+
+    @media (max-width: 430px) {
+
+        #popupMenu {
+            font-family: 'Inter', sans-serif;
+            width: 270px; /* or something like 300px */
+            bottom: 20px; /* avoid pushing it out of view */
+            transition: height 0.3s ease-in-out;
+        }
+    }
     #popupMenu h3 { margin: 0; font-size: 20pt; margin-left: 6px}
     
 `;
@@ -136,6 +147,9 @@ document.getElementById("popupHeader").addEventListener("click", function () {
 // Global variable to store the current target location
 let currentTargetLocation = null;
 
+// const sidebar = 
+
+
 function resetGoButton() {
     popupMenu.style.display = "block";
     const goButton = document.getElementById("goButton");
@@ -145,6 +159,7 @@ function resetGoButton() {
 
     goButton.onclick = function () {
         let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
+        document.getElementById("popupMenu").classList.toggle("minimized");
         if (!startLocation) {
             alert("Start location not available! Please allow the website to acess your live location on your browser.");
             p.setupUserLocation();
@@ -174,7 +189,7 @@ function showPopupMenu(location) {
     currentTargetLocation = [location.lat, location.lng];
     document.getElementById("destinationText").textContent = location.name;
     popupMenu.style.display = "block";
-    console.log(currentTargetLocation);
+    // console.log(currentTargetLocation);
     let startLocation = p.getSelectedStartLocation(startLocationSelect.value);
     if (startLocation) {
         p.calculateETA(startLocation, [location.lat, location.lng], document);
@@ -220,6 +235,7 @@ const fetchLocationData = async (blockId) => {
     }
 };
 
+//getting icons from the backend
 const iconG = async () => {
     try {
         // Fetch all block icons from the server (base64 images)
@@ -280,6 +296,7 @@ const iconG = async () => {
     }
 };
 
+// get facilityIcons
 const displayExtendedLocations = async () => {
     try {
         // Fetch facility icons from the server
@@ -319,12 +336,9 @@ const displayExtendedLocations = async () => {
     }
 };
 
-/* Testing Tools
-getAllLocationData();
-getAllIcons()
-*/
 
 
+// get data that will be searched from backend
 const getSearchData = async (searchTerm) => {
   
     try {
@@ -344,7 +358,6 @@ const getSearchData = async (searchTerm) => {
 getSearchData("Block A");
 
 
-// Call the iconG function to load the map markers
 iconG(showPopupMenu);
 displayExtendedLocations()
 

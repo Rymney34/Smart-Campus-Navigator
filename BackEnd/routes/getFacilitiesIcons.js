@@ -4,6 +4,7 @@ const icons = require("../schemas/icons.js")
 const locationType = require("../schemas/locationType.js")
 const {ic1} = require("../controllers/getIconController.js");
 
+// Route of getting icons
 
 const router = express.Router();
 

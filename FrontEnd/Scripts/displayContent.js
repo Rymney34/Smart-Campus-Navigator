@@ -21,14 +21,16 @@ const displayLocationData = (locationData) => {
         <div id="dropdownContainer">
             <select id="floorDropdown"></select>
         </div>
-        <div>
+        <div class = "blockDetailsBlock">
             <div id="buildingInfo">
-                <h1 id="roomLabel"></h1>
-                <h1 id="facilitiesLabel"></h1>
+                <h2 id="roomLabel"></h2>
+                <h2 id="facilitiesLabel"></h2>
             </div>
+            <div class="lineB"></div>
+           
             <div id="buildingInfo">
-                <h2 id="dynamicRooms"></h2>
-                <h2 id="dynamicFacilities"></h2>
+                <p id="dynamicRooms"></p>
+                <p id="dynamicFacilities"></p>
             </div>
         </div>
     `;

@@ -4,6 +4,7 @@ const Images = require("../schemas/images.js")
 const icons = require("../schemas/icons.js")
 const blocks = require("../schemas/blocks.js")
 
+// getting map icons 
 async function mapIc1() {
     try {
         const q = [

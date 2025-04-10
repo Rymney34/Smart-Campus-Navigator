@@ -57,6 +57,15 @@
     padding: 10px;
 }
 
+.lineB {
+    width: 1px;
+    height: 175px;
+    /* rotate: 90deg; */
+    background-color: black;
+    margin: 0 0 0 160px;
+    position: absolute;
+}
+
 #searchBar {
     border-radius: 5px;
     border: 0;
@@ -67,10 +76,13 @@
 }
 
 #sideBarImage {
+    margin-top: 10px;
     width: 300px;
-    height: 150px;
+    height: 170px;
     object-fit: cover;
-    padding: 10px;
+    border-radius: 10px;
+    border: 0.5px solid black;
+    
 }
 
 #settingsDiv {
@@ -84,6 +96,11 @@
     margin-right: 70%;
 }
 
+:root {
+    --link-color: rgb(255, 255, 255);
+    --link-underline-padding: .5em;
+}
+
 #settingsButton {
     padding: 20px;
     font-size: 25px;
@@ -91,7 +108,24 @@
     border: 0;
     color: white;
     cursor: pointer;
+
 }
+#settingsButton:after{
+    background-color: var(--link-color);
+    content: '';
+    display: block;
+    height: .1em;
+    margin-left: calc(var(--link-underline-padding)*-1);
+    margin-top: .2em;
+    transition: width .5s;
+    width: 0;
+
+}
+
+#settingsButton:hover:after{
+    width: calc(100% + var(--link-underline-padding) * 2);
+}
+
 
 #settingsContentDiv {
     display: flex;
@@ -104,9 +138,17 @@
     margin-bottom: 5px;
 }
 
+
+
 #titleContainer {
     text-align: center;
-    width: 100%;
+    /* width: 100%; */
+  
+    
+}
+
+#dynamicBuildingTitle{
+    font-size: 20px;
 }
 
 #settingsTitleText {
@@ -116,7 +158,9 @@
 
 #setTitleText {
     margin: 5px 0;
+
 }
+
 
 p {
     margin: 2px 0;
@@ -166,14 +210,15 @@ a:hover::after {
 #dropdownContainer {
     width: 100%;
     text-align: right;
-    padding-top: 10px;
+    margin: 5px;
 
 }
 
 #floorDropdown {
     margin-left: auto;
-    margin-right: 55px;
+    margin-right: 30px;
     border: none;
+    font-weight: bold;
 }
 
 #dynamicRooms {
@@ -207,4 +252,21 @@ a:hover::after {
 
 #side-bar:not(.active) #autocompleteList {
     display: none !important;
+}
+
+#dynamicRooms{
+    color: #0f0f2d;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#dynamicFacilities{
+    color: #0f0f2d;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.blockDetailsBlock{
+    margin-top: 10px;
+
 }

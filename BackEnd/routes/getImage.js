@@ -8,6 +8,7 @@ const {imag1} = require("../controllers/imageController.js");
 
 const app = express();
 
+// Route of getting images 
 
 const router = express.Router();
 
