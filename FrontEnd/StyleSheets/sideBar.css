@@ -61,7 +61,7 @@
     height: 175px;
     /* rotate: 90deg; */
     background-color: black;
-    margin: 0 0 0 180px;
+    margin: 0 0 0 160px;
     position: absolute;
 }
 
@@ -145,6 +145,9 @@
     
 }
 
+#dynamicBuildingTitle{
+    font-size: 20px;
+}
 
 #settingsTitleText {
     text-decoration: underline;

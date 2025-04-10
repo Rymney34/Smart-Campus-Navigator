@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log(formData); // Add this line to check what data is being sent
 
+       
+    
+
         // Send data to the backend using Fetch API
         fetch('http://localhost:3000/api/users', {
             method: 'POST',
@@ -61,7 +64,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }).finally(() => {
             hideLoading(); // Hide loading screen after request completes
         });
+
     });
+
+
+    const toggleIcon = document.querySelector('.togglePassword');
+    const passwordField = document.getElementById('password');
+    const toggleIcons = document.querySelectorAll('.togglePassword');
+
+    toggleIcons.forEach((toggleIcon) => {
+        toggleIcon.addEventListener('click', () => {
+            // Get the password field that is just before the clicked icon
+            const passwordField = toggleIcon.previousElementSibling;
+    
+            const isPasswordVisible = passwordField.type === 'text';
+    
+            if (isPasswordVisible) {
+                passwordField.type = 'password';
+            } else {
+                passwordField.type = 'text';
+            }
+    
+            toggleIcon.classList.toggle('fa-eye');
+            toggleIcon.classList.toggle('fa-eye-slash');
+        });
+    });
+    
+
+
 
     function validateName(name) {
         const nameRegex = /^[A-Za-z]+$/;

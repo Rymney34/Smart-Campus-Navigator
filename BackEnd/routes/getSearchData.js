@@ -20,7 +20,7 @@ router.get("/getSearchData/:searchTerm", async (req, res) => {
         
         res.json(result);
 
-        console.log(result)
+      
 
     } catch (e) {
         console.error("Error in Search route:", e.message);
