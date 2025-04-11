@@ -12,13 +12,8 @@ class Settings {
                     <h1 id="settingsTitleText">Settings</h1>
                     <p>Click the links below</p>
                 </div>
-           
-                <div id="fontSizeContainer">
-                    <a href=""><h1 id="setTitleText" >Font Size</h1></a>
-                    <p id="smallFontSizeText">Small, Medium, Large</p>
-                </div>
                 <div id="versionContainer">
-                    <a href=""><h1 id="setTitleText" >About the App</h1></a>
+                    <a href="about.html"><h1 id="setTitleText" >About the App</h1></a>
                     <p id="smallAboutAppText">Version Info, Credits</p>
                 </div>
                 <div id="feedbackContainer">
