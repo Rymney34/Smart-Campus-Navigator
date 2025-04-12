@@ -84,7 +84,7 @@ popupMenu.innerHTML = `
     <!-- ETA and GO Button Row -->
     <div class="eta-go-container">
         <div class="eta-box">
-            <p id="eta-label">ETA</p>
+            <p id="eta-label">(Walk) ETA</p>
             <span id="eta">-- min</span>
         </div>
         <div class="go-button-container">
