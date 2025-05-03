@@ -73,25 +73,25 @@ const displayLocationData = (locationData) => {
         floorDropdownElement.appendChild(option);
     });
 
-    // Function to update rooms display when a floor is selected
     const updateRoomsDisplay = (selectedFloor) => {
-        const selectedFloorData = locationData.find(floorData => floorData.floors.floorNum == selectedFloor);
-    
+        const roomsElement = document.getElementById("dynamicRooms");
         roomsElement.innerHTML = ""; // Clear previous content
     
-        if (selectedFloorData?.floorLocation?.places?.length) {
-            // Only add room elements if rooms are defined and not empty
-            selectedFloorData.floorLocation.places.forEach(room => {
-                if (room.roomNumber) {  // Check if roomNumber exists
+        // Get all entries for selected floor
+        const floorEntries = locationData.filter(floorData => floorData.floors.floorNum == selectedFloor);
+    
+        // Extract and render all roomNumbers
+        floorEntries.forEach(entry => {
+            entry.floorLocation?.places?.forEach(place => {
+                if (place.roomNumber) {
                     const roomElement = document.createElement("div");
-                    roomElement.textContent = `${room.roomNumber}`;
+                    roomElement.textContent = place.roomNumber;
                     roomsElement.appendChild(roomElement);
                 }
             });
-        } else {
-            roomsElement.textContent = "";  // Display nothing if there are no rooms
-        }
+        });
     };
+    
     
 
     // Function to update facilities display when a floor is selected
