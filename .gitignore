@@ -1,5 +1,5 @@
 node_modules
-.env
+#.env
 dump/
 .DS_Store
 
