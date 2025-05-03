@@ -222,7 +222,7 @@ locations.forEach(function(location) {
 });
 
 // Function to fetch location data based on the blockId
-const fetchLocationData = async (blockId) => {
+export const fetchLocationData = async (blockId) => {
     try {
         const response = await fetch(`/getLocations/${blockId}`);
         let data = await response.json();
