@@ -5,28 +5,50 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const { mapIc1 } = require('../../../BackEnd/controllers/mapIconCntrl');
-const Block = require('../../../BackEnd/schemas/blocks');
 const Icon = require('../../../BackEnd/schemas/icons');
 
 let mongoServer;
-let iconId;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
-  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  // Create an icon first and store the ID
-  const iconDoc = await Icon.create({
-    image: Buffer.from('dummy-image-data')
+  await mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
-  iconId = iconDoc._id;
 
-  // Create a block that references the icon
-  await Block.create({
+  const iconId = new mongoose.Types.ObjectId();
+
+  // Insert icon using the actual schema
+  await Icon.create({
+    _id: iconId,
+    image: Buffer.from('icon-image'),
+  });
+
+  // 🔧 Define a temporary model with idIcon for test only
+  const TempBlock = mongoose.model(
+    'TempBlock',
+    new mongoose.Schema(
+      {
+        name: String,
+        idIcon: mongoose.Schema.Types.ObjectId,
+      },
+      { collection: 'blocks' } // Reuse same collection
+    )
+  );
+
+  // Create block referencing the icon
+  await TempBlock.create({
     name: 'Block Test',
-    idIcon: iconId
+    idIcon: iconId,
   });
+});
+
+afterEach(async () => {
+  const collections = await mongoose.connection.db.collections();
+  for (const collection of collections) {
+    await collection.deleteMany();
+  }
 });
 
 afterAll(async () => {
@@ -44,13 +66,9 @@ describe('mapIc1()', () => {
     const block = result.find(b => b.name === 'Block Test');
     expect(block).toBeDefined();
     expect(block).toHaveProperty('image');
-
-    // Depending on how it's returned
     expect(block.image).toBeDefined();
     expect(
-      Buffer.isBuffer(block.image) || block.image._bsontype === 'Binary'
+      Buffer.isBuffer(block.image) || (block.image && block.image._bsontype === 'Binary')
     ).toBe(true);
   });
 });
-
-

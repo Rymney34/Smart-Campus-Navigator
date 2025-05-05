@@ -36,57 +36,43 @@ afterEach(async () => {
 
 describe('getLocation()', () => {
   test('returns full block info with nested data', async () => {
-    // Create mock icon
-    const iconDoc = await Icon.create({ image: Buffer.from('fakeicon') });
-
-    // Create locationType referencing icon
-    const locTypeDoc = await LocationType.create({
-      typeName: 'Toilet',
-      idImage: iconDoc._id,
-    });
-
-    // Create image for block
-    const imageDoc = await Image.create({ image: Buffer.from('blockimg') });
-
-    // Create block
-    const blockDoc = await Block.create({
-      name: 'Block Test',
-      title: 'Engineering',
-      idImage: imageDoc._id,
-    });
-
-    // Create floor that belongs to block
-    const floorDoc = await Floor.create({
-      id_block: blockDoc._id,
-      floorNum: 1,
-    });
-
-    // Create location with place referencing locationType
+    const iconId = new mongoose.Types.ObjectId();
+    const typeId = new mongoose.Types.ObjectId();
+    const imageId = new mongoose.Types.ObjectId();
+    const blockId = new mongoose.Types.ObjectId();
+    const floorId = new mongoose.Types.ObjectId();
+  
+    await Icon.create({ _id: iconId, image: Buffer.from('fakeicon') });
+    await LocationType.create({ _id: typeId, typeName: 'Toilet', idImage: iconId });
+    await Image.create({ _id: imageId, image: Buffer.from('blockimg') });
+    await Block.create({ _id: blockId, name: 'Block Test', title: 'Engineering', idImage: imageId });
+    await Floor.create({ _id: floorId, id_block: blockId, floorNum: 1 });
+  
     await Location.create({
-      idFloor: floorDoc._id,
+      _id: new mongoose.Types.ObjectId(),
+      idFloor: floorId,
       opentime: '08:00',
       closetime: '18:00',
-      places: [
-        {
-          roomNumber: 'E.101',
-          idType: locTypeDoc._id,
-        },
-      ],
+      places: [{
+        _id: new mongoose.Types.ObjectId(),
+        roomNumber: 'E.101',
+        idType: typeId,
+        isFacility: false
+      }]
     });
 
-    // Now run the actual controller
-    const result = await getLocation(blockDoc._id.toString());
+    const result = await getLocation(blockId.toString());
 
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeGreaterThan(0);
-    const data = result[0];
-    expect(data).toHaveProperty('name', 'Block Test');
-    expect(data).toHaveProperty('floors');
-    expect(data).toHaveProperty('floorLocation');
-    expect(data).toHaveProperty('locationType');
-    expect(data).toHaveProperty('locationImage');
+    expect(result[0]).toHaveProperty('name', 'Block Test');
+    expect(result[0]).toHaveProperty('floors');
+    expect(result[0]).toHaveProperty('floorLocation');
+    expect(result[0]).toHaveProperty('locationType');
+    expect(result[0]).toHaveProperty('locationImage');
   });
-
+  
+  
   test('returns mock error response for invalid blockId', async () => {
     const mockRes = {
     status: jest.fn().mockReturnThis(),

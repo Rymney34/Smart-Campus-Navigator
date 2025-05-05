@@ -57,9 +57,7 @@ const searchLogic = async (query, data) => {
   });
 };
 
-// ----------------------------
-// ✅ Unit Tests
-// ----------------------------
+
 test("renders unique suggestions and handles click", async () => {
   const fakeData = [
     { name: "Block A", title: "School of Art" },

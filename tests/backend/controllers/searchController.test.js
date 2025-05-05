@@ -35,20 +35,45 @@ afterEach(async () => {
 
 describe('getSearchDetails()', () => {
   test('returns blocks matching search term in block name or facility', async () => {
-    const iconDoc = await Icon.create({ image: Buffer.from('iconimg') });
-    const locTypeDoc = await LocationType.create({ typeName: 'Cafe', idImage: iconDoc._id });
-    const imgDoc = await Image.create({ image: Buffer.from('blockimg') });
+    const imageId = new mongoose.Types.ObjectId();
+    const iconId = new mongoose.Types.ObjectId();
+    const typeId = new mongoose.Types.ObjectId();
+    const blockId = new mongoose.Types.ObjectId();
+    const floorId = new mongoose.Types.ObjectId();
 
-    const blockDoc = await Block.create({ name: 'Block A', title: 'Business', idImage: imgDoc._id });
-    const floorDoc = await Floor.create({ id_block: blockDoc._id, floorNum: 1 });
+    // Insert images and icons
+    await Image.create({ _id: imageId, image: Buffer.from('blockimg') });
+    await Icon.create({ _id: iconId, image: Buffer.from('iconimg') });
 
+    // Insert location type
+    await LocationType.create({ _id: typeId, typeName: 'Cafe', idImage: iconId });
+
+    // Create block and manually set `idImage` (bypassing schema)
+    const block = new Block({
+      _id: blockId,
+      name: 'Block A',
+      title: 'Business'
+    });
+    block.set('idImage', imageId);
+    await block.save();
+
+    // Insert floor
+    await Floor.create({ _id: floorId, id_block: blockId, floorNum: 1 });
+
+    // Insert location with room and type
     await Location.create({
-      idFloor: floorDoc._id,
+      _id: new mongoose.Types.ObjectId(),
+      idFloor: floorId,
       opentime: '08:00',
       closetime: '18:00',
-      places: [{ roomNumber: 'A.101', idType: locTypeDoc._id }]
+      places: [{
+        roomNumber: 'A.101',
+        idType: typeId,
+        isFacility: false
+      }]
     });
 
+    // Perform the search
     const results = await getSearchDetails("Cafe");
 
     expect(Array.isArray(results)).toBe(true);
