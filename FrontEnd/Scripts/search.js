@@ -1,6 +1,7 @@
 import { displayLocationData } from "./displayContent.js";
 import { showPopupMenu } from "./index.js";
 import { locations } from "../Assets/FetchMethods/fetchLocationMarkers.js";
+import { fetchLocationData } from './index.js'; // if it's one folder up
 import Location from "../Models/Location.js"
 const autocompleteList = document.getElementById("autocompleteList");
 
@@ -33,7 +34,7 @@ searchBar.addEventListener("input", async function () {
             entry.classList.add("autocomplete-item");
             entry.textContent = label;
 
-            entry.addEventListener("click", () => {
+            entry.addEventListener("click", async () => {
                 const matchingItems = data.filter(d => {
                     const b = d.name || "Unknown Block";
                     const t = d.title || "Unknown School";
@@ -46,14 +47,28 @@ searchBar.addEventListener("input", async function () {
                     const first = matchingItems[0];
                     // This updates the popup/ETA/GO logic just like clicking a map marker
                     const match = locations.find(loc => loc.name === item.name);
-
+                    console.log(first)
+                    const blockId = first._id;
+                    console.log(blockId)
+                    const fullData = await fetchLocationData(blockId);
                 if (match) {
-                    const location = new Location(match.name, match.lat, match.lng); // or however you construct it
+                    const location = new Location(match.name, match.lat, match.lng); 
                     showPopupMenu(location);
                 } else {
                     console.warn("Could not find matching Location object for popup menu.");
                 }
-                displayLocationData(matchingItems); 
+                
+                if (!blockId) {
+                    console.warn("No blockId found, skipping location fetch.");
+                    return;
+                }
+                
+                if (!fullData || fullData.length === 0) {
+                    console.warn("No data returned from fetchLocationData");
+                    return;
+                }
+
+                displayLocationData(fullData); 
 
 
                 }
