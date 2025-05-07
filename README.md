@@ -32,6 +32,12 @@ Make sure you have the following software installed:
 3. Install dependencies:
    ```bash
    npm install
+   
+4. Open Powershell (Ctrl ')
+
+4. Run System:
+   ```bash
+   npm start
 
 ## Technologies Used:
 - **Node.js**: JavaScript runtime for the backend.
