@@ -34,13 +34,24 @@ Make sure you have the following software installed:
    npm install
 
 ## Technologies Used:
-- **Node.js**: JavaScript runtime for the backend
-- **Express**: Web framework for Node.js
-- **Leaflet**: Library for interactive maps
-- **MongoDB**: Database for storing data (e.g., Map Data, Images)
-- **Mongoose**: Object Data Modeling (ODM) Library for MongoDB
+- **Node.js**: JavaScript runtime for the backend.
+- **Express.js**: Web framework for building RESTful APIs.
+- **MongoDB**: NoSQL database for storing application data.
+- **Mongoose**: Object Data Modeling (ODM) library for MongoDB and Node.js.
+- **Axios**: Promise-based HTTP client for the browser and Node.js.
+- **bcryptjs**: Library to hash and compare passwords securely.
+- **cors**: Middleware to enable Cross-Origin Resource Sharing.
+- **dotenv**: Loads environment variables from a `.env` file into `process.env`.
+- **Leaflet**: JavaScript library for interactive maps.
+- **Nodemon**: Tool that automatically restarts the Node.js server on file changes.
+
 
 ## Features:
+- **Map View**: displaying the locations of Cardiff Met llandaff Campus
+- **Block Buildings**: displaying all the main buidlings (Block O, Block A, etc)
+- **Points of Interest**: displaying car parks, bus stop and bike racks
+- **Real-Time Directions**: displaying directons to and from locations
+- **Searching**: location searching (Search for library, cafe, gym, etc)
 
 ## Contributors:
 - **Lucas** - https://github.com/Lucasarl
