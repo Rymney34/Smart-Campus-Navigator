@@ -33,7 +33,7 @@ Make sure you have the following software installed:
    ```bash
    npm install
    
-4. Open Powershell (Ctrl ')
+4. Open Powershell ( Ctrl ' )
 
 4. Run System:
    ```bash
